@@ -174,7 +174,7 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
     height: 100%;
     overflow: visible;
-    color: #000;
+    color: ${colors.white};
     background-color: ${colors.white};
     
     &.modal {

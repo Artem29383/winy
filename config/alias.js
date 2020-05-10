@@ -9,4 +9,5 @@ module.exports = {
   constants: `${process.cwd()}/src/constants`,
   styles: `${process.cwd()}/src/styles`,
   images: `${process.cwd()}/src/images`,
+  assets: `${process.cwd()}/src/assets`,
 };

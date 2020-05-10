@@ -21,6 +21,7 @@ module.exports = {
   rules: {
     "global-require": "off",
     "no-console": "off",
+    'react/jsx-props-no-spreading': 0,
     "no-underscore-dangle": "off",
     "function-paren-newline": "off",
     "import/first": "off",
