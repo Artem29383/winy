@@ -1,0 +1,48 @@
+import React, { memo, useCallback, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import S from './Button.styled';
+
+const Button = ({ children, className, onClickHandler, isLoader }) => {
+  const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+  const btnRef = useRef();
+  let width;
+  let height;
+  if (isLoader) {
+    if (btnRef.current) {
+      width = btnRef.current.offsetWidth;
+      height = btnRef.current.offsetHeight;
+    }
+  }
+
+  const setCoords = useCallback(
+    e => {
+      const x = e.clientX - e.currentTarget.getBoundingClientRect().left;
+      const y = e.clientY - e.currentTarget.getBoundingClientRect().top;
+      setCoordinates({ x, y });
+    },
+    [coordinates]
+  );
+
+  return (
+    <S.Button
+      ref={btnRef}
+      className={className}
+      onClick={onClickHandler}
+      onMouseDown={setCoords}
+      width={width}
+      height={height}
+      {...coordinates}
+    >
+      {children}
+    </S.Button>
+  );
+};
+
+Button.propTypes = {
+  children: PropTypes.any.isRequired,
+  className: PropTypes.string,
+  isLoader: PropTypes.bool,
+  onClickHandler: PropTypes.func,
+};
+
+export default memo(Button);

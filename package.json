@@ -1,5 +1,5 @@
 {
-  "name": "junior_test-app",
+  "name": "mini-twitter",
   "version": "1.0.0",
   "main": "index.js",
   "author": "i am",
@@ -58,6 +58,8 @@
     "@reduxjs/toolkit": "^1.2.5",
     "axios": "^0.19.2",
     "connected-react-router": "^6.7.0",
+    "firebase": "^7.14.3",
+    "history": "^4.10.1",
     "normalizr": "^3.6.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

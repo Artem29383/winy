@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import colors from './colors';
 /* stylelint-disable */
 
 export const GlobalStyles = createGlobalStyle`
@@ -174,8 +173,8 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
     height: 100%;
     overflow: visible;
-    color: #000;
-    background-color: ${colors.white};
+    color: #fff;
+    background-color: #fff;
     
     &.modal {
       overflow: hidden;
