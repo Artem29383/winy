@@ -1,12 +1,8 @@
 import styled from 'styled-components';
-import colors from 'styles/colors';
 
 export default {
-  Button: styled.button.attrs(({ x, y }) => ({
-    style: {
-      backgroundImage: `radial-gradient(circle at ${x}px ${y}px, transparent 1%, ${colors.mineShaft} 1%)`,
-    },
-  }))`
+  // eslint-disable-next-line no-unused-vars
+  Button: styled.button`
     border: none;
     border-radius: 2px;
     padding: 0 18px;
@@ -17,11 +13,19 @@ export default {
     height: ${({ height }) => height && `${height}px`};
     cursor: pointer;
     display: block;
-    color: ${colors.silverChalice};
+    color: ${props => props.theme.btnTextColor};
     text-transform: uppercase;
-    box-shadow: 0 0 4px ${colors.tundora};
-    transition: background 0.8s, box-shadow 0.1s ease-in-out;
-    background: ${colors.mineShaft} left/15000%;
+    transition: background 0.8s;
+    background-color: ${props => props.theme.btnBackground};
+
+    &:hover {
+      background: ${({
+        x,
+        y,
+        theme,
+      }) => `${theme.btnBackgroundHover} radial-gradient(circle at ${x}px ${y}px, transparent 1%, ${theme.btnBackgroundHover} 1%)
+        left/15000%`};
+    }
 
     &.circle {
       border-radius: 50%;
@@ -32,7 +36,7 @@ export default {
 
     &:active {
       box-shadow: 0 0 5px 0 rgba(255, 139, 0, 1);
-      background-color: ${colors.tundora};
+      background-color: ${props => props.theme.btnBackgroundActive};
       background-size: 100%;
       transition: background 0s;
     }

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import eye from 'assets/images/eye.svg';
-import Eye from 'assets/images/eye.styled';
+import Eye from 'assets/images/Icons.styled';
 import S, { InputField, Label } from './TextField.styled';
 
 const TextField = ({

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colors from 'styles/colors';
 
 export default {
   Form: styled.form`
@@ -8,11 +7,16 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px solid ${colors.mineShaft};
+    border: 1px solid ${props => props.theme.formBorder};
     border-radius: 5px;
-    background-color: ${colors.black};
-    color: ${colors.silverChalice};
+    background-color: ${props => props.theme.formBackground};
+    color: ${props => props.theme.textColor};
     padding-bottom: 10px;
+    transition: background-color 0.2s linear, color 0.2s linear;
+
+    &.error {
+      border: 2px solid ${props => props.theme.error};
+    }
   `,
   InputWrapper: styled.div`
     width: 100%;
@@ -29,12 +33,23 @@ export default {
 
     &.link {
       cursor: pointer;
-      color: ${colors.silverChalice};
+      color: ${props => props.theme.textColor};
       text-decoration: none;
+      transition: color 0.2s linear;
 
       &:hover {
         text-decoration: underline;
       }
     }
+  `,
+  Error: styled.div`
+    font-size: 22px;
+    text-align: center;
+    color: ${props => props.theme.error};
+  `,
+  Success: styled.div`
+    font-size: 22px;
+    text-align: center;
+    color: ${props => props.theme.success};
   `,
 };

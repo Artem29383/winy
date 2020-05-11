@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as yup from 'yup';
 import Container from 'components/Container';
 import TextField from 'components/TextField';
@@ -6,11 +6,18 @@ import Button from 'components/Button';
 import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import { useForm } from 'react-hook-form';
-// eslint-disable-next-line no-unused-vars
-import firebase from '../../firebase/firebase';
+import { loginUser, registerSuccess, setError } from 'models/user/reducer';
+import useAction from 'hooks/useAction';
+import { errorSelector, successMsgSelector } from 'models/user/selectors';
+import useSelector from 'hooks/useSelector';
 import S from './RegisterPage.styled';
 
 const RegisterPage = () => {
+  const registerUser = useAction(loginUser);
+  const setSuccessMsg = useAction(registerSuccess);
+  const successMsg = useSelector(successMsgSelector);
+  const errorSet = useAction(setError);
+  const fetchError = useSelector(errorSelector);
   const registerSchema = yup.object().shape({
     login: yup.string().required('login is required'),
     email: yup
@@ -24,19 +31,42 @@ const RegisterPage = () => {
     confirm: yup.string().required('confirm is required'),
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const { register, handleSubmit, errors, watch } = useForm({
+  const { register, handleSubmit, errors, watch, reset } = useForm({
     mode: 'onSubmit',
     validationSchema: registerSchema,
   });
+  const watchEmail = watch('email');
+  const watchLogin = watch('login');
+  const watchPassword = watch('password');
+  const watchConfirm = watch('confirm');
+
+  useEffect(() => {
+    if (fetchError.message.trim()) {
+      errorSet({
+        message: '',
+        idError: '',
+      });
+    }
+  }, [watchConfirm, watchPassword, watchLogin, watchEmail]);
+
+  useEffect(() => {
+    if (successMsg) {
+      setTimeout(() => {
+        setSuccessMsg('');
+      }, 5000);
+    }
+  }, [successMsg]);
 
   const registration = async data => {
-    // eslint-disable-next-line no-unused-vars
     const { login, email, password, confirm } = data;
     if (password !== confirm) {
-      console.log('password not confirm');
+      errorSet({
+        message: 'password not confirm',
+        idError: 'notConfirm',
+      });
     } else {
-      console.log('registration');
+      registerUser({ login, email, password });
+      reset();
     }
     // const regResponse = await firebase
     //   .auth()
@@ -54,7 +84,10 @@ const RegisterPage = () => {
 
   return (
     <Container maxWidth="800">
-      <S.Form onSubmit={handleSubmit(registration)}>
+      <S.Form
+        onSubmit={handleSubmit(registration)}
+        className={fetchError.message && 'error'}
+      >
         <S.InputWrapper>
           <S.Text>Create an account</S.Text>
         </S.InputWrapper>
@@ -95,6 +128,16 @@ const RegisterPage = () => {
         <S.InputWrapper>
           <Button className="center">Create</Button>
         </S.InputWrapper>
+        {fetchError.message && (
+          <S.InputWrapper>
+            <S.Error>{fetchError.message}</S.Error>
+          </S.InputWrapper>
+        )}
+        {successMsg && (
+          <S.InputWrapper>
+            <S.Success>{successMsg}</S.Success>
+          </S.InputWrapper>
+        )}
         <S.InputWrapper>
           <NavLink to={routes.auth}>
             <S.Text className="link">Already have an account?</S.Text>
