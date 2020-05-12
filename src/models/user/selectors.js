@@ -10,3 +10,10 @@ export const successMsgSelector = createSelector(
   getSuccessMsg,
   successMsg => successMsg
 );
+
+const getLoading = state => state.user.isLoading;
+
+export const loadingSelector = createSelector(
+  getLoading,
+  isLoading => isLoading
+);

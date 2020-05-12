@@ -8,6 +8,7 @@ const userReducer = createSlice({
     isAdmin: false,
     login: '',
     isInit: false,
+    isLoading: false,
     error: {
       message: '',
       idError: '',
@@ -15,6 +16,9 @@ const userReducer = createSlice({
     successMsg: '',
   },
   reducers: {
+    setLoader(state, { payload }) {
+      state.isLoading = payload;
+    },
     setError(state, { payload }) {
       const { message, idError } = payload;
       state.error = {
@@ -43,8 +47,15 @@ const userReducer = createSlice({
     checkAuthUser: state => state,
     loginUser: state => state,
     logOutUser: state => state,
+    passReset: state => state,
   },
 });
 
 export default userReducer.reducer;
-export const { loginUser, setError, registerSuccess } = userReducer.actions;
+export const {
+  loginUser,
+  setError,
+  registerSuccess,
+  setLoader,
+  passReset,
+} = userReducer.actions;

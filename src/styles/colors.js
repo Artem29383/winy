@@ -15,9 +15,11 @@ const dark = {
   moonColor: '#1e1e1e',
   sunInitColor: '#fff',
   success: '#9ACD32',
+  loaderColor: '#ff8b00',
 };
 
 const light = {
+  loaderColor: '#fff',
   success: '#5c7e22',
   sunInitColor: '#fff',
   contentColorBody: '#fff',

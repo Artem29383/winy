@@ -6,18 +6,25 @@ import Button from 'components/Button';
 import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import { useForm } from 'react-hook-form';
-import { loginUser, registerSuccess, setError } from 'models/user/reducer';
+import { loginUser, registerSuccess } from 'models/user/reducer';
 import useAction from 'hooks/useAction';
-import { errorSelector, successMsgSelector } from 'models/user/selectors';
+import { successMsgSelector } from 'models/user/selectors';
 import useSelector from 'hooks/useSelector';
+import useFetchingError from 'hooks/useFetchingError';
+import { ternaryCheckError } from 'utils/ternaryCheckError';
 import S from './RegisterPage.styled';
 
 const RegisterPage = () => {
   const registerUser = useAction(loginUser);
   const setSuccessMsg = useAction(registerSuccess);
   const successMsg = useSelector(successMsgSelector);
-  const errorSet = useAction(setError);
-  const fetchError = useSelector(errorSelector);
+  const {
+    fetchError,
+    resetError,
+    isLoad,
+    setIsLoading,
+    setErrorHandle,
+  } = useFetchingError();
   const registerSchema = yup.object().shape({
     login: yup.string().required('login is required'),
     email: yup
@@ -41,11 +48,8 @@ const RegisterPage = () => {
   const watchConfirm = watch('confirm');
 
   useEffect(() => {
-    if (fetchError.message.trim()) {
-      errorSet({
-        message: '',
-        idError: '',
-      });
+    if (fetchError.trim()) {
+      resetError();
     }
   }, [watchConfirm, watchPassword, watchLogin, watchEmail]);
 
@@ -60,40 +64,26 @@ const RegisterPage = () => {
   const registration = async data => {
     const { login, email, password, confirm } = data;
     if (password !== confirm) {
-      errorSet({
-        message: 'password not confirm',
-        idError: 'notConfirm',
-      });
+      setErrorHandle('password not confirm', 'notConfirm');
     } else {
       registerUser({ login, email, password });
       reset();
+      setIsLoading(true);
     }
-    // const regResponse = await firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(email, password);
-    // const newFieldInBd = await firebase
-    //   .firestore()
-    //   .collection('users')
-    //   .add({
-    //     login,
-    //     email,
-    //   });
-    // console.log(regResponse);
-    // console.log(newFieldInBd);
   };
 
   return (
     <Container maxWidth="800">
       <S.Form
         onSubmit={handleSubmit(registration)}
-        className={fetchError.message && 'error'}
+        className={fetchError && 'error'}
       >
         <S.InputWrapper>
           <S.Text>Create an account</S.Text>
         </S.InputWrapper>
         <S.InputWrapper>
           <TextField
-            label="Логин"
+            label="Login"
             name="login"
             errors={errors.login}
             register={register}
@@ -126,11 +116,13 @@ const RegisterPage = () => {
           />
         </S.InputWrapper>
         <S.InputWrapper>
-          <Button className="center">Create</Button>
+          <Button className="center" isLoader>
+            {ternaryCheckError(isLoad, fetchError, 'Create')}
+          </Button>
         </S.InputWrapper>
-        {fetchError.message && (
+        {fetchError && (
           <S.InputWrapper>
-            <S.Error>{fetchError.message}</S.Error>
+            <S.Error>{fetchError}</S.Error>
           </S.InputWrapper>
         )}
         {successMsg && (

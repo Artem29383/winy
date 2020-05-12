@@ -55,6 +55,11 @@ const AuthPage = () => {
             <S.Text className="link">Create a new account?</S.Text>
           </NavLink>
         </S.InputWrapper>
+        <S.InputWrapper>
+          <NavLink to={routes.reset}>
+            <S.Text className="link">Forgot password?</S.Text>
+          </NavLink>
+        </S.InputWrapper>
       </S.Form>
     </Container>
   );
