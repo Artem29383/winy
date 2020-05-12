@@ -4,6 +4,8 @@ import {
   checkAuthUser,
   loginUser,
   loginUserSuccess,
+  logoutUser,
+  logOutUser,
   passReset,
   registerSuccess,
   registerUser,
@@ -147,9 +149,31 @@ function* userAuth(action) {
   });
 }
 
+function* userLogOut() {
+  try {
+    yield authRef.signOut();
+    yield put({
+      type: logoutUser.type,
+    });
+  } catch (e) {
+    yield put({
+      type: setError.type,
+      payload: {
+        message: e.message,
+        idError: 'serverError',
+      },
+    });
+  }
+  yield put({
+    type: setLoader.type,
+    payload: false,
+  });
+}
+
 export default function* rootSagaAuth() {
   yield takeEvery(registerUser, signIn);
   yield takeEvery(passReset, resetPassword);
   yield takeEvery(checkAuthUser, checkLoginUser);
   yield takeEvery(loginUser, userAuth);
+  yield takeEvery(logOutUser, userLogOut);
 }

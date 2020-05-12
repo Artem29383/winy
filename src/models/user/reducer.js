@@ -1,22 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 /* eslint-disable no-param-reassign */
 
+const initialState = {
+  isAuth: false,
+  email: null,
+  uid: null,
+  isAdmin: false,
+  login: null,
+  isInit: false,
+  isLoading: false,
+  error: {
+    message: '',
+    idError: '',
+  },
+  successMsg: '',
+};
+
 const userReducer = createSlice({
   name: 'user',
-  initialState: {
-    isAuth: false,
-    email: null,
-    uid: null,
-    isAdmin: false,
-    login: null,
-    isInit: false,
-    isLoading: false,
-    error: {
-      message: '',
-      idError: '',
-    },
-    successMsg: '',
-  },
+  initialState,
   reducers: {
     setLoader(state, { payload }) {
       state.isLoading = payload;
@@ -29,10 +31,7 @@ const userReducer = createSlice({
       };
     },
     logoutUser(state) {
-      state.isAuth = false;
-      state.login = '';
-      state.isAdmin = false;
-      state.msgError = '';
+      Object.assign(state, { ...initialState, isInit: true });
     },
     registerSuccess(state, { payload }) {
       state.successMsg = payload;
@@ -56,6 +55,7 @@ const userReducer = createSlice({
 
 export default userReducer.reducer;
 export const {
+  logOutUser,
   loginUser,
   setError,
   registerSuccess,
@@ -64,5 +64,6 @@ export const {
   loginUserSuccess,
   checkAuthUser,
   setInit,
+  logoutUser,
   registerUser,
 } = userReducer.actions;
