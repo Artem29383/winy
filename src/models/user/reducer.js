@@ -5,8 +5,10 @@ const userReducer = createSlice({
   name: 'user',
   initialState: {
     isAuth: false,
+    email: null,
+    uid: null,
     isAdmin: false,
-    login: '',
+    login: null,
     isInit: false,
     isLoading: false,
     error: {
@@ -46,6 +48,7 @@ const userReducer = createSlice({
     },
     checkAuthUser: state => state,
     loginUser: state => state,
+    registerUser: state => state,
     logOutUser: state => state,
     passReset: state => state,
   },
@@ -58,4 +61,8 @@ export const {
   registerSuccess,
   setLoader,
   passReset,
+  loginUserSuccess,
+  checkAuthUser,
+  setInit,
+  registerUser,
 } = userReducer.actions;

@@ -9,8 +9,9 @@ const Button = ({ children, className, onClickHandler, isLoader }) => {
   let height;
   if (isLoader) {
     if (btnRef.current) {
-      width = btnRef.current.offsetWidth;
-      height = btnRef.current.offsetHeight;
+      const figure = btnRef.current.getBoundingClientRect();
+      width = Math.ceil(figure.width + 1);
+      height = Math.ceil(figure.height);
     }
   }
 

@@ -2,12 +2,14 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { LoaderComponent } from './Loader.styled';
 
-const Loader = ({ width, height, position, color }) => (
+const Loader = ({ width, height, position, color, top, left }) => (
   <LoaderComponent
     width={width}
     height={height}
     position={position}
     color={color}
+    top={top}
+    left={left}
   >
     <div />
     <div />
@@ -21,5 +23,11 @@ Loader.propTypes = {
   height: PropTypes.string,
   position: PropTypes.string,
   color: PropTypes.string,
+  top: PropTypes.string,
+  left: PropTypes.string,
+};
+
+Loader.defaultProps = {
+  position: 'relative',
 };
 export default memo(Loader);

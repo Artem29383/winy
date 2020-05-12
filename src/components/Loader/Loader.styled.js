@@ -13,7 +13,11 @@ const keyframes1 = keyframes`
 
 export const LoaderComponent = styled.div`
   display: block;
-  position: relative;
+  position: ${({ position }) => position};
+  top: ${({ top }) => top && `${top}%`};
+  left: ${({ left }) => left && `${left}%`};
+  transform: ${({ position }) =>
+    position === 'absolute' ? 'translate(-50%, -50%)' : ''};
   width: ${({ width }) => (width ? `${width}px` : '64px')};
   height: ${({ height }) => (height ? `${height}px` : '64px')};
 

@@ -38,4 +38,9 @@ export default {
       }
     }
   `,
+  Error: styled.div`
+    font-size: 22px;
+    text-align: center;
+    color: ${props => props.theme.error};
+  `,
 };

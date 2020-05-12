@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from 'components/Container';
 import TextField from 'components/TextField';
 import Button from 'components/Button/Button';
@@ -6,22 +6,37 @@ import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import useAction from 'hooks/useAction';
+import { loginUser } from 'models/user/reducer';
+import useFetchingError from 'hooks/useFetchingError';
+import { ternaryCheckError } from 'utils/ternaryCheckError';
 import S from './AuthPage.styled';
 
 const AuthPage = () => {
+  const { fetchError, resetError, isLoad, setIsLoading } = useFetchingError();
+  const userLoginProcess = useAction(loginUser);
   const authSchema = yup.object().shape({
     email: yup.string().required('email is required'),
     password: yup.string().required('password is required'),
   });
 
-  // eslint-disable-next-line no-unused-vars
   const { register, handleSubmit, errors, watch } = useForm({
     mode: 'onChange',
     validationSchema: authSchema,
   });
 
+  const watchEmail = watch('email');
+  const watchPassword = watch('email');
+
+  useEffect(() => {
+    if (fetchError.trim()) {
+      resetError();
+    }
+  }, [watchEmail, watchPassword]);
+
   const auth = data => {
-    console.log(data);
+    setIsLoading(true);
+    userLoginProcess(data);
   };
 
   return (
@@ -48,7 +63,9 @@ const AuthPage = () => {
           />
         </S.InputWrapper>
         <S.InputWrapper>
-          <Button className="center">Log in</Button>
+          <Button className="center" isLoader>
+            {ternaryCheckError(isLoad, fetchError, 'Log in')}
+          </Button>
         </S.InputWrapper>
         <S.InputWrapper>
           <NavLink to={routes.register}>
@@ -60,6 +77,11 @@ const AuthPage = () => {
             <S.Text className="link">Forgot password?</S.Text>
           </NavLink>
         </S.InputWrapper>
+        {fetchError && (
+          <S.InputWrapper>
+            <S.Error>{fetchError}</S.Error>
+          </S.InputWrapper>
+        )}
       </S.Form>
     </Container>
   );

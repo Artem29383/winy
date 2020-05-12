@@ -6,7 +6,7 @@ import Button from 'components/Button';
 import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import { useForm } from 'react-hook-form';
-import { loginUser, registerSuccess } from 'models/user/reducer';
+import { registerSuccess, registerUser } from 'models/user/reducer';
 import useAction from 'hooks/useAction';
 import { successMsgSelector } from 'models/user/selectors';
 import useSelector from 'hooks/useSelector';
@@ -15,7 +15,7 @@ import { ternaryCheckError } from 'utils/ternaryCheckError';
 import S from './RegisterPage.styled';
 
 const RegisterPage = () => {
-  const registerUser = useAction(loginUser);
+  const userRegister = useAction(registerUser);
   const setSuccessMsg = useAction(registerSuccess);
   const successMsg = useSelector(successMsgSelector);
   const {
@@ -66,7 +66,7 @@ const RegisterPage = () => {
     if (password !== confirm) {
       setErrorHandle('password not confirm', 'notConfirm');
     } else {
-      registerUser({ login, email, password });
+      userRegister({ login, email, password });
       reset();
       setIsLoading(true);
     }
