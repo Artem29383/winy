@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export default {
-  // eslint-disable-next-line no-unused-vars
   Button: styled.button`
     border: none;
     border-radius: 2px;
@@ -12,7 +11,8 @@ export default {
     width: ${({ width }) => width && `${width}px`};
     height: ${({ height }) => height && `${height}px`};
     cursor: pointer;
-    display: block;
+    display: flex;
+    justify-content: center;
     color: ${props => props.theme.btnTextColor};
     text-transform: uppercase;
     transition: background 0.8s;

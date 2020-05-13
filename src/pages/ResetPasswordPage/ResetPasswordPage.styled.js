@@ -43,4 +43,9 @@ export default {
     text-align: center;
     color: ${props => props.theme.error};
   `,
+  Success: styled.div`
+    font-size: 22px;
+    text-align: center;
+    color: ${props => props.theme.success};
+  `,
 };

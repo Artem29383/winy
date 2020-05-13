@@ -10,3 +10,18 @@ export const successMsgSelector = createSelector(
   getSuccessMsg,
   successMsg => successMsg
 );
+
+const getLoading = state => state.user.isLoading;
+
+export const loadingSelector = createSelector(
+  getLoading,
+  isLoading => isLoading
+);
+
+const getIsInit = state => state.user.isInit;
+
+export const isInitSelector = createSelector(getIsInit, isInit => isInit);
+
+const getIsAuth = state => state.user.isAuth;
+
+export const isAuthSelector = createSelector(getIsAuth, isAuth => isAuth);

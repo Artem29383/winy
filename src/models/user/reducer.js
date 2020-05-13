@@ -1,20 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 /* eslint-disable no-param-reassign */
 
+const initialState = {
+  isAuth: false,
+  email: null,
+  uid: null,
+  isAdmin: false,
+  login: null,
+  isInit: false,
+  isLoading: false,
+  error: {
+    message: '',
+    idError: '',
+  },
+  successMsg: '',
+};
+
 const userReducer = createSlice({
   name: 'user',
-  initialState: {
-    isAuth: false,
-    isAdmin: false,
-    login: '',
-    isInit: false,
-    error: {
-      message: '',
-      idError: '',
-    },
-    successMsg: '',
-  },
+  initialState,
   reducers: {
+    setLoader(state, { payload }) {
+      state.isLoading = payload;
+    },
     setError(state, { payload }) {
       const { message, idError } = payload;
       state.error = {
@@ -23,10 +31,7 @@ const userReducer = createSlice({
       };
     },
     logoutUser(state) {
-      state.isAuth = false;
-      state.login = '';
-      state.isAdmin = false;
-      state.msgError = '';
+      Object.assign(state, { ...initialState, isInit: true });
     },
     registerSuccess(state, { payload }) {
       state.successMsg = payload;
@@ -42,9 +47,23 @@ const userReducer = createSlice({
     },
     checkAuthUser: state => state,
     loginUser: state => state,
+    registerUser: state => state,
     logOutUser: state => state,
+    passReset: state => state,
   },
 });
 
 export default userReducer.reducer;
-export const { loginUser, setError, registerSuccess } = userReducer.actions;
+export const {
+  logOutUser,
+  loginUser,
+  setError,
+  registerSuccess,
+  setLoader,
+  passReset,
+  loginUserSuccess,
+  checkAuthUser,
+  setInit,
+  logoutUser,
+  registerUser,
+} = userReducer.actions;
