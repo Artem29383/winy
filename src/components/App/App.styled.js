@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export default {
   Content: styled.div`
     width: 100%;
+    display: flex;
     position: relative;
     height: 100%;
     background-color: ${props => props.theme.contentColorBody};

@@ -3,4 +3,5 @@ export default {
   register: '/register',
   home: '/home',
   reset: '/reset',
+  profile: '/profile',
 };

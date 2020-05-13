@@ -16,6 +16,7 @@ import {
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';
+import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { authRef, firestoreRef } from '../../firebase/firebase';
 
 function* signIn(action) {
@@ -26,6 +27,8 @@ function* signIn(action) {
       email,
       password
     );
+    // set admin access
+    // yield setAdminAccess(email);
     // Create user collection with uniq user ID
     yield firestoreRef
       .collection(API_PATH.users)
@@ -90,12 +93,16 @@ function* checkLoginUser() {
       });
     });
     const { user } = yield take(authEventsChannel);
+    const idTokenResult = yield user.getIdTokenResult();
+    const doc = yield firestoreRef
+      .collection(API_PATH.users)
+      .doc(user.uid)
+      .get();
+    const data = doc.data();
     if (user) {
       yield put({
         type: loginUserSuccess.type,
-        payload: {
-          isAuth: true,
-        },
+        payload: exportDefaultUserData(idTokenResult.claims, data),
       });
     } else {
       yield put(push(routes.auth));
@@ -119,6 +126,7 @@ function* userAuth(action) {
   try {
     const { email, password } = action.payload;
     const { user } = yield authRef.signInWithEmailAndPassword(email, password);
+    const idTokenResult = yield user.getIdTokenResult();
     const doc = yield firestoreRef
       .collection(API_PATH.users)
       .doc(user.uid)
@@ -126,13 +134,7 @@ function* userAuth(action) {
     const data = doc.data();
     yield put({
       type: loginUserSuccess.type,
-      payload: {
-        isAuth: true,
-        isAdmin: data.isAdmin,
-        login: data.login,
-        email: data.email,
-        uid: user.uid,
-      },
+      payload: exportDefaultUserData(idTokenResult.claims, data),
     });
   } catch (e) {
     yield put({

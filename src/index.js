@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { GlobalStyles } from 'styles/index';
 import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import { ConnectedRouter } from 'connected-react-router';
@@ -17,7 +16,6 @@ store.runSaga(rootSaga);
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <GlobalStyles />
       <App />
     </ConnectedRouter>
   </Provider>,

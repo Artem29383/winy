@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import './fonts.css';
 /* stylelint-disable */
 
 export const GlobalStyles = createGlobalStyle`
@@ -90,7 +91,7 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 100%;
     vertical-align: baseline;
   }
-
+  
   article,
   aside,
   details,
@@ -174,7 +175,7 @@ export const GlobalStyles = createGlobalStyle`
     height: 100%;
     overflow: visible;
     color: #fff;
-    background-color: #fff;
+    background-color: ${props => props.theme.documentBody};
     
     &.modal {
       overflow: hidden;

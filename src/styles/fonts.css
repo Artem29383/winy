@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Font Name';
+  src: local('Font Name'), local('FontName'),
+  url('../assets/fonts/fonts/w2.woff2') format('woff2'),
+  url('../assets/fonts/fonts/w.woff') format('woff');
+  font-weight: 300;
+  font-display: fallback;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Font Name';
+}
