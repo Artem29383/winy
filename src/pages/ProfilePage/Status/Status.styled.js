@@ -1,0 +1,20 @@
+import styled from 'styled-components';
+
+export default {
+  UserStatus: styled.div`
+    padding-top: 20px;
+  `,
+  StatusField: styled.div`
+    font-size: 16px;
+    color: #000;
+    display: flex;
+    min-height: 36px;
+    align-items: center;
+    line-height: 1.5;
+    max-width: 90%;
+    background-color: rgb(90, 90, 90, 0.1);
+    padding: 10px 15px;
+    border-radius: 10px;
+    word-break: break-word;
+  `,
+};
