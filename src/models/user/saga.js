@@ -2,6 +2,7 @@ import { put, take, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
   checkAuthUser,
+  firebaseUpdateStatus,
   loginUser,
   loginUserSuccess,
   logoutUser,
@@ -12,6 +13,7 @@ import {
   setError,
   setInit,
   setLoader,
+  updateStatus,
 } from 'models/user/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
@@ -37,6 +39,7 @@ function* signIn(action) {
         {
           login,
           email,
+          status: '',
         },
         { merge: true }
       );
@@ -172,10 +175,27 @@ function* userLogOut() {
   });
 }
 
+function* statusUpdate(action) {
+  try {
+    const { status, uid } = action.payload;
+    yield firestoreRef
+      .collection(API_PATH.users)
+      .doc(uid)
+      .set({ status }, { merge: true });
+    yield put({
+      type: updateStatus.type,
+      payload: status,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default function* rootSagaAuth() {
   yield takeEvery(registerUser, signIn);
   yield takeEvery(passReset, resetPassword);
   yield takeEvery(checkAuthUser, checkLoginUser);
   yield takeEvery(loginUser, userAuth);
   yield takeEvery(logOutUser, userLogOut);
+  yield takeEvery(firebaseUpdateStatus, statusUpdate);
 }

@@ -25,3 +25,7 @@ export const isInitSelector = createSelector(getIsInit, isInit => isInit);
 const getIsAuth = state => state.user.isAuth;
 
 export const isAuthSelector = createSelector(getIsAuth, isAuth => isAuth);
+
+const getUser = state => state.user.user;
+
+export const userSelector = createSelector(getUser, user => user);

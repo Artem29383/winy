@@ -32,8 +32,8 @@ SelectList.propTypes = {
   options: PropTypes.array,
   callbacks: PropTypes.array,
   active: PropTypes.bool,
-  toggle: PropTypes.func,
   isHide: PropTypes.bool,
+  toggle: PropTypes.func,
 };
 
 export default SelectList;

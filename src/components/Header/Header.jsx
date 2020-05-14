@@ -3,11 +3,14 @@ import malePhoto from 'assets/images/defaultUserPhoto.png';
 import SettingButton from 'components/SettingButton';
 import useToggle from 'hooks/useToggle';
 import Navigation from 'components/Header/Navigation';
+import useSelector from 'hooks/useSelector';
+import { userSelector } from 'models/user/selectors';
 import S from './Header.styled';
 
 const Header = () => {
   const [isHideNav, setIsHideNav] = useToggle(false);
   const [isAnimBurg, setIsAnimBurg] = useState(false);
+  const { login } = useSelector(userSelector);
 
   const animClick = () => {
     setIsAnimBurg(true);
@@ -15,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <S.NavigatorBlock isHide={isHideNav} width={isHideNav ? '55px' : '270px'}>
+    <S.NavigatorBlock isHide={isHideNav} width={isHideNav ? '55px' : '290px'}>
       <S.NavigatorHeader isHide={isHideNav}>
         <S.Burger onClick={animClick} isHide={isHideNav}>
           <S.Line1 isHide={isHideNav} isAnim={isAnimBurg} />
@@ -30,7 +33,7 @@ const Header = () => {
           <S.PhotoUrl>
             <S.Img src={malePhoto} alt="" />
           </S.PhotoUrl>
-          <S.LoginUser>Artem12345</S.LoginUser>
+          <S.LoginUser>{login}</S.LoginUser>
           <S.Follows>Followers and Following</S.Follows>
         </S.ProfileInfoBlock>
       )}

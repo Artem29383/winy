@@ -9,14 +9,14 @@ const animline1 = keyframes`
   
   100% {
     width: 50%;
-    transform: rotate(33deg) translateX(12px);
+    transform: rotate(38deg) translateX(14px);
   }
 `;
 
 const obranimline1 = keyframes`
   0% {
     width: 50%;
-    transform: rotate(33deg) translateX(12px);
+    transform: rotate(38deg) translateX(14px);
   }
   
   100% {
@@ -35,7 +35,7 @@ const animline3 = keyframes`
   100% {
     opacity: 1;
     width: 50%;
-    transform: rotate(-37deg) translateX(12px);
+    transform: rotate(-36deg) translateX(14px);
   }
 `;
 
@@ -43,7 +43,7 @@ const obranimline3 = keyframes`
   0% {
     opacity: 1;
     width: 50%;
-    transform: rotate(-37deg) translateX(12px);
+    transform: rotate(-36deg) translateX(14px);
   }
   
   100% {
@@ -77,6 +77,7 @@ export default {
     position: relative;
   `,
   NavigatorBlock: styled.div`
+    flex-shrink: 0;
     width: ${({ width }) => width};
     position: relative;
     box-shadow: 2px 0 1px 0 rgba(0, 0, 0, 0.75);
@@ -156,6 +157,7 @@ export default {
     height: 4px;
     transform-origin: right center;
     top: 0;
+    border-radius: 10px;
     transition: background-color 0.1s linear;
     animation: ${props =>
       props.isAnim
@@ -172,6 +174,7 @@ export default {
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
+    border-radius: 10px;
     position: absolute;
     background-color: ${props => props.theme.burgerLineColor};
     transition: background-color 0.1s linear;
@@ -180,6 +183,7 @@ export default {
   Line3: styled.div`
     width: 100%;
     bottom: 0;
+    border-radius: 10px;
     position: absolute;
     transform-origin: right center;
     background-color: ${props => props.theme.burgerLineColor};

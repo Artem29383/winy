@@ -3,10 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isAuth: false,
-  email: null,
-  uid: null,
-  isAdmin: false,
-  login: null,
+  user: {
+    email: null,
+    uid: null,
+    isAdmin: false,
+    login: null,
+    status: '',
+  },
   isInit: false,
   isLoading: false,
   error: {
@@ -30,6 +33,9 @@ const userReducer = createSlice({
         idError,
       };
     },
+    updateStatus(state, { payload }) {
+      state.user.status = payload;
+    },
     logoutUser(state) {
       Object.assign(state, { ...initialState, isInit: true });
     },
@@ -50,6 +56,7 @@ const userReducer = createSlice({
     registerUser: state => state,
     logOutUser: state => state,
     passReset: state => state,
+    firebaseUpdateStatus: state => state,
   },
 });
 
@@ -66,4 +73,6 @@ export const {
   setInit,
   logoutUser,
   registerUser,
+  updateStatus,
+  firebaseUpdateStatus,
 } = userReducer.actions;
