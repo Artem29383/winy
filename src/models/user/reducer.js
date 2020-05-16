@@ -9,9 +9,11 @@ const initialState = {
     isAdmin: false,
     login: null,
     status: '',
+    avatarURL: '',
   },
   isInit: false,
   isLoading: false,
+  progressUpload: 0,
   error: {
     message: '',
     idError: '',
@@ -51,12 +53,19 @@ const userReducer = createSlice({
     setInit(state, { payload }) {
       state.isInit = payload;
     },
+    setNewAvatar(state, { payload }) {
+      state.user.avatarURL = payload;
+    },
+    setProgressUpload(state, { payload }) {
+      state.progressUpload = payload;
+    },
     checkAuthUser: state => state,
     loginUser: state => state,
     registerUser: state => state,
     logOutUser: state => state,
     passReset: state => state,
     firebaseUpdateStatus: state => state,
+    firebaseUploadAvatarUser: state => state,
   },
 });
 
@@ -75,4 +84,7 @@ export const {
   registerUser,
   updateStatus,
   firebaseUpdateStatus,
+  firebaseUploadAvatarUser,
+  setNewAvatar,
+  setProgressUpload,
 } = userReducer.actions;

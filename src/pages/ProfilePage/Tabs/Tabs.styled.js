@@ -5,8 +5,7 @@ export default {
     padding-left: 50px;
   `,
   UserTabsNavigation: styled.div`
-    border-bottom: 3px solid #eee;
-    border-radius: 10px 0 0 10px;
+    border-bottom: ${props => `3px solid ${props.theme.lpTabsNavigation}`};
   `,
   WrapperTabs: styled.div`
     max-width: 600px;

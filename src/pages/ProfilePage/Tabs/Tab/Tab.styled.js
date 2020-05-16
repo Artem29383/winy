@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default {
   Tab: styled.div`
-    color: #cdcdcd;
+    color: ${props => props.theme.lpTab};
     transition: color 0.2s linear;
     flex-grow: 1;
     text-transform: uppercase;
@@ -22,12 +22,12 @@ export default {
       border-radius: 10px 10px 0 0;
       height: 0;
       bottom: -3px;
-      left: 0;
-      background-color: #aa33e2;
+      left: -1px;
+      background-color: ${props => props.theme.lpAfterTab};
     }
 
     &.active {
-      color: #000;
+      color: ${props => props.theme.lpTabActive};
 
       &::after {
         height: 7px;

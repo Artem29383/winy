@@ -6,13 +6,14 @@ export default {
   `,
   StatusField: styled.div`
     font-size: 16px;
-    color: #000;
+    color: ${props => props.theme.lpStatusField};
     display: flex;
     min-height: 36px;
+    cursor: pointer;
     align-items: center;
     line-height: 1.5;
     max-width: 90%;
-    background-color: rgb(90, 90, 90, 0.1);
+    background-color: rgba(90, 90, 90, 0.1);
     padding: 10px 15px;
     border-radius: 10px;
     word-break: break-word;

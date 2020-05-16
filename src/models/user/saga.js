@@ -3,6 +3,7 @@ import { eventChannel } from 'redux-saga';
 import {
   checkAuthUser,
   firebaseUpdateStatus,
+  firebaseUploadAvatarUser,
   loginUser,
   loginUserSuccess,
   logoutUser,
@@ -13,13 +14,16 @@ import {
   setError,
   setInit,
   setLoader,
+  setNewAvatar,
+  setProgressUpload,
   updateStatus,
 } from 'models/user/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
-import { authRef, firestoreRef } from '../../firebase/firebase';
+import { FireSaga } from 'utils/sagaFirebaseHelpers';
+import { authRef, storageRef } from '../../firebase/firebase';
 
 function* signIn(action) {
   try {
@@ -32,17 +36,12 @@ function* signIn(action) {
     // set admin access
     // yield setAdminAccess(email);
     // Create user collection with uniq user ID
-    yield firestoreRef
-      .collection(API_PATH.users)
-      .doc(user.uid)
-      .set(
-        {
-          login,
-          email,
-          status: '',
-        },
-        { merge: true }
-      );
+    yield FireSaga.setToCollection(
+      API_PATH.users,
+      user.uid,
+      { login, email },
+      true
+    );
     // logOut user, idk why firebase autologin me
     yield authRef.signOut();
     yield put({
@@ -97,10 +96,7 @@ function* checkLoginUser() {
     });
     const { user } = yield take(authEventsChannel);
     const idTokenResult = yield user.getIdTokenResult();
-    const doc = yield firestoreRef
-      .collection(API_PATH.users)
-      .doc(user.uid)
-      .get();
+    const doc = yield FireSaga.getCollection(API_PATH.users, user.uid);
     const data = doc.data();
     if (user) {
       yield put({
@@ -130,10 +126,7 @@ function* userAuth(action) {
     const { email, password } = action.payload;
     const { user } = yield authRef.signInWithEmailAndPassword(email, password);
     const idTokenResult = yield user.getIdTokenResult();
-    const doc = yield firestoreRef
-      .collection(API_PATH.users)
-      .doc(user.uid)
-      .get();
+    const doc = FireSaga.getCollection(API_PATH.users, user.uid);
     const data = doc.data();
     yield put({
       type: loginUserSuccess.type,
@@ -178,16 +171,66 @@ function* userLogOut() {
 function* statusUpdate(action) {
   try {
     const { status, uid } = action.payload;
-    yield firestoreRef
-      .collection(API_PATH.users)
-      .doc(uid)
-      .set({ status }, { merge: true });
+    yield FireSaga.setToCollection(API_PATH.users, uid, { status }, true);
     yield put({
       type: updateStatus.type,
       payload: status,
     });
   } catch (e) {
     console.log(e);
+  }
+}
+
+function* avatarUpload(action) {
+  const { image, uid } = action.payload;
+  const metadata = {
+    contentType: image.type,
+  };
+  // create reference upload image (see docs firebase)
+  const uploadTask = storageRef.child(`avatars/${uid}`).put(image, metadata);
+  // create emit channel, he returned progress bar upload file and his url in the end
+  const channel = eventChannel(emit =>
+    uploadTask.on(
+      'state_changed',
+      emit,
+      error => {
+        emit(error);
+      },
+      () => emit(uploadTask.snapshot.ref.getDownloadURL())
+    )
+  );
+  while (true) {
+    try {
+      // take info from channel
+      const snapshot = yield take(channel);
+      // if state === 'running' then me get progress status file else get url and do dispatch
+      if (snapshot.state === 'running') {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        yield put({
+          type: setProgressUpload.type,
+          payload: progress,
+        });
+      } else {
+        const url = yield snapshot;
+        yield FireSaga.setToCollection(
+          API_PATH.users,
+          uid,
+          { avatarURL: url },
+          true
+        );
+        yield put({
+          type: setNewAvatar.type,
+          payload: url,
+        });
+        yield put({
+          type: setLoader.type,
+          payload: false,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
@@ -198,4 +241,5 @@ export default function* rootSagaAuth() {
   yield takeEvery(loginUser, userAuth);
   yield takeEvery(logOutUser, userLogOut);
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
+  yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
 }

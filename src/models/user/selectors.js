@@ -29,3 +29,10 @@ export const isAuthSelector = createSelector(getIsAuth, isAuth => isAuth);
 const getUser = state => state.user.user;
 
 export const userSelector = createSelector(getUser, user => user);
+
+const getProgressUpload = state => state.user.progressUpload;
+
+export const progressUploadSelector = createSelector(
+  getProgressUpload,
+  progressUpload => progressUpload
+);

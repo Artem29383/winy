@@ -14,22 +14,8 @@ export default {
     display: flex;
     width: 100%;
   `,
-  Photo: styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  `,
-  Img: styled.img`
-    border-radius: 50%;
-    border: 3px solid black;
-    overflow: hidden;
-    width: 60%;
-    height: 60%;
-  `,
   UpdateUserInfo: styled.div`
-    color: #000;
+    color: ${props => props.theme.lpupdateUserInfo};
   `,
   UserName: styled.div`
     width: 100%;
@@ -37,7 +23,7 @@ export default {
   `,
   Text: styled.div`
     font-size: 26px;
-    color: #000;
+    color: ${props => props.theme.lptext};
   `,
   UserInfoBlock: styled.div`
     width: 100%;

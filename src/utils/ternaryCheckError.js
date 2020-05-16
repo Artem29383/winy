@@ -11,7 +11,13 @@ export const ternaryCheckError = (
   heightLoader = '30'
 ) => {
   return isLoad && action === str ? (
-    <Loader width={widthLoader} height={heightLoader} />
+    <Loader
+      width={widthLoader}
+      height={heightLoader}
+      top="50"
+      position="absolute"
+      translate="translateY(-50%)"
+    />
   ) : fetchError && action === str ? (
     'Retry'
   ) : (
