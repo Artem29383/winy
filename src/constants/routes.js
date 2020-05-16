@@ -1,5 +1,5 @@
 export default {
-  auth: '/auth',
+  auth: '/user',
   register: '/register',
   home: '/home',
   reset: '/reset',

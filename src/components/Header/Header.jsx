@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import malePhoto from 'assets/images/defaultUserPhoto.png';
 import SettingButton from 'components/SettingButton';
 import useToggle from 'hooks/useToggle';
 import Navigation from 'components/Header/Navigation';
@@ -10,7 +9,7 @@ import S from './Header.styled';
 const Header = () => {
   const [isHideNav, setIsHideNav] = useToggle(false);
   const [isAnimBurg, setIsAnimBurg] = useState(false);
-  const { login } = useSelector(userSelector);
+  const { login, avatarURL } = useSelector(userSelector);
 
   const animClick = () => {
     setIsAnimBurg(true);
@@ -31,7 +30,7 @@ const Header = () => {
       {!isHideNav && (
         <S.ProfileInfoBlock>
           <S.PhotoUrl>
-            <S.Img src={malePhoto} alt="" />
+            <S.Img src={avatarURL} alt="" />
           </S.PhotoUrl>
           <S.LoginUser>{login}</S.LoginUser>
           <S.Follows>Followers and Following</S.Follows>

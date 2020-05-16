@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { LoaderComponent } from './Loader.styled';
 
-const Loader = ({ width, height, position, color, top, left }) => (
+const Loader = ({ width, height, position, color, top, left, translate }) => (
   <LoaderComponent
     width={width}
     height={height}
@@ -10,6 +10,7 @@ const Loader = ({ width, height, position, color, top, left }) => (
     color={color}
     top={top}
     left={left}
+    translate={translate}
   >
     <div />
     <div />
@@ -25,6 +26,7 @@ Loader.propTypes = {
   color: PropTypes.string,
   top: PropTypes.string,
   left: PropTypes.string,
+  translate: PropTypes.string,
 };
 
 Loader.defaultProps = {

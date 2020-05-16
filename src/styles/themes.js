@@ -1,4 +1,7 @@
-const dark = {
+// auth colors
+import { treatmentThemesObject } from 'utils/treatmentThemesObject';
+
+const authDark = {
   documentBody: '#151515',
   contentColorBody: '#151515',
   btnBackgroundActive: '#151515',
@@ -37,7 +40,7 @@ const dark = {
   burgerLineColorActive: '#dacfdc',
 };
 
-const light = {
+const authLight = {
   settingNav: '#808080',
   settingNavActive: '#000',
   leftBorderColor: '#0000FF',
@@ -75,5 +78,64 @@ const light = {
   inputTextColor: '#8034ef',
   error: 'red',
 };
+
+// profileTheme
+const lightProfileTheme = {
+  lpupdateUserInfo: '#000',
+  lptext: '#000',
+  lpimgBorder: '#000',
+  lpTabsNavigation: '#eee',
+  lpTab: '#cdcdcd',
+  lpTabActive: '#000',
+  lpAfterTab: '#aa33e2',
+  lpStatusField: '#000',
+};
+
+const darkProfileTheme = {
+  lpupdateUserInfo: '#000',
+  lptext: '#fff',
+  lpimgBorder: '#fff',
+  lpTabsNavigation: '#242424',
+  lpTab: '#cdcdcd',
+  lpTabActive: '#fff',
+  lpAfterTab: '#e2231a',
+  lpStatusField: '#fff',
+};
+
+// modalTheme
+const modalLight = {
+  modalTitle: '#000',
+  modalBgc: '#fff',
+};
+
+const modalDark = {
+  modalTitle: '#fff',
+  modalBgc: '#151515',
+};
+
+const fileInputLight = {
+  fileIBgc: '#00bfff',
+  fileIColor: '#fff',
+  progressBarBgc: '#cce',
+};
+
+const fileInputDark = {
+  fileIBgc: '#242424',
+  fileIColor: '#ff5b51',
+  progressBarBgc: '#605353',
+};
+
+const dark = treatmentThemesObject([
+  authDark,
+  darkProfileTheme,
+  modalDark,
+  fileInputDark,
+]);
+const light = treatmentThemesObject([
+  authLight,
+  lightProfileTheme,
+  modalLight,
+  fileInputLight,
+]);
 
 export { dark, light };
