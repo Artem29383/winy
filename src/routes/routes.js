@@ -33,7 +33,7 @@ export default [
   },
   {
     path: routes.profile,
-    exact: true,
+    exact: false,
     component: ProfilePage,
     isAuth: true,
     isAdmin: false,

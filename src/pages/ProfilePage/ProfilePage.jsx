@@ -4,7 +4,10 @@ import { userSelector } from 'models/user/selectors';
 import Status from 'pages/ProfilePage/Status';
 import Tabs from 'pages/ProfilePage/Tabs';
 import UserPhoto from 'pages/ProfilePage/UserPhoto';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import routes from 'constants/routes';
 import S from './ProfilePage.styled';
+import profilePageRoutes from '../../routes/profilePageRoutes';
 
 const ProfilePage = () => {
   const { uid, status, login, avatarURL } = useSelector(userSelector);
@@ -23,7 +26,24 @@ const ProfilePage = () => {
         </S.UserInfoBlock>
         <S.UserActionsBlock />
       </S.UserBlock>
-      <Tabs />
+      <S.Content>
+        <Tabs />
+        <S.UserProfileContent>
+          <Switch>
+            {profilePageRoutes.map(({ path, exact, component: Component }) => {
+              return (
+                <Route
+                  key={path}
+                  exact={exact}
+                  path={path}
+                  render={props => <Component {...props} />}
+                />
+              );
+            })}
+            <Redirect to={routes.profileAbout} />
+          </Switch>
+        </S.UserProfileContent>
+      </S.Content>
     </S.Profile>
   );
 };

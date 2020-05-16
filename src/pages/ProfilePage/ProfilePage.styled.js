@@ -32,4 +32,12 @@ export default {
     max-width: 20%;
     width: 100%;
   `,
+  Content: styled.div`
+    width: 100%;
+    padding-left: 50px;
+  `,
+  UserProfileContent: styled.div`
+    width: 100%;
+    color: #000;
+  `,
 };

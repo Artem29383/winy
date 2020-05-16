@@ -1,7 +1,8 @@
 export default {
-  auth: '/user',
+  auth: '/auth',
   register: '/register',
   home: '/home',
   reset: '/reset',
   profile: '/profile',
+  profileAbout: '/profile/about',
 };
