@@ -3,7 +3,7 @@ import routes from 'constants/routes';
 
 export default [
   {
-    to: routes.profile,
+    to: routes.profileAbout,
     svg: profile,
     svgId: 'profileNav',
     text: 'Profile',

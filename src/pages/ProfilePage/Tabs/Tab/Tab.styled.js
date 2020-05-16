@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export default {
-  Tab: styled.div`
+  Tab: styled(NavLink)`
+    display: block;
     color: ${props => props.theme.lpTab};
     transition: color 0.2s linear;
     flex-grow: 1;
@@ -12,6 +14,7 @@ export default {
     position: relative;
     padding-bottom: 20px;
     padding-left: 30px;
+    padding-right: 30px;
 
     &::after {
       transition: height 0.2s linear;

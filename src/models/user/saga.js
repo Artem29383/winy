@@ -126,7 +126,7 @@ function* userAuth(action) {
     const { email, password } = action.payload;
     const { user } = yield authRef.signInWithEmailAndPassword(email, password);
     const idTokenResult = yield user.getIdTokenResult();
-    const doc = FireSaga.getCollection(API_PATH.users, user.uid);
+    const doc = yield FireSaga.getCollection(API_PATH.users, user.uid);
     const data = doc.data();
     yield put({
       type: loginUserSuccess.type,
