@@ -1,4 +1,5 @@
 const path = require('path');
+const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
 const optimize = require('./optimize');
 const plugins = require('./plugins');
@@ -58,15 +59,41 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(svg|png|jpg|jpeg|gif)$/,
+        test: /\.(svg|otf|ttf|woff|woff2|eot)$/,
         use: ['file-loader'],
+        exclude: [/ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/],
       },
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+        use: ['raw-loader'],
       },
       {
-        test: /\.(otf|ttf|woff|woff2|eot)$/,
+        // Or /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/ if you want to limit this loader
+        // to CKEditor 5's theme only.
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              injectType: 'singletonStyleTag',
+            },
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'postcss-loader',
+            options: styles.getPostCssConfig( {
+              themeImporter: {
+                themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+              },
+              minify: true,
+            }),
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif)$/,
         use: ['file-loader'],
       },
       {

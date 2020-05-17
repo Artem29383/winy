@@ -10,4 +10,5 @@ module.exports = {
   styles: `${process.cwd()}/src/styles`,
   images: `${process.cwd()}/src/images`,
   assets: `${process.cwd()}/src/assets`,
+  src: `${process.cwd()}/src`,
 };
