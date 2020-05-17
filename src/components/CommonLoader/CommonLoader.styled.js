@@ -13,7 +13,7 @@ const keyframes1 = keyframes`
 
 export const LoaderComponent = styled.div`
   display: inline-block;
-  position: relative;
+  position: fixed;
   width: 80px;
   height: 80px;
   top: 50%;

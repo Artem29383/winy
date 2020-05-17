@@ -79,9 +79,10 @@ export default {
   NavigatorBlock: styled.div`
     flex-shrink: 0;
     width: ${({ width }) => width};
-    position: relative;
     box-shadow: 2px 0 1px 0 rgba(0, 0, 0, 0.75);
-    height: 100%;
+    position: sticky;
+    height: 100vh;
+    top: 0;
     background-color: ${props => props.theme.navigatorColor};
     transition: background-color 0.1s linear, width 0.1s linear;
   `,

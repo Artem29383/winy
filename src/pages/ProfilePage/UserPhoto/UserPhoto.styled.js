@@ -13,7 +13,7 @@ export default {
     border-radius: 10px;
     border: ${props => `3px solid ${props.theme.lpimgBorder}`};
     overflow: hidden;
-    width: 200px;
+    width: 250px;
     height: 235px;
   `,
   WrapInputFile: styled.div`
