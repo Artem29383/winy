@@ -165,14 +165,12 @@ export const GlobalStyles = createGlobalStyle`
   html {
     font-size: 55px;
     width: 100%;
-    height: 100%;
   }
   
   body {
     margin: 0;
     min-height: 100%;
     width: 100%;
-    height: 100%;
     overflow: visible;
     color: #fff;
     background-color: ${props => props.theme.documentBody};

@@ -46,4 +46,9 @@ export default {
       fill: ${props => props.theme.settingNavActive};
     }
   `,
+  SymbolEditor: styled.svg`
+    width: 30px;
+    height: 30px;
+    fill: #000;
+  `,
 };
