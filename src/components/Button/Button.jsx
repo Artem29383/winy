@@ -2,7 +2,7 @@ import React, { memo, useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import S from './Button.styled';
 
-const Button = ({ children, className, onClickHandler, isLoader }) => {
+const Button = ({ children, className, onClickHandler, isLoader, margin }) => {
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const btnRef = useRef();
   let width;
@@ -10,7 +10,7 @@ const Button = ({ children, className, onClickHandler, isLoader }) => {
   if (isLoader) {
     if (btnRef.current) {
       const figure = btnRef.current.getBoundingClientRect();
-      width = Math.ceil(figure.width + 1);
+      width = Math.ceil(figure.width);
       height = Math.ceil(figure.height);
     }
   }
@@ -27,6 +27,7 @@ const Button = ({ children, className, onClickHandler, isLoader }) => {
   return (
     <S.Button
       ref={btnRef}
+      margin={margin}
       className={className}
       onClick={onClickHandler}
       onMouseDown={setCoords}
@@ -44,6 +45,7 @@ Button.propTypes = {
   className: PropTypes.string,
   isLoader: PropTypes.bool,
   onClickHandler: PropTypes.func,
+  margin: PropTypes.string,
 };
 
 export default memo(Button);

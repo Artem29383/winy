@@ -10,6 +10,9 @@ export const exportDefaultUserData = (idTokenResult, data) => {
       uid: idTokenResult.user_id,
       status: data.status || '',
       avatarURL: data.avatarURL || defaultUserPhoto,
+      about: {
+        aboutUser: data.htmlContent || '',
+      },
     },
   };
 };

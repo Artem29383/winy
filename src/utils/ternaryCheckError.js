@@ -7,6 +7,8 @@ export const ternaryCheckError = (
   textUserButton,
   action = '',
   str = '',
+  idError = '',
+  strError = '',
   widthLoader = '30',
   heightLoader = '30'
 ) => {
@@ -18,7 +20,7 @@ export const ternaryCheckError = (
       position="absolute"
       translate="translateY(-50%)"
     />
-  ) : fetchError && action === str ? (
+  ) : fetchError && idError === strError ? (
     'Retry'
   ) : (
     textUserButton

@@ -12,6 +12,7 @@ export default {
     height: ${({ height }) => height && `${height}px`};
     cursor: pointer;
     display: flex;
+    margin: ${({ margin }) => margin};
     justify-content: center;
     color: ${props => props.theme.btnTextColor};
     text-transform: uppercase;
@@ -43,6 +44,25 @@ export default {
 
     &.center {
       margin: 0 auto;
+    }
+
+    &.red {
+      background-color: ${props => props.theme.btnBackgroundRed};
+
+      &:hover {
+        background: ${({
+          x,
+          y,
+          theme,
+        }) => `${theme.btnBackgroundHoverRed} radial-gradient(circle at ${x}px ${y}px, transparent 1%, ${theme.btnBackgroundHoverRed} 1%)
+        left/15000%`};
+      }
+
+      &:active {
+        background-size: 100%;
+        transition: background 0s;
+        background-color: ${props => props.theme.btnBackgroundActiveRed};
+      }
     }
   `,
 };

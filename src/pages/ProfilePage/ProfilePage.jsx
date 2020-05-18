@@ -10,7 +10,7 @@ import S from './ProfilePage.styled';
 import profilePageRoutes from '../../routes/profilePageRoutes';
 
 const ProfilePage = () => {
-  const { uid, status, login, avatarURL } = useSelector(userSelector);
+  const { uid, status, login, avatarURL, about } = useSelector(userSelector);
 
   return (
     <S.Profile>
@@ -36,7 +36,7 @@ const ProfilePage = () => {
                   key={path}
                   exact={exact}
                   path={path}
-                  render={props => <Component {...props} />}
+                  render={props => <Component {...props} about={about} />}
                 />
               );
             })}
