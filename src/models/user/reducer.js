@@ -10,6 +10,9 @@ const initialState = {
     login: null,
     status: '',
     avatarURL: '',
+    about: {
+      aboutUser: '',
+    },
   },
   isInit: false,
   isLoading: false,
@@ -59,6 +62,10 @@ const userReducer = createSlice({
     setProgressUpload(state, { payload }) {
       state.progressUpload = payload;
     },
+    setUserContent(state, { payload }) {
+      state.user.about.aboutUser = payload;
+    },
+    setUserAboutContent: state => state,
     checkAuthUser: state => state,
     loginUser: state => state,
     registerUser: state => state,
@@ -71,6 +78,7 @@ const userReducer = createSlice({
 
 export default userReducer.reducer;
 export const {
+  setUserAboutContent,
   logOutUser,
   loginUser,
   setError,
@@ -78,6 +86,7 @@ export const {
   setLoader,
   passReset,
   loginUserSuccess,
+  setUserContent,
   checkAuthUser,
   setInit,
   logoutUser,

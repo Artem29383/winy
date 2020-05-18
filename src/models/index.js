@@ -7,7 +7,8 @@ import userReducer from './user/reducer';
 /* reducers */
 
 /* sagas */
-import rootSagaAuth from './user/saga';
+import rootSagaAuth from './user/sagaAuth';
+import rootSagaUser from './user/sagaUserProfile';
 /* sagas */
 
 export const createRootReducer = history =>
@@ -17,5 +18,5 @@ export const createRootReducer = history =>
   });
 
 export const rootSaga = function* rootSaga() {
-  yield all([rootSagaAuth()]);
+  yield all([rootSagaAuth(), rootSagaUser()]);
 };

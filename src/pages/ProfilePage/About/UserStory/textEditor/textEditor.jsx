@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import ClassicEditor from 'src/ckeditor/ckeditor';
 import PropTypes from 'prop-types';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import S from './textEditor.styled';
 
-// eslint-disable-next-line no-unused-vars
-const TextEditor = ({ changeHandle, htmlContent }) => {
+const TextEditor = ({ setHTMLContent, htmlContent, isLoad }) => {
+  const changeBlur = useCallback(
+    (e, editor) => {
+      setHTMLContent(editor.getData());
+    },
+    [htmlContent]
+  );
+
   return (
     <S.Editor>
       <CKEditor
+        disabled={isLoad}
         data={htmlContent}
         editor={ClassicEditor}
-        onChange={changeHandle}
+        onBlur={changeBlur}
       />
     </S.Editor>
   );
@@ -19,7 +26,8 @@ const TextEditor = ({ changeHandle, htmlContent }) => {
 
 TextEditor.propTypes = {
   htmlContent: PropTypes.string,
-  changeHandle: PropTypes.func.isRequired,
+  setHTMLContent: PropTypes.func.isRequired,
+  isLoad: PropTypes.bool,
 };
 
 export default TextEditor;

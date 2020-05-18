@@ -2,8 +2,6 @@ import { put, take, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
   checkAuthUser,
-  firebaseUpdateStatus,
-  firebaseUploadAvatarUser,
   loginUser,
   loginUserSuccess,
   logoutUser,
@@ -14,16 +12,13 @@ import {
   setError,
   setInit,
   setLoader,
-  setNewAvatar,
-  setProgressUpload,
-  updateStatus,
 } from 'models/user/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef, storageRef } from '../../firebase/firebase';
+import { authRef } from '../../firebase/firebase';
 
 function* signIn(action) {
   try {
@@ -168,78 +163,10 @@ function* userLogOut() {
   });
 }
 
-function* statusUpdate(action) {
-  try {
-    const { status, uid } = action.payload;
-    yield FireSaga.setToCollection(API_PATH.users, uid, { status }, true);
-    yield put({
-      type: updateStatus.type,
-      payload: status,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-function* avatarUpload(action) {
-  const { image, uid } = action.payload;
-  const metadata = {
-    contentType: image.type,
-  };
-  // create reference upload image (see docs firebase)
-  const uploadTask = storageRef.child(`avatars/${uid}`).put(image, metadata);
-  // create emit channel, he returned progress bar upload file and his url in the end
-  const channel = eventChannel(emit =>
-    uploadTask.on(
-      'state_changed',
-      emit,
-      error => {
-        emit(error);
-      },
-      () => emit(uploadTask.snapshot.ref.getDownloadURL())
-    )
-  );
-  while (true) {
-    try {
-      // take info from channel
-      const snapshot = yield take(channel);
-      // if state === 'running' then me get progress status file else get url and do dispatch
-      if (snapshot.state === 'running') {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        yield put({
-          type: setProgressUpload.type,
-          payload: progress,
-        });
-      } else {
-        const url = yield snapshot;
-        yield FireSaga.setToCollection(
-          API_PATH.users,
-          uid,
-          { avatarURL: url },
-          true
-        );
-        yield put({
-          type: setNewAvatar.type,
-          payload: url,
-        });
-        yield put({
-          type: setLoader.type,
-          payload: false,
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}
-
 export default function* rootSagaAuth() {
   yield takeEvery(registerUser, signIn);
   yield takeEvery(passReset, resetPassword);
   yield takeEvery(checkAuthUser, checkLoginUser);
   yield takeEvery(loginUser, userAuth);
   yield takeEvery(logOutUser, userLogOut);
-  yield takeEvery(firebaseUpdateStatus, statusUpdate);
-  yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
 }

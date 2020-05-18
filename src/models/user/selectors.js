@@ -36,3 +36,7 @@ export const progressUploadSelector = createSelector(
   getProgressUpload,
   progressUpload => progressUpload
 );
+
+const getUserAbout = state => state.user.user.about;
+
+export const userAboutSelector = createSelector(getUserAbout, about => about);
