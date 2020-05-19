@@ -36,6 +36,7 @@ ClassicEditor.builtinPlugins = [
 ];
 
 ClassicEditor.defaultConfig = {
+  setStartupFocus: true,
   image: {
     toolbar: [
       'imageTextAlternative',

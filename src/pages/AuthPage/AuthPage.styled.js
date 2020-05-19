@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export default {
   Form: styled.form`
@@ -13,6 +14,10 @@ export default {
     color: ${props => props.theme.textColor};
     padding-bottom: 10px;
     transition: background-color 0.2s linear, color 0.2s linear;
+
+    @media ${device.mobileM} {
+      width: 300px;
+    }
   `,
   InputWrapper: styled.div`
     width: 100%;
