@@ -21,21 +21,4 @@ export default {
   DetailsList: styled.ul`
     width: 100%;
   `,
-  DetailsItem: styled.li`
-    padding: 20px 0;
-    width: 100%;
-    border-bottom: 2px solid #efefef;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    font-family: 'Roboto Light', serif;
-  `,
-  TitleItem: styled.div`
-    color: #d3d3d3;
-    font-size: 28px;
-  `,
-  TextItem: styled.div`
-    font-size: 28px;
-    margin-left: 30px;
-  `,
 };

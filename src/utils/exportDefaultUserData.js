@@ -1,5 +1,36 @@
 import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
 
+export const details = {
+  lastOnline: {
+    field: 'Last Online',
+    text: '',
+  },
+  orientation: {
+    field: 'Orientation',
+    text: '',
+  },
+  ethnicity: {
+    field: 'Ethnicity',
+    text: '',
+  },
+  height: {
+    field: 'Height',
+    text: '',
+  },
+  bodyType: {
+    field: 'BodyType',
+    text: '',
+  },
+  diet: {
+    field: 'Diet',
+    text: '',
+  },
+  smokes: {
+    field: 'Smokes',
+    text: '',
+  },
+};
+
 export const exportDefaultUserData = (idTokenResult, data) => {
   return {
     isAuth: true,
@@ -12,6 +43,7 @@ export const exportDefaultUserData = (idTokenResult, data) => {
       avatarURL: data.avatarURL || defaultUserPhoto,
       about: {
         aboutUser: data.htmlContent || '',
+        details: { ...details, ...data.details },
       },
     },
   };

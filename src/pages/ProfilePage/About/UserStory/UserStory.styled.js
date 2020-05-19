@@ -13,7 +13,7 @@ export default {
     min-height: 150px;
     cursor: pointer;
     font-family: 'Roboto Light', serif;
-    padding: 0 10px 20px 10px;
+    padding: 10px 10px 20px 10px;
     background-color: rgba(90, 90, 90, 0.1);
     border-radius: 10px;
     max-height: 450px;
@@ -65,5 +65,10 @@ export default {
   `,
   MySelfInfo: styled.div`
     flex-basis: 60%;
+  `,
+  DefaultWall: styled.div`
+    font-size: 24px;
+    padding-top: 10px;
+    color: rgba(0, 0, 0, 0.5);
   `,
 };

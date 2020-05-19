@@ -15,18 +15,30 @@ const Status = ({ userStatus, uid }) => {
 
   useEffect(() => {
     if (reference.current) {
-      reference.current.textContent = userStatus.trim();
+      setStatus(userStatus);
     }
   }, []);
 
   const startEditStatus = () => {
     if (!edit) {
       setEdit(true);
-      setTimeout(() => {
-        reference.current.focus();
-      }, 100);
     }
   };
+
+  useEffect(() => {
+    if (reference.current && edit) {
+      reference.current.focus();
+      reference.current.textContent = userStatus.trim();
+      const { firstChild } = reference.current;
+      if (firstChild) {
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.setStart(firstChild, firstChild.length);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+  }, [edit]);
 
   const changeHandle = useCallback(
     e => {
@@ -39,7 +51,6 @@ const Status = ({ userStatus, uid }) => {
         const sel = window.getSelection();
         reference.current.textContent = temp.trim();
         range.setStart(reference.current.firstChild, MAX_LENGTH_STATUS - 1);
-        // range.collapse(true);
         sel.removeAllRanges();
         sel.addRange(range);
       }
@@ -48,10 +59,10 @@ const Status = ({ userStatus, uid }) => {
   );
 
   const endEditStatusBlur = () => {
+    setEdit(false);
+    setStatus(value);
+    reference.current.textContent = value.trim();
     if (value.trim() !== status.trim()) {
-      setEdit(false);
-      setStatus(value);
-      reference.current.textContent = value.trim();
       setNewStatus({
         status: value,
         uid,
@@ -61,14 +72,16 @@ const Status = ({ userStatus, uid }) => {
 
   const endEditStatusKey = useCallback(
     e => {
-      if (e.key === 'Enter' && status.trim() !== value.trim()) {
+      if (e.key === 'Enter') {
         setEdit(false);
         setStatus(value);
         reference.current.textContent = value.trim();
-        setNewStatus({
-          status: value,
-          uid,
-        });
+        if (status.trim() !== value.trim()) {
+          setNewStatus({
+            status: value,
+            uid,
+          });
+        }
       }
       if (e.key === 'Escape') {
         setEdit(false);
@@ -84,14 +97,19 @@ const Status = ({ userStatus, uid }) => {
 
   return (
     <S.UserStatus>
-      <S.StatusField
-        ref={reference}
-        onClick={startEditStatus}
-        contentEditable={edit}
-        onInput={changeHandle}
-        onKeyDown={endEditStatusKey}
-        onBlur={endEditStatusBlur}
-      />
+      {edit ? (
+        <S.StatusField
+          ref={reference}
+          contentEditable={edit}
+          onInput={changeHandle}
+          onKeyDown={endEditStatusKey}
+          onBlur={endEditStatusBlur}
+        />
+      ) : (
+        <S.DefaultStatus onClick={startEditStatus}>
+          {status || 'Изменить статус'}
+        </S.DefaultStatus>
+      )}
     </S.UserStatus>
   );
 };

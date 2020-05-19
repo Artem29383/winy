@@ -19,6 +19,10 @@ const TextEditor = ({ setHTMLContent, htmlContent, isLoad }) => {
         data={htmlContent}
         editor={ClassicEditor}
         onBlur={changeBlur}
+        onInit={editor => {
+          editor.editing.view.focus();
+        }}
+        autoFocus
       />
     </S.Editor>
   );

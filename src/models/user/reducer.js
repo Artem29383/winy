@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { details } from 'utils/exportDefaultUserData';
 /* eslint-disable no-param-reassign */
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
     avatarURL: '',
     about: {
       aboutUser: '',
+      details,
     },
   },
   isInit: false,
@@ -65,6 +67,10 @@ const userReducer = createSlice({
     setUserContent(state, { payload }) {
       state.user.about.aboutUser = payload;
     },
+    setUserDetails(state, { payload }) {
+      const { id, field, text } = payload;
+      state.user.about.details[id] = { field, text };
+    },
     setUserAboutContent: state => state,
     checkAuthUser: state => state,
     loginUser: state => state,
@@ -73,6 +79,7 @@ const userReducer = createSlice({
     passReset: state => state,
     firebaseUpdateStatus: state => state,
     firebaseUploadAvatarUser: state => state,
+    firebaseUploadDetails: state => state,
   },
 });
 
@@ -96,4 +103,6 @@ export const {
   firebaseUploadAvatarUser,
   setNewAvatar,
   setProgressUpload,
+  firebaseUploadDetails,
+  setUserDetails,
 } = userReducer.actions;

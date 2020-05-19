@@ -3,9 +3,7 @@ import styled from 'styled-components';
 export default {
   Editor: styled.div`
     font-size: 32px;
-    border: 3px solid black;
     border-radius: 10px;
-    overflow: hidden;
     font-family: 'Roboto Light', serif;
 
     div {

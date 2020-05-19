@@ -24,7 +24,6 @@ const ProfilePage = () => {
           </S.UserName>
           <Status uid={uid} userStatus={status} />
         </S.UserInfoBlock>
-        <S.UserActionsBlock />
       </S.UserBlock>
       <S.Content>
         <Tabs />

@@ -3,12 +3,14 @@ import { eventChannel } from 'redux-saga';
 import {
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
+  firebaseUploadDetails,
   setError,
   setLoader,
   setNewAvatar,
   setProgressUpload,
   setUserAboutContent,
   setUserContent,
+  setUserDetails,
   updateStatus,
 } from 'models/user/reducer';
 import { API_PATH } from 'constants/constants';
@@ -93,9 +95,7 @@ function* uploadUserContent(action) {
   try {
     const { htmlContent } = action.payload;
     const { uid } = yield authRef.currentUser;
-    FireSaga.setToCollection(API_PATH.users, uid, { htmlContent }, true)
-      .then(() => console.log('i'))
-      .catch(() => console.log('e'));
+    yield FireSaga.setToCollection(API_PATH.users, uid, { htmlContent }, true);
     yield put({
       type: setUserContent.type,
       payload: htmlContent,
@@ -115,8 +115,30 @@ function* uploadUserContent(action) {
   });
 }
 
+function* uploadDetailsUser(action) {
+  try {
+    const { id, field, text } = action.payload;
+    const details = {
+      [id]: { field, text },
+    };
+    const { uid } = yield authRef.currentUser;
+    yield FireSaga.setToCollection(API_PATH.users, uid, { details }, true);
+    yield put({
+      type: setUserDetails.type,
+      payload: { id, field, text },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  yield put({
+    type: setLoader.type,
+    payload: false,
+  });
+}
+
 export default function* rootSagaUser() {
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
   yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
   yield takeEvery(setUserAboutContent, uploadUserContent);
+  yield takeEvery(firebaseUploadDetails, uploadDetailsUser);
 }

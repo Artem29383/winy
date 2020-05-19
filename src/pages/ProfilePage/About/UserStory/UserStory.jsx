@@ -73,7 +73,13 @@ const UserStory = ({ aboutUser }) => {
           </S.FooterEditorButtons>
         </div>
       ) : (
-        <S.AboutContent onClick={setEdit}>{jsxContent}</S.AboutContent>
+        <S.AboutContent onClick={setEdit}>
+          {jsxContent.length !== 0 ? (
+            jsxContent
+          ) : (
+            <S.DefaultWall>Расскажите о себе</S.DefaultWall>
+          )}
+        </S.AboutContent>
       )}
     </S.MySelfInfo>
   );

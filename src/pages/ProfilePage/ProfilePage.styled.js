@@ -5,14 +5,15 @@ export default {
     flex-grow: 1;
   `,
   UserBlock: styled.div`
-    height: 300px;
+    height: 400px;
     display: flex;
     padding-top: 30px;
   `,
   UserPhotoBlock: styled.div`
-    max-width: 300px;
+    max-width: 500px;
     display: flex;
     width: 100%;
+    padding: 0 50px 25px 50px;
   `,
   UpdateUserInfo: styled.div`
     color: ${props => props.theme.lpupdateUserInfo};
