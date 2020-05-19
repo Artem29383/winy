@@ -1,4 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
+import { device } from 'constants/device';
+import transition from 'styled-transition-group';
 /* stylelint-disable */
 
 const animline1 = keyframes`
@@ -71,10 +73,58 @@ export const LeftBorder = styled.div`
 `;
 
 export default {
+  HeaderOverlay: transition.div`
+    @media ${device.laptop} {
+      position: fixed;
+      background-color: ${({ isHide }) =>
+        `${isHide ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.6)'}`};
+      width: ${({ isHide }) => `${isHide ? '55px' : '100%'}`};
+      height: 100vh;
+      z-index: 10000;
+      transition: background-color 200ms linear;
+      
+      &:enter {
+        background-color: rgba(0,0,0,0.0.6);
+        width: 100%;
+        position: fixed;
+      }
+      
+      &:appear {
+        background-color: rgba(0,0,0,0.6);
+        width: 100%;
+        position: fixed;
+      }
+      
+      &:enter-active {
+        background-color: rgba(0,0,0,0.6);
+        width: 100%;
+        position: fixed;
+      }
+      
+      &:exit {
+        background-color: rgba(0,0,0,0.6);
+        width: 100%;
+        position: fixed;
+      }
+      
+      &:exit-active {
+        background-color: rgba(0,0,0,0);
+        width: 100%;
+        position: fixed;
+      }
+    }
+  `,
   NavigatorHeader: styled.div`
     width: 100%;
     height: ${({ isHide }) => isHide && '100px'};
     position: relative;
+  `,
+  BackDrop: styled.div`
+    position: ${({ isHide }) => `${isHide ? 'static' : 'fixed'}`};
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
   `,
   NavigatorBlock: styled.div`
     flex-shrink: 0;

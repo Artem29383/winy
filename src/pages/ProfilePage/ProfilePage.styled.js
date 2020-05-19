@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export default {
   Profile: styled.div`
     flex-grow: 1;
+
+    @media ${device.laptop} {
+      margin-left: 55px;
+    }
   `,
   UserBlock: styled.div`
     height: 550px;
