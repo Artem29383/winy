@@ -5,12 +5,12 @@ export default {
     flex-grow: 1;
   `,
   UserBlock: styled.div`
-    height: 400px;
+    height: 550px;
     display: flex;
     padding-top: 30px;
   `,
   UserPhotoBlock: styled.div`
-    max-width: 500px;
+    max-width: 550px;
     display: flex;
     width: 100%;
     padding: 0 50px 25px 50px;

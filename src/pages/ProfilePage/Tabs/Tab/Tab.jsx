@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import S from './Tab.styled';
 
@@ -14,4 +14,4 @@ Tab.propTypes = {
   value: PropTypes.object,
 };
 
-export default Tab;
+export default memo(Tab);
