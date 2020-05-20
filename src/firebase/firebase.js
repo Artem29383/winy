@@ -14,3 +14,5 @@ export const functionsRef = firebase.functions();
 export const storage = firebase.storage();
 export const storageRef = storage.ref();
 export const databaseRef = firebase.database();
+export const { database } = firebase;
+export const { firestore } = firebase;

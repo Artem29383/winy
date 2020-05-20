@@ -11,6 +11,7 @@ const initialState = {
     login: null,
     status: '',
     avatarURL: '',
+    online: false,
     about: {
       aboutUser: '',
       details,

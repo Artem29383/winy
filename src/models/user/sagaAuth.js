@@ -18,7 +18,7 @@ import { push } from 'connected-react-router';
 import routes from 'constants/routes';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef } from '../../firebase/firebase';
+import { authRef } from 'src/firebase/firebase';
 
 function* signIn(action) {
   try {
@@ -93,6 +93,8 @@ function* checkLoginUser() {
     const idTokenResult = yield user.getIdTokenResult();
     const doc = yield FireSaga.getCollection(API_PATH.users, user.uid);
     const data = doc.data();
+    data.online = true;
+    console.log(data);
     if (user) {
       yield put({
         type: loginUserSuccess.type,

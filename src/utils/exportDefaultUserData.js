@@ -41,6 +41,7 @@ export const exportDefaultUserData = (idTokenResult, data) => {
       uid: idTokenResult.user_id,
       status: data.status || '',
       avatarURL: data.avatarURL || defaultUserPhoto,
+      online: data.online,
       about: {
         aboutUser: data.htmlContent || '',
         details: { ...details, ...data.details },
