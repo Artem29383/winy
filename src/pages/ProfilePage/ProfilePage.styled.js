@@ -8,6 +8,10 @@ export default {
     @media ${device.laptop} {
       margin-left: 55px;
     }
+
+    @media ${device.tablet} {
+      margin: 0;
+    }
   `,
   UserBlock: styled.div`
     height: 550px;

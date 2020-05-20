@@ -5,11 +5,13 @@ import useToggle from 'hooks/useToggle';
 import Navigation from 'components/Header/Navigation';
 import useSelector from 'hooks/useSelector';
 import { userSelector } from 'models/user/selectors';
+import Burger from 'components/Header/Burger';
 import S from './Header.styled';
 
 const Header = () => {
   const [isHideNav, setIsHideNav] = useToggle(false);
   const LAPTOP_SIZE = 1024;
+  const TABLET = 768;
   const [isAnimBurg, setIsAnimBurg] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const { login, avatarURL } = useSelector(userSelector);
@@ -30,12 +32,15 @@ const Header = () => {
   }, [isHideNav]);
 
   useEffect(() => {
+    if (!isHideNav && windowSize < LAPTOP_SIZE) {
+      animClick();
+    }
+  }, [windowSize]);
+
+  useEffect(() => {
     const debouncedHandleResize = debounce(() => {
       setWindowSize(window.innerWidth);
-      if (!isHideNav && windowSize < LAPTOP_SIZE) {
-        animClick();
-      }
-    }, 1500);
+    }, 500);
 
     window.addEventListener('resize', debouncedHandleResize);
 
@@ -45,32 +50,50 @@ const Header = () => {
   });
 
   return (
-    <S.HeaderOverlay isHide={isHideNav} in={!isHideNav} timeout={200}>
-      <S.NavigatorBlock isHide={isHideNav} width={isHideNav ? '55px' : '290px'}>
-        {windowSize < LAPTOP_SIZE && (
-          <S.BackDrop isHide={isHideNav} onClick={animClick} />
-        )}
-        <S.NavigatorHeader isHide={isHideNav}>
-          <S.Burger onClick={animClick} isHide={isHideNav}>
-            <S.Line1 isHide={isHideNav} isAnim={isAnimBurg} />
-            <S.Line2 isHide={isHideNav} />
-            <S.Line3 isHide={isHideNav} isAnim={isAnimBurg} />
-          </S.Burger>
-          {!isHideNav && <S.Title>Winy</S.Title>}
-          <SettingButton isHide={isHideNav} />
-        </S.NavigatorHeader>
-        {!isHideNav && (
-          <S.ProfileInfoBlock>
+    <>
+      {windowSize < TABLET && (
+        <Burger
+          isHideNav={isHideNav}
+          animClick={animClick}
+          isAnimBurg={isAnimBurg}
+        />
+      )}
+      {windowSize < LAPTOP_SIZE && (
+        <S.BackDrop
+          unmountOnExit
+          in={!isHideNav}
+          timeout={200}
+          isHide={isHideNav}
+          onClick={animClick}
+        />
+      )}
+      <S.HeaderOverlay isHide={isHideNav} in={!isHideNav} timeout={200}>
+        <S.NavigatorBlock
+          isHide={isHideNav}
+          width={isHideNav ? '55px' : '290px'}
+        >
+          <S.NavigatorHeader isHide={isHideNav}>
+            {windowSize >= TABLET && (
+              <Burger
+                isHideNav={isHideNav}
+                animClick={animClick}
+                isAnimBurg={isAnimBurg}
+              />
+            )}
+            <S.Title isHide={isHideNav}>Winy</S.Title>
+            <SettingButton isHide={isHideNav} />
+          </S.NavigatorHeader>
+          <S.ProfileInfoBlock isHide={isHideNav}>
             <S.PhotoUrl>
               <S.Img src={avatarURL} alt="" />
             </S.PhotoUrl>
             <S.LoginUser>{login}</S.LoginUser>
             <S.Follows>Followers and Following</S.Follows>
           </S.ProfileInfoBlock>
-        )}
-        <Navigation isHideNav={isHideNav} />
-      </S.NavigatorBlock>
-    </S.HeaderOverlay>
+          <Navigation isHideNav={isHideNav} />
+        </S.NavigatorBlock>
+      </S.HeaderOverlay>
+    </>
   );
 };
 

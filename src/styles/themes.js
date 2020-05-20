@@ -15,7 +15,7 @@ const authDark = {
   formBorder: '#242424',
   formBackground: '#000',
   textColor: '#a6a6a6',
-  btnTextColor: '#a6a6a6',
+  btnTextColor: '#fff',
   inputTextColor: '#ff8b00',
   error: 'red',
   sunColor: '#eedc01',
@@ -131,17 +131,83 @@ const fileInputDark = {
   progressBarBgc: '#605353',
 };
 
+const editorDark = {
+  backGroundEditor: '#4A494B',
+  foregroundEditor: '#2D2D2F',
+  borderEditor: '#393839',
+  customWhiteEditor: '#fff',
+  borderFocusEditor: '#343638',
+  colorTextEditor: '#fff',
+  shadowDrop: 'rgba(0, 0, 0, 0.1)',
+  shadowInner: 'rgba(0, 0, 0, 0.1)',
+  defaultHoverBgcEditor: '#383839',
+  defaultHoverBgcActiveEditor: '#333234',
+  defaultActiveShadowEditor: '#3B393C',
+  mainBgcEditor: '#3a3a3a',
+  textEditorMain: '#fff',
+  baseBorderEditor: '#464646',
+  aboutContentColor: '#fff',
+  aboutContentColorLink: '#dded15',
+};
+
+const editorLight = {
+  aboutContentColorLink: '#de35ed',
+  baseBorderEditor: '#c4c4c4',
+  textEditorMain: '#000',
+  backGroundEditor: '#4A494B',
+  foregroundEditor: '#2D2D2F',
+  borderEditor: '#393839',
+  customWhiteEditor: '#fff',
+  borderFocusEditor: '#47A4F5',
+  colorTextEditor: '#fff',
+  shadowDrop: 'rgba(0, 0, 0, 0.1)',
+  shadowInner: 'rgba(0, 0, 0, 0.1)',
+  defaultHoverBgcEditor: '#383839',
+  defaultHoverBgcActiveEditor: '#333234',
+  defaultActiveShadowEditor: '#3B393C',
+  mainBgcEditor: '#fff',
+  aboutContentColor: '#000',
+};
+
+const statusDark = {
+  textStatus: 'rgba(255,255,255,0.5)',
+};
+
+const statusLight = {
+  textStatus: 'rgba(0, 0, 0, 0.5)',
+};
+
+const detailsDark = {
+  detailsText: 'rgba(255,255,255,0.85)',
+  detailsInputBgc: '#151515',
+  detailsTitle: '#fff',
+  detailsColorTextItem: '#fff',
+};
+
+const detailsLight = {
+  detailsText: 'rgba(0,0,0,0.85)',
+  detailsInputBgc: '#fff',
+  detailsColorTextItem: '#000',
+  detailsTitle: '#000',
+};
+
 const dark = treatmentThemesObject([
   authDark,
   darkProfileTheme,
   modalDark,
   fileInputDark,
+  editorDark,
+  statusDark,
+  detailsDark,
 ]);
 const light = treatmentThemesObject([
   authLight,
   lightProfileTheme,
   modalLight,
   fileInputLight,
+  editorLight,
+  statusLight,
+  detailsLight,
 ]);
 
 export { dark, light };

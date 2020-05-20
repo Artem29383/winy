@@ -17,6 +17,7 @@ export default {
     font-size: 32px;
     border-bottom: 2px solid #efefef;
     padding-bottom: 20px;
+    color: ${props => props.theme.detailsTitle};
   `,
   DetailsList: styled.ul`
     width: 100%;

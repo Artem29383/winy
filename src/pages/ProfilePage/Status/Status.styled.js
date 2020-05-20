@@ -20,7 +20,7 @@ export default {
   `,
   DefaultStatus: styled.div`
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.5);
+    color: ${props => props.theme.textStatus};
     min-height: 36px;
     cursor: pointer;
     align-items: center;

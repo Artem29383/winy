@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { device } from 'constants/device';
 
 export const ItemText = styled.div`
   color: ${props => props.theme.navItemText};
   transition: color 0.1s linear;
+  display: ${({ isHide }) => (isHide ? 'none' : 'block')};
+
+  @media ${device.tablet} {
+    display: block;
+  }
 `;
 
 export const LeftBorder = styled.div`

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export default {
   Icon: styled.svg`
@@ -33,6 +34,10 @@ export default {
     height: 30px;
     transition: fill 0.1s linear;
     margin: ${({ isHide }) => (isHide ? '0 10px 0 15px' : '0 10px 0 35px')};
+
+    @media ${device.tablet} {
+      margin: 0 10px 0 35px;
+    }
   `,
   SettingNav: styled.svg`
     cursor: pointer;

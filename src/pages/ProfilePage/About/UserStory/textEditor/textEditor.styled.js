@@ -5,6 +5,7 @@ export default {
     font-size: 32px;
     border-radius: 10px;
     font-family: 'Roboto Light', serif;
+    color: ${props => props.theme.textEditorMain};
 
     div {
       &.ck-editor__main {

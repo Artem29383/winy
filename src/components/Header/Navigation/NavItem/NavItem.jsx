@@ -25,7 +25,7 @@ const NavItem = ({
         <Icons.ProfileNav isHide={isHideNav}>
           <use xlinkHref={`${svg}#${svgId}`} />
         </Icons.ProfileNav>
-        {!isHideNav && <ItemText>{text}</ItemText>}
+        <ItemText isHide={isHideNav}>{text}</ItemText>
       </S.ItemContent>
     </S.Item>
   );

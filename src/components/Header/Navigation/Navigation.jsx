@@ -21,7 +21,7 @@ const Navigation = ({ isHideNav }) => {
     />
   ));
 
-  return <S.Nav isHide={isHideNav}>{navItems}</S.Nav>;
+  return <S.Nav>{navItems}</S.Nav>;
 };
 
 Navigation.propTypes = {

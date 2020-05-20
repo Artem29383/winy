@@ -17,6 +17,11 @@ export default {
     background-color: rgba(90, 90, 90, 0.1);
     border-radius: 10px;
     max-height: 450px;
+    color: ${props => props.theme.aboutContentColor};
+
+    & a {
+      color: ${props => props.theme.aboutContentColorLink};
+    }
 
     & h6 {
       font-size: 32px;

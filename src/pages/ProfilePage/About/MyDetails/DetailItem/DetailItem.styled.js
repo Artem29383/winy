@@ -11,7 +11,7 @@ export default {
     font-family: 'Roboto Light', serif;
   `,
   TitleItem: styled.div`
-    color: #d3d3d3;
+    color: #c1c1c1;
     font-size: 16px;
     flex-shrink: 1;
   `,
@@ -20,6 +20,7 @@ export default {
     margin-left: 15px;
     cursor: pointer;
     flex-grow: 1;
+    color: ${props => props.theme.detailsColorTextItem};
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -31,6 +32,7 @@ export default {
     border-bottom: 1px solid lightgray;
     padding: 0 5px 0 5px;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.8);
+    background-color: ${props => props.theme.detailsInputBgc};
+    color: ${props => props.theme.detailsText};
   `,
 };

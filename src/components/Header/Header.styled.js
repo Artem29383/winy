@@ -1,59 +1,7 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import { device } from 'constants/device';
 import transition from 'styled-transition-group';
 /* stylelint-disable */
-
-const animline1 = keyframes`
-  0% {
-    transform: rotate(0);
-    width: 100%;
-  }
-  
-  100% {
-    width: 50%;
-    transform: rotate(38deg) translateX(14px);
-  }
-`;
-
-const obranimline1 = keyframes`
-  0% {
-    width: 50%;
-    transform: rotate(38deg) translateX(14px);
-  }
-  
-  100% {
-    transform: rotate(0);
-    width: 100%;
-  }
-`;
-
-const animline3 = keyframes`
-  0% {
-    transform: rotate(0);
-    width: 100%;
-    opacity: 1;
-  }
-  
-  100% {
-    opacity: 1;
-    width: 50%;
-    transform: rotate(-36deg) translateX(14px);
-  }
-`;
-
-const obranimline3 = keyframes`
-  0% {
-    opacity: 1;
-    width: 50%;
-    transform: rotate(-36deg) translateX(14px);
-  }
-  
-  100% {
-    transform: rotate(0);
-    width: 100%;
-    opacity: 1;
-  }
-`;
 
 export const ItemText = styled.div`
   color: ${props => props.theme.navItemText};
@@ -76,55 +24,60 @@ export default {
   HeaderOverlay: transition.div`
     @media ${device.laptop} {
       position: fixed;
-      background-color: ${({ isHide }) =>
-        `${isHide ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.6)'}`};
-      width: ${({ isHide }) => `${isHide ? '55px' : '100%'}`};
+      width: ${({ isHide }) => `${isHide ? '55px' : '290px'}`};
       height: 100vh;
       z-index: 10000;
-      transition: background-color 200ms linear;
-      
-      &:enter {
-        background-color: rgba(0,0,0,0.0.6);
-        width: 100%;
-        position: fixed;
-      }
-      
-      &:appear {
-        background-color: rgba(0,0,0,0.6);
-        width: 100%;
-        position: fixed;
-      }
-      
-      &:enter-active {
-        background-color: rgba(0,0,0,0.6);
-        width: 100%;
-        position: fixed;
-      }
-      
-      &:exit {
-        background-color: rgba(0,0,0,0.6);
-        width: 100%;
-        position: fixed;
-      }
-      
-      &:exit-active {
-        background-color: rgba(0,0,0,0);
-        width: 100%;
-        position: fixed;
-      }
+    }
+    @media ${device.tablet} {
+      position: fixed;
+      background-color: rgba(0, 0, 0, 0.6);
+      width: 290px;
+      transform: ${({ isHide }) =>
+        `${isHide ? 'translateX(-102%)' : 'translateX(0)'}`};
+      height: 100vh;
+      z-index: 10000;
+      transition: transform 0.2s linear;
     }
   `,
   NavigatorHeader: styled.div`
     width: 100%;
     height: ${({ isHide }) => isHide && '100px'};
     position: relative;
+
+    @media ${device.tablet} {
+      height: auto;
+    }
   `,
-  BackDrop: styled.div`
-    position: ${({ isHide }) => `${isHide ? 'static' : 'fixed'}`};
+  BackDrop: transition.div`
+    position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: 1;
+    background-color: ${({ isHide }) =>
+      `${isHide ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)'}`};
+    transition: background-color 0.2s linear;
+    
+      &:appear {
+        background-color: rgba(0,0,0,0);
+      }
+      
+      &:enter {
+        background-color: rgba(0,0,0,0);
+      }
+      
+      &:enter-active {
+        background-color: rgba(0,0,0,0.5);
+      }
+      
+      &:exit {
+        background-color: rgba(0,0,0,0.5);
+      }
+      
+      &:exit-active {
+        background-color: rgba(0,0,0,0);
+      }
   `,
   NavigatorBlock: styled.div`
     flex-shrink: 0;
@@ -134,21 +87,35 @@ export default {
     height: 100vh;
     top: 0;
     background-color: ${props => props.theme.navigatorColor};
-    transition: background-color 0.1s linear, width 0.1s linear;
+    transition: background-color 0.1s linear,
+      width 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media ${device.tablet} {
+      width: 290px;
+    }
   `,
   Title: styled.div`
     font-size: 30px;
     height: 60px;
     width: 100%;
     color: ${props => props.theme.navTitleColor};
-    display: flex;
+    display: ${({ isHide }) => (isHide ? 'none' : 'flex')};
     justify-content: center;
     align-items: center;
     font-weight: bold;
     transition: color 0.1s linear;
+
+    @media ${device.tablet} {
+      display: flex;
+    }
   `,
   ProfileInfoBlock: styled.div`
+    display: ${({ isHide }) => (isHide ? 'none' : 'block')};
     width: 100%;
+
+    @media ${device.tablet} {
+      display: block;
+    }
   `,
   PhotoUrl: styled.div`
     display: flex;
@@ -186,70 +153,6 @@ export default {
     color: ${props => props.theme.followsColor};
     font-size: 20px;
     transition: color 0.1s linear, border-color 0.1s linear;
-  `,
-  Burger: styled.div`
-    width: 25px;
-    height: 20px;
-    top: ${({ isHide }) => (isHide ? '25%' : '50%')};
-    transform: ${({ isHide }) =>
-      isHide ? 'translateY(0)' : 'translateY(-50%)'};
-    position: absolute;
-    cursor: pointer;
-    left: 15px;
-
-    &:hover div {
-      background-color: ${props => props.theme.burgerLineColorActive};
-    }
-  `,
-  Line1: styled.div`
-    width: 100%;
-    position: absolute;
-    background-color: ${props => props.theme.burgerLineColor};
-    height: 4px;
-    transform-origin: right center;
-    top: 0;
-    border-radius: 10px;
-    transition: background-color 0.1s linear;
-    animation: ${props =>
-      props.isAnim
-        ? props.isHide
-          ? css`
-              ${animline1} 0.1s ease-in-out forwards
-            `
-          : css`
-              ${obranimline1} 0.1s ease-in-out forwards
-            `
-        : ''};
-  `,
-  Line2: styled.div`
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 10px;
-    position: absolute;
-    background-color: ${props => props.theme.burgerLineColor};
-    transition: background-color 0.1s linear;
-    height: 4px;
-  `,
-  Line3: styled.div`
-    width: 100%;
-    bottom: 0;
-    border-radius: 10px;
-    position: absolute;
-    transform-origin: right center;
-    background-color: ${props => props.theme.burgerLineColor};
-    height: 4px;
-    transition: background-color 0.1s linear;
-    animation: ${props =>
-      props.isAnim
-        ? props.isHide
-          ? css`
-              ${animline3} 0.1s ease-in-out forwards
-            `
-          : css`
-              ${obranimline3} 0.1s ease-in-out forwards
-            `
-        : ''};
   `,
 };
 /* stylelint-enable */

@@ -188,19 +188,22 @@ export const GlobalStyles = createGlobalStyle`
   :root {
       --ck-border-radius: 4px;
       --ck-font-size-base: 14px;
-      --ck-custom-background: hsl(270, 1%, 29%);
-      --ck-custom-foreground: hsl(255, 3%, 18%);
-      --ck-custom-border: hsl(300, 1%, 22%);
-      --ck-custom-white: hsl(0, 0%, 100%);
+      --ck-custom-background: ${props => props.theme.backGroundEditor};
+      --ck-custom-foreground: ${props => props.theme.foregroundEditor};
+      --ck-custom-border: ${props => props.theme.borderEditor};
+      --ck-custom-white: ${props => props.theme.customWhiteEditor};
       --ck-color-base-foreground: var(--ck-custom-background);
-      --ck-color-focus-border: hsl(208, 90%, 62%);
-      --ck-color-text: hsl(0, 0%, 98%);
-      --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
-      --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
+      --ck-color-focus-border: ${props => props.theme.borderFocusEditor};
+      --ck-color-text: ${props => props.theme.colorTextEditor};
+      --ck-color-shadow-drop: ${props => props.theme.shadowDrop};
+      --ck-color-shadow-inner: ${props => props.theme.shadowInner};
       --ck-color-button-default-background: var(--ck-custom-background);
-      --ck-color-button-default-hover-background: hsl(270, 1%, 22%);
-      --ck-color-button-default-active-background: hsl(270, 2%, 20%);
-      --ck-color-button-default-active-shadow: hsl(270, 2%, 23%);
+      --ck-color-button-default-hover-background: ${props =>
+        props.theme.defaultHoverBgcEditor};
+      --ck-color-button-default-active-background: ${props =>
+        props.theme.defaultHoverBgcActiveEditor};
+      --ck-color-button-default-active-shadow: ${props =>
+        props.theme.defaultActiveShadowEditor};
       --ck-color-button-default-disabled-background: var(
         --ck-custom-background
       );
@@ -248,6 +251,8 @@ export const GlobalStyles = createGlobalStyle`
       --ck-color-widget-hover-border: hsl(43, 100%, 68%);
       --ck-color-widget-editable-focus-background: var(--ck-custom-white);
       --ck-color-link-default: hsl(190, 100%, 75%);
+      --ck-color-base-background: ${props => props.theme.mainBgcEditor};
+      --ck-color-base-border: ${props => props.theme.baseBorderEditor};
     }
  
 `;
