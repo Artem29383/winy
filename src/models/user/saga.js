@@ -4,18 +4,17 @@ import {
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
   firebaseUploadDetails,
-  setError,
-  setLoader,
   setNewAvatar,
-  setProgressUpload,
   setUserAboutContent,
   setUserContent,
   setUserDetails,
   updateStatus,
 } from 'models/user/reducer';
+import { setError, setLoader, setProgressUpload } from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, storageRef } from 'src/firebase/firebase';
+import { updateAvatar } from 'models/auth/reducer';
 
 function* statusUpdate(action) {
   try {
@@ -72,6 +71,10 @@ function* avatarUpload(action) {
         );
         yield put({
           type: setNewAvatar.type,
+          payload: url,
+        });
+        yield put({
+          type: updateAvatar.type,
           payload: url,
         });
         yield put({

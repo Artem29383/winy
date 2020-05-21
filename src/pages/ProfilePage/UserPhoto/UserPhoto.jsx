@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import useToggle from 'hooks/useToggle';
 import useSelector from 'hooks/useSelector';
-import { progressUploadSelector } from 'models/user/selectors';
+import { progressUploadSelector } from 'models/app/selectors';
 import useAction from 'hooks/useAction';
 import { firebaseUploadAvatarUser } from 'models/user/reducer';
 import Modal from 'components/Modal';

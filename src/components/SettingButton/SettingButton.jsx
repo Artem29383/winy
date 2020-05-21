@@ -5,7 +5,7 @@ import settingNav from 'assets/images/settingNav.svg';
 import SelectList from 'components/SelectList';
 import useClickAway from 'hooks/useClickAway';
 import useAction from 'hooks/useAction';
-import { logOutUser } from 'models/user/reducer';
+import { logOutUser } from 'models/auth/reducer';
 import S from './SettingButton.styled';
 
 const SettingButton = ({ isHide }) => {

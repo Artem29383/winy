@@ -4,7 +4,7 @@ import SettingButton from 'components/SettingButton';
 import useToggle from 'hooks/useToggle';
 import Navigation from 'components/Header/Navigation';
 import useSelector from 'hooks/useSelector';
-import { userSelector } from 'models/user/selectors';
+import { initialUserDataSelector } from 'models/auth/selectors';
 import Burger from 'components/Header/Burger';
 import S from './Header.styled';
 
@@ -14,7 +14,7 @@ const Header = () => {
   const TABLET = 768;
   const [isAnimBurg, setIsAnimBurg] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const { login, avatarURL } = useSelector(userSelector);
+  const { login, avatarURL } = useSelector(initialUserDataSelector);
 
   const animClick = useCallback(() => {
     setIsAnimBurg(true);

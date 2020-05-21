@@ -7,11 +7,11 @@ import Button from 'components/Button/Button';
 import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import useAction from 'hooks/useAction';
-import { passReset, registerSuccess } from 'models/user/reducer';
+import { passReset, registerSuccess } from 'models/auth/reducer';
 import useFetchingError from 'hooks/useFetchingError';
 import { ternaryCheckError } from 'utils/ternaryCheckError';
 import useSelector from 'hooks/useSelector';
-import { successMsgSelector } from 'models/user/selectors';
+import { successMsgSelector } from 'models/app/selectors';
 import S from './ResetPasswordPage.styled';
 
 const ResetPasswordPage = () => {

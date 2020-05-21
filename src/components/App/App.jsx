@@ -9,17 +9,18 @@ import useInit from 'hooks/useInit';
 import { GlobalStyles } from 'styles/index';
 import CommonLoader from 'components/CommonLoader';
 import useSelector from 'hooks/useSelector';
-import { isAuthSelector } from 'models/user/selectors';
+import { isAuthSelector } from 'models/auth/selectors';
 import Header from 'components/Header';
 import {
   authRef,
   databaseRef,
-  // eslint-disable-next-line no-unused-vars
   database,
   firestoreRef,
   firestore,
   functionsRef,
 } from 'src/firebase/firebase';
+import { FireSaga } from 'utils/sagaFirebaseHelpers';
+import { API_PATH } from 'constants/constants';
 import S from './App.styled';
 
 const App = () => {
@@ -38,66 +39,70 @@ const App = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (isInit) {
-      const { uid } = authRef.currentUser;
-      const userStatusDatabaseRef = databaseRef.ref(`/status/${uid}`);
-      const userStatusFirestoreRef = firestoreRef.doc(`/status/${uid}`);
+    const user = authRef.currentUser;
+    if (!user) return;
+    const { uid } = user;
+    const userStatusDatabaseRef = databaseRef.ref(`/status/${uid}`);
 
-      const isOfflineForDatabase = {
-        state: 'offline',
-        last_changed: database.ServerValue.TIMESTAMP,
-      };
+    const isOfflineForDatabase = {
+      onlineStatus: false,
+      last_changed: database.ServerValue.TIMESTAMP,
+    };
 
-      const isOnlineForDatabase = {
-        state: 'online',
-        last_changed: database.ServerValue.TIMESTAMP,
-      };
+    const isOnlineForDatabase = {
+      onlineStatus: true,
+      last_changed: database.ServerValue.TIMESTAMP,
+    };
 
-      const isOfflineForFirestore = {
-        state: 'offline',
-        last_changed: firestore.FieldValue.serverTimestamp(),
-      };
+    const isOfflineForFirestore = {
+      onlineStatus: false,
+      last_changed: firestore.FieldValue.serverTimestamp(),
+    };
 
-      const isOnlineForFirestore = {
-        state: 'online',
-        last_changed: firestore.FieldValue.serverTimestamp(),
-      };
+    const isOnlineForFirestore = {
+      onlineStatus: true,
+      last_changed: firestore.FieldValue.serverTimestamp(),
+    };
 
-      databaseRef.ref('.info/connected').on('value', snapshot => {
-        if (snapshot.val() === false) {
-          userStatusFirestoreRef.set(isOfflineForFirestore);
-          return;
-        }
+    databaseRef.ref('.info/connected').on('value', snapshot => {
+      if (snapshot.val() === false) {
+        FireSaga.setToCollection(
+          API_PATH.status,
+          uid,
+          isOfflineForFirestore,
+          true
+        );
+        return;
+      }
 
-        userStatusDatabaseRef
-          .onDisconnect()
-          .set(isOfflineForDatabase)
-          .then(() => {
-            functionsRef.httpsCallable('onUserStatusChanged');
-            userStatusDatabaseRef.set(isOnlineForDatabase);
-            userStatusFirestoreRef.set(isOnlineForFirestore);
-          });
-      });
-
-      firestoreRef
-        .collection('status')
-        .where('state', '==', 'online')
-        .onSnapshot(snapshot => {
-          snapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-              const msg = `User ${change.doc.id} is online.`;
-              console.log(msg);
-              functionsRef.httpsCallable('onUserStatusChanged');
-            }
-            if (change.type === 'removed') {
-              const msg = `User ${change.doc.id} is offline.`;
-              console.log(msg);
-              functionsRef.httpsCallable('onUserStatusChanged');
-            }
-          });
+      userStatusDatabaseRef
+        .onDisconnect()
+        .set(isOfflineForDatabase)
+        .then(() => {
+          userStatusDatabaseRef.set(isOnlineForDatabase);
+          FireSaga.setToCollection(
+            API_PATH.status,
+            uid,
+            isOnlineForFirestore,
+            true
+          );
         });
-    }
-  }, [isInit]);
+    });
+
+    firestoreRef
+      .collection('status')
+      .where('onlineStatus', '==', true)
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            functionsRef.httpsCallable('onUserStatusChanged');
+          }
+          if (change.type === 'removed') {
+            functionsRef.httpsCallable('onUserStatusChanged');
+          }
+        });
+      });
+  }, [isAuth]);
 
   return (
     <ThemeProvider theme={theme === 'dark' ? dark : light}>

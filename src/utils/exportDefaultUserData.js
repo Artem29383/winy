@@ -31,17 +31,15 @@ export const details = {
   },
 };
 
-export const exportDefaultUserData = (idTokenResult, data) => {
+export const exportDefaultUserData = data => {
   return {
-    isAuth: true,
     user: {
-      isAdmin: idTokenResult.admin || false,
-      login: data.login,
-      email: idTokenResult.email,
-      uid: idTokenResult.user_id,
+      uid: data.uid,
+      login: data.login || '',
       status: data.status || '',
       avatarURL: data.avatarURL || defaultUserPhoto,
-      online: data.online,
+      onlineStatus: data.onlineStatus,
+      last_changed: data.last_changed,
       about: {
         aboutUser: data.htmlContent || '',
         details: { ...details, ...data.details },

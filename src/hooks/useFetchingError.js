@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 import useSelector from 'hooks/useSelector';
-import { errorSelector, loadingSelector } from 'models/user/selectors';
+import { errorSelector, loadingSelector } from 'models/app/selectors';
 import useAction from 'hooks/useAction';
-import { setError, setLoader } from 'models/user/reducer';
+import { setError, setLoader } from 'models/app/reducer';
 
 const useFetchingError = () => {
   const [action, setAction] = useState('');

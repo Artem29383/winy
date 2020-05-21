@@ -9,35 +9,35 @@ import {
   passReset,
   registerSuccess,
   registerUser,
-  setError,
   setInit,
-  setLoader,
-} from 'models/user/reducer';
+} from 'models/auth/reducer';
+import { resetAll, setError, setLoader } from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';
-import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef } from 'src/firebase/firebase';
+import { authRef, firestore } from 'src/firebase/firebase';
+import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
+import { resetUser } from 'models/user/reducer';
 
 function* signIn(action) {
   try {
     const { login, email, password } = action.payload;
-    // Create user account
+    // Create auth account
     const { user } = yield authRef.createUserWithEmailAndPassword(
       email,
       password
     );
     // set admin access
     // yield setAdminAccess(email);
-    // Create user collection with uniq user ID
+    // Create auth collection with uniq auth ID
     yield FireSaga.setToCollection(
       API_PATH.users,
       user.uid,
       { login, email },
       true
     );
-    // logOut user, idk why firebase autologin me
+    // logOut auth, idk why firebase autologin me
     yield authRef.signOut();
     yield put({
       type: registerSuccess.type,
@@ -93,12 +93,18 @@ function* checkLoginUser() {
     const idTokenResult = yield user.getIdTokenResult();
     const doc = yield FireSaga.getCollection(API_PATH.users, user.uid);
     const data = doc.data();
-    data.online = true;
-    console.log(data);
+    const { email, login } = data;
     if (user) {
       yield put({
         type: loginUserSuccess.type,
-        payload: exportDefaultUserData(idTokenResult.claims, data),
+        payload: {
+          email,
+          login,
+          isAdmin: idTokenResult.admin || false,
+          isAuth: true,
+          uid: user.uid,
+          avatarURL: data.avatarURL || defaultUserPhoto,
+        },
       });
     } else {
       yield put(push(routes.auth));
@@ -127,7 +133,14 @@ function* userAuth(action) {
     const data = doc.data();
     yield put({
       type: loginUserSuccess.type,
-      payload: exportDefaultUserData(idTokenResult.claims, data),
+      payload: {
+        email,
+        login: data.login,
+        isAdmin: idTokenResult.admin || false,
+        isAuth: true,
+        uid: user.uid,
+        avatarURL: data.avatarURL || defaultUserPhoto,
+      },
     });
   } catch (e) {
     yield put({
@@ -146,9 +159,23 @@ function* userAuth(action) {
 
 function* userLogOut() {
   try {
+    const { uid } = authRef.currentUser;
+    const lastChanged = firestore.FieldValue.serverTimestamp();
+    yield FireSaga.setToCollection(
+      API_PATH.status,
+      uid,
+      { onlineStatus: false, last_changed: lastChanged },
+      true
+    );
     yield authRef.signOut();
     yield put({
       type: logoutUser.type,
+    });
+    yield put({
+      type: resetUser.type,
+    });
+    yield put({
+      type: resetAll.type,
     });
   } catch (e) {
     yield put({
