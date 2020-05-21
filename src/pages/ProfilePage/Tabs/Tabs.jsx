@@ -1,20 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Tab from 'pages/ProfilePage/Tabs/Tab';
 import routes from 'constants/routes';
 import S from './Tabs.styled';
 
-const Tabs = () => {
+const Tabs = ({ uid }) => {
   const tabs = [
     {
-      to: `${routes.profileAbout}`,
+      to: `${routes.about}`,
       text: 'About',
     },
     {
-      to: `${routes.profile}/photos`,
+      to: `/photos`,
       text: 'photos',
     },
     {
-      to: `${routes.profile}/questions`,
+      to: `/questions`,
       text: 'questions',
     },
   ];
@@ -23,12 +24,16 @@ const Tabs = () => {
       <S.UserTabsNavigation>
         <S.WrapperTabs>
           {tabs.map(tab => (
-            <Tab key={tab.to} value={tab} />
+            <Tab key={tab.to} value={tab} uid={uid} />
           ))}
         </S.WrapperTabs>
       </S.UserTabsNavigation>
     </S.UserTabs>
   );
+};
+
+Tabs.propTypes = {
+  uid: PropTypes.string.isRequired,
 };
 
 export default Tabs;

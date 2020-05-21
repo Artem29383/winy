@@ -1,6 +1,7 @@
 import { put, take, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
+  firebaseGetUserInfo,
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
   firebaseUploadDetails,
@@ -8,6 +9,7 @@ import {
   setUserAboutContent,
   setUserContent,
   setUserDetails,
+  setUserInfo,
   updateStatus,
 } from 'models/user/reducer';
 import { setError, setLoader, setProgressUpload } from 'models/app/reducer';
@@ -15,6 +17,7 @@ import { API_PATH } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, storageRef } from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
+import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 
 function* statusUpdate(action) {
   try {
@@ -139,9 +142,43 @@ function* uploadDetailsUser(action) {
   });
 }
 
+function* getUserInfo(action) {
+  try {
+    const { uid } = authRef.currentUser;
+    const httpUserId = action.payload;
+    const isOwner = uid === httpUserId;
+    const data = yield FireSaga.getCollection(API_PATH.users, httpUserId);
+    const { login, status, details, avatarURL, htmlContent } = data.data();
+    const statusOnline = yield FireSaga.getCollection(
+      API_PATH.status,
+      httpUserId
+    );
+    const onliner = statusOnline.data() || {
+      onlineStatus: false,
+      last_changed: '',
+    };
+    yield put({
+      type: setUserInfo.type,
+      payload: exportDefaultUserData({
+        uid: httpUserId,
+        ...onliner,
+        login,
+        isOwner,
+        status,
+        avatarURL,
+        htmlContent,
+        details,
+      }),
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default function* rootSagaUser() {
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
   yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
   yield takeEvery(setUserAboutContent, uploadUserContent);
   yield takeEvery(firebaseUploadDetails, uploadDetailsUser);
+  yield takeEvery(firebaseGetUserInfo, getUserInfo);
 }

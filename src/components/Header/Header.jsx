@@ -14,7 +14,7 @@ const Header = () => {
   const TABLET = 768;
   const [isAnimBurg, setIsAnimBurg] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const { login, avatarURL } = useSelector(initialUserDataSelector);
+  const { login, avatarURL, uid } = useSelector(initialUserDataSelector);
 
   const animClick = useCallback(() => {
     setIsAnimBurg(true);
@@ -90,7 +90,7 @@ const Header = () => {
             <S.LoginUser>{login}</S.LoginUser>
             <S.Follows>Followers and Following</S.Follows>
           </S.ProfileInfoBlock>
-          <Navigation isHideNav={isHideNav} />
+          <Navigation isHideNav={isHideNav} uid={uid} />
         </S.NavigatorBlock>
       </S.HeaderOverlay>
     </>

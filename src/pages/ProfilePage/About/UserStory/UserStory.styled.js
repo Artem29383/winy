@@ -11,7 +11,7 @@ export default {
     word-break: break-word;
     overflow-y: auto;
     min-height: 150px;
-    cursor: pointer;
+    cursor: ${({ isOwner }) => isOwner && 'pointer'};
     font-family: 'Roboto Light', serif;
     padding: 10px 10px 20px 10px;
     background-color: rgba(90, 90, 90, 0.1);

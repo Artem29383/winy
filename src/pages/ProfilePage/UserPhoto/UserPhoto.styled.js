@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default {
   Photo: styled.div`
-    cursor: pointer;
+    cursor: ${({ isOwner }) => isOwner && 'pointer'};
     width: 100%;
     height: 100%;
     display: flex;

@@ -4,5 +4,6 @@ export default {
   home: '/home',
   reset: '/reset',
   profile: '/profile',
-  profileAbout: '/profile/about',
+  about: '/about',
+  users: '/users',
 };

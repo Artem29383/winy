@@ -7,11 +7,15 @@ import {
   logoutUser,
   logOutUser,
   passReset,
-  registerSuccess,
   registerUser,
   setInit,
 } from 'models/auth/reducer';
-import { resetAll, setError, setLoader } from 'models/app/reducer';
+import {
+  resetAll,
+  setError,
+  setLoader,
+  registerSuccess,
+} from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';

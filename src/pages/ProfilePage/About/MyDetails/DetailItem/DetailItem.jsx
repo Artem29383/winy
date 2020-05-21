@@ -7,7 +7,7 @@ import { firebaseUploadDetails } from 'models/user/reducer';
 import useFetchingError from 'hooks/useFetchingError';
 import S from './DetailItem.styled';
 
-const DetailItem = ({ id, field, text }) => {
+const DetailItem = ({ id, field, text, isOwner }) => {
   const [edit, setEdit] = useToggle(false);
   const { isLoad, setIsLoading, action, setAction } = useFetchingError();
   const [value, setValue, setDefaultHandle] = useInput(text);
@@ -22,9 +22,11 @@ const DetailItem = ({ id, field, text }) => {
   const stopEditKey = e => {
     if (e.key === 'Enter') {
       setEdit();
-      setIsLoading(true);
-      setAction(id);
-      setDetails({ id, field, text: value });
+      if (text.trim() !== value.trim()) {
+        setIsLoading(true);
+        setAction(id);
+        setDetails({ id, field, text: value });
+      }
     }
     if (e.key === 'Escape') {
       setDefaultHandle(text);
@@ -34,24 +36,32 @@ const DetailItem = ({ id, field, text }) => {
 
   const stopEditBlur = () => {
     setEdit();
-    setIsLoading(true);
-    setAction(id);
-    setDetails({ id, field, text: value });
+    if (text.trim() !== value.trim()) {
+      setIsLoading(true);
+      setAction(id);
+      setDetails({ id, field, text: value });
+    }
   };
 
   return (
     <S.DetailsItem key={field}>
       <S.TitleItem>{field}</S.TitleItem>
-      {edit || (isLoad && action === id) ? (
-        <S.Input
-          autoFocus
-          onBlur={stopEditBlur}
-          onKeyDown={stopEditKey}
-          onChange={setValue}
-          value={value}
-        />
+      {isOwner ? (
+        edit || (isLoad && action === id) ? (
+          <S.Input
+            autoFocus
+            onBlur={stopEditBlur}
+            onKeyDown={stopEditKey}
+            onChange={setValue}
+            value={value}
+          />
+        ) : (
+          <S.TextItem isOwner={isOwner} onClick={setEdit}>
+            {value || '-'}
+          </S.TextItem>
+        )
       ) : (
-        <S.TextItem onClick={setEdit}>{value || '-'}</S.TextItem>
+        <S.TextItem isOwner={isOwner}>{value || '-'}</S.TextItem>
       )}
     </S.DetailsItem>
   );
@@ -61,6 +71,7 @@ DetailItem.propTypes = {
   id: PropTypes.string,
   field: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 export default DetailItem;

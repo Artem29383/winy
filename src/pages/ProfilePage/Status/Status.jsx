@@ -4,7 +4,7 @@ import useAction from 'hooks/useAction';
 import { firebaseUpdateStatus } from 'models/user/reducer';
 import S from './Status.styled';
 
-const Status = ({ userStatus, uid }) => {
+const Status = ({ userStatus, uid, isOwner }) => {
   const MAX_LENGTH_STATUS = 100;
   const [edit, setEdit] = useState(false);
   const [temp, setTemp] = useState('');
@@ -95,7 +95,7 @@ const Status = ({ userStatus, uid }) => {
     [value, status]
   );
 
-  return (
+  return isOwner ? (
     <S.UserStatus>
       {edit ? (
         <S.StatusField
@@ -106,10 +106,16 @@ const Status = ({ userStatus, uid }) => {
           onBlur={endEditStatusBlur}
         />
       ) : (
-        <S.DefaultStatus onClick={startEditStatus}>
+        <S.DefaultStatus isOwner={isOwner} onClick={startEditStatus}>
           {status || 'Изменить статус'}
         </S.DefaultStatus>
       )}
+    </S.UserStatus>
+  ) : (
+    <S.UserStatus>
+      <S.DefaultStatus isOwner={isOwner}>
+        {status || 'Изменить статус'}
+      </S.DefaultStatus>
     </S.UserStatus>
   );
 };
@@ -117,6 +123,7 @@ const Status = ({ userStatus, uid }) => {
 Status.propTypes = {
   uid: PropTypes.string,
   userStatus: PropTypes.string,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 export default memo(Status);

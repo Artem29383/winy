@@ -3,7 +3,7 @@ import About from 'pages/ProfilePage/About';
 
 export default [
   {
-    path: routes.profileAbout,
+    path: `${routes.profile}/:id${routes.about}`,
     exact: true,
     component: About,
     isAuth: true,

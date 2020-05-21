@@ -18,7 +18,7 @@ export default {
   TextItem: styled.div`
     font-size: 14px;
     margin-left: 15px;
-    cursor: pointer;
+    cursor: ${({ isOwner }) => isOwner && 'pointer'};
     flex-grow: 1;
     color: ${props => props.theme.detailsColorTextItem};
     white-space: nowrap;

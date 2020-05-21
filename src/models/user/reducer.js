@@ -4,6 +4,7 @@ import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
 /* eslint-disable no-param-reassign */
 
 const initialState = {
+  isOwner: false,
   login: null,
   uid: null,
   status: '',
@@ -23,6 +24,9 @@ const userReducer = createSlice({
     resetUser(state) {
       Object.assign(state, initialState);
     },
+    setUserInfo(state, { payload }) {
+      Object.assign(state, payload);
+    },
     updateStatus(state, { payload }) {
       state.status = payload;
     },
@@ -41,6 +45,7 @@ const userReducer = createSlice({
     firebaseUpdateStatus: state => state,
     firebaseUploadAvatarUser: state => state,
     firebaseUploadDetails: state => state,
+    firebaseGetUserInfo: state => state,
   },
 });
 
@@ -55,4 +60,6 @@ export const {
   firebaseUploadDetails,
   setUserDetails,
   resetUser,
+  firebaseGetUserInfo,
+  setUserInfo,
 } = userReducer.actions;

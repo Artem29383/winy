@@ -25,6 +25,9 @@ const appReducer = createSlice({
         idError,
       };
     },
+    registerSuccess(state, { payload }) {
+      state.successMsg = payload;
+    },
     setProgressUpload(state, { payload }) {
       state.progressUpload = payload;
     },
@@ -36,6 +39,7 @@ const appReducer = createSlice({
 
 export default appReducer.reducer;
 export const {
+  registerSuccess,
   setError,
   setLoader,
   setProgressUpload,

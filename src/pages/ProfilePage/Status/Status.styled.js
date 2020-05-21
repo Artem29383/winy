@@ -22,7 +22,7 @@ export default {
     font-size: 16px;
     color: ${props => props.theme.textStatus};
     min-height: 36px;
-    cursor: pointer;
+    cursor: ${({ isOwner }) => isOwner && 'pointer'};
     align-items: center;
     word-break: break-word;
     line-height: 1.5;

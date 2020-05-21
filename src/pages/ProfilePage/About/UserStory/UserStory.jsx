@@ -10,7 +10,7 @@ import useFetchingError from 'hooks/useFetchingError';
 import ReactHtmlParser from 'react-html-parser';
 import S from './UserStory.styled';
 
-const UserStory = ({ aboutUser }) => {
+const UserStory = ({ aboutUser, isOwner }) => {
   const [edit, setEdit] = useToggle(false);
   const [htmlContent, setHTMLContent] = useState(aboutUser);
   const setUserContent = useAction(setUserAboutContent);
@@ -42,7 +42,7 @@ const UserStory = ({ aboutUser }) => {
     setUserContent({ htmlContent });
   };
 
-  return (
+  return isOwner ? (
     <S.MySelfInfo>
       {edit ? (
         <div>
@@ -73,7 +73,7 @@ const UserStory = ({ aboutUser }) => {
           </S.FooterEditorButtons>
         </div>
       ) : (
-        <S.AboutContent onClick={setEdit}>
+        <S.AboutContent onClick={setEdit} isOwner={isOwner}>
           {jsxContent.length !== 0 ? (
             jsxContent
           ) : (
@@ -82,11 +82,22 @@ const UserStory = ({ aboutUser }) => {
         </S.AboutContent>
       )}
     </S.MySelfInfo>
+  ) : (
+    <S.MySelfInfo>
+      <S.AboutContent isOwner={isOwner}>
+        {jsxContent.length !== 0 ? (
+          jsxContent
+        ) : (
+          <S.DefaultWall>Расскажите о себе</S.DefaultWall>
+        )}
+      </S.AboutContent>
+    </S.MySelfInfo>
   );
 };
 
 UserStory.propTypes = {
   aboutUser: PropTypes.string,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 export default memo(UserStory);

@@ -30,6 +30,8 @@ export default {
   UserName: styled.div`
     width: 100%;
     height: 30px;
+    display: flex;
+    align-items: center;
   `,
   Text: styled.div`
     font-size: 26px;

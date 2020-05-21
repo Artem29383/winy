@@ -21,12 +21,6 @@ const authReducer = createSlice({
     logoutUser(state) {
       Object.assign(state, { ...initialState, isInit: true });
     },
-    registerSuccess(state, { payload }) {
-      state.successMsg = payload;
-    },
-    loginUserFailure(state, { payload }) {
-      state.msgError = payload;
-    },
     loginUserSuccess(state, { payload }) {
       Object.assign(state, payload);
     },
@@ -45,10 +39,9 @@ export default authReducer.reducer;
 export const {
   logOutUser,
   loginUser,
-  registerSuccess,
   passReset,
-  loginUserSuccess,
   checkAuthUser,
+  loginUserSuccess,
   setInit,
   logoutUser,
   updateAvatar,

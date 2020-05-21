@@ -10,7 +10,7 @@ import FileInput from 'components/FileInput';
 import Portal from 'components/Portal';
 import S from './UserPhoto.styled';
 
-const UserPhoto = ({ avatarURL, uid }) => {
+const UserPhoto = ({ avatarURL, uid, isOwner }) => {
   const [showModal, setShowModal] = useToggle(false);
   const progressUpload = useSelector(progressUploadSelector);
   const [isLoad, setIsLoading] = useToggle(false);
@@ -52,8 +52,12 @@ const UserPhoto = ({ avatarURL, uid }) => {
 
   return (
     <>
-      <S.Photo>
-        <S.Img src={avatarURL} onClick={setShowModal} />
+      <S.Photo isOwner={isOwner}>
+        {isOwner ? (
+          <S.Img src={avatarURL} onClick={setShowModal} />
+        ) : (
+          <S.Img src={avatarURL} />
+        )}
       </S.Photo>
       <Portal id="modal">
         <Modal
@@ -85,8 +89,9 @@ const UserPhoto = ({ avatarURL, uid }) => {
 };
 
 UserPhoto.propTypes = {
-  uid: PropTypes.string,
+  uid: PropTypes.string.isRequired,
   avatarURL: PropTypes.string,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 export default memo(UserPhoto);
