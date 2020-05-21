@@ -15,7 +15,7 @@ import {
 import { setError, setLoader, setProgressUpload } from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef, storageRef } from 'src/firebase/firebase';
+import { authRef, storage, storageRef } from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 
@@ -34,11 +34,17 @@ function* statusUpdate(action) {
 }
 
 function* avatarUpload(action) {
-  const { image } = action.payload;
+  const { image, lowImage } = action.payload;
   const { uid } = authRef.currentUser;
   const metadata = {
     contentType: image.type,
   };
+
+  // upload low quality image
+  const lowImageRef = yield storage
+    .ref(`lowAvatars/${uid}`)
+    .put(lowImage, metadata);
+  const lowUrl = yield lowImageRef.ref.getDownloadURL();
   // create reference upload image (see docs firebase)
   const uploadTask = storageRef.child(`avatars/${uid}`).put(image, metadata);
   // create emit channel, he returned progress bar upload file and his url in the end
@@ -69,7 +75,7 @@ function* avatarUpload(action) {
         yield FireSaga.setToCollection(
           API_PATH.users,
           uid,
-          { avatarURL: url },
+          { avatarURL: url, lowAvatarURL: lowUrl },
           true
         );
         yield put({
@@ -78,7 +84,7 @@ function* avatarUpload(action) {
         });
         yield put({
           type: updateAvatar.type,
-          payload: url,
+          payload: lowUrl,
         });
         yield put({
           type: setLoader.type,

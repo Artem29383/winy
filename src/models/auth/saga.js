@@ -107,7 +107,7 @@ function* checkLoginUser() {
           isAdmin: idTokenResult.admin || false,
           isAuth: true,
           uid: user.uid,
-          avatarURL: data.avatarURL || defaultUserPhoto,
+          avatarURL: data.lowAvatarURL || defaultUserPhoto,
         },
       });
     } else {
@@ -143,7 +143,7 @@ function* userAuth(action) {
         isAdmin: idTokenResult.admin || false,
         isAuth: true,
         uid: user.uid,
-        avatarURL: data.avatarURL || defaultUserPhoto,
+        avatarURL: data.lowAvatarURL || defaultUserPhoto,
       },
     });
   } catch (e) {

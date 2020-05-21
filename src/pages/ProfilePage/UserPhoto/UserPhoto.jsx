@@ -15,9 +15,43 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
   const progressUpload = useSelector(progressUploadSelector);
   const [isLoad, setIsLoading] = useToggle(false);
   const [image, setImage] = useState(null);
+  const [lowImage, setLowImage] = useState(null);
   const uploadAvatar = useAction(firebaseUploadAvatarUser);
 
-  const changeHandle = e => {
+  const compressImage = img => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    const newImgData = canvas.toDataURL(image.type, 0.3);
+    fetch(newImgData)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], `low${image.name}`, {
+          type: image.type,
+        });
+        setLowImage(file);
+      });
+  };
+
+  const createImage = e => {
+    const img = document.createElement('IMG');
+    img.src = e.target.result;
+    img.onload = () => {
+      compressImage(img);
+    };
+  };
+
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.addEventListener('load', createImage, false);
+    if (image) {
+      reader.readAsDataURL(image);
+    }
+    return () => reader.removeEventListener('load', createImage);
+  }, [image]);
+
+  const changeHandle = async e => {
     const file = e.currentTarget.files[0];
     if (file) {
       const type = file.type.split('/');
@@ -47,6 +81,7 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
     uploadAvatar({
       uid,
       image,
+      lowImage,
     });
   };
 
