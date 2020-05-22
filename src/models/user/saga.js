@@ -80,7 +80,7 @@ function* avatarUpload(action) {
         );
         yield put({
           type: setNewAvatar.type,
-          payload: url,
+          payload: { url, lowUrl },
         });
         yield put({
           type: updateAvatar.type,
@@ -158,7 +158,14 @@ function* getUserInfo(action) {
     const httpUserId = action.payload;
     const isOwner = uid === httpUserId;
     const data = yield FireSaga.getCollection(API_PATH.users, httpUserId);
-    const { login, status, details, avatarURL, htmlContent } = data.data();
+    const {
+      login,
+      status,
+      details,
+      avatarURL,
+      htmlContent,
+      lowAvatarURL,
+    } = data.data();
     const statusOnline = yield FireSaga.getCollection(
       API_PATH.status,
       httpUserId
@@ -176,6 +183,7 @@ function* getUserInfo(action) {
         isOwner,
         status,
         avatarURL,
+        lowAvatarURL,
         htmlContent,
         details,
       }),

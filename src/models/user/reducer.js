@@ -11,6 +11,7 @@ const initialState = {
   avatarURL: defaultUserPhoto,
   onlineStatus: false,
   last_changed: null,
+  lowAvatarURL: defaultUserPhoto,
   about: {
     aboutUser: '',
     details,
@@ -31,7 +32,9 @@ const userReducer = createSlice({
       state.status = payload;
     },
     setNewAvatar(state, { payload }) {
-      state.avatarURL = payload;
+      const { url, lowUrl } = payload;
+      state.avatarURL = url;
+      state.lowAvatarURL = lowUrl;
     },
     setUserContent(state, { payload }) {
       state.about.aboutUser = payload;

@@ -26,6 +26,7 @@ export const exportDefaultUserData = data => {
     login: data.login || '',
     status: data.status || '',
     avatarURL: data.avatarURL || defaultUserPhoto,
+    lowAvatarURL: data.lowAvatarURL || defaultUserPhoto,
     onlineStatus: data.onlineStatus,
     last_changed: data.last_changed,
     about: {
