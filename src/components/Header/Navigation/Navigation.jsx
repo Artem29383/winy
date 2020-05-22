@@ -15,7 +15,7 @@ const Navigation = ({ isHideNav, uid }) => {
         <NavItem
           key={`${to}/${uid}${routes.about}`}
           isHideNav={isHideNav}
-          to={`${to}/${uid}${routes.about}`}
+          to={`${to}/${uid}`}
           text={text}
           svg={svg}
           svgId={svgId}

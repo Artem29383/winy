@@ -51,7 +51,7 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
     return () => reader.removeEventListener('load', createImage);
   }, [image]);
 
-  const changeHandle = async e => {
+  const changeHandle = e => {
     const file = e.currentTarget.files[0];
     if (file) {
       const type = file.type.split('/');

@@ -11,12 +11,8 @@ const Tabs = ({ uid }) => {
       text: 'About',
     },
     {
-      to: `/photos`,
-      text: 'photos',
-    },
-    {
-      to: `/questions`,
-      text: 'questions',
+      to: `${routes.posts}`,
+      text: 'Posts',
     },
   ];
   return (

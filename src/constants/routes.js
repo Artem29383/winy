@@ -6,4 +6,5 @@ export default {
   profile: '/profile',
   about: '/about',
   users: '/users',
+  posts: '/posts',
 };

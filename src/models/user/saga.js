@@ -87,6 +87,10 @@ function* avatarUpload(action) {
           payload: lowUrl,
         });
         yield put({
+          type: setProgressUpload.type,
+          payload: 0,
+        });
+        yield put({
           type: setLoader.type,
           payload: false,
         });
