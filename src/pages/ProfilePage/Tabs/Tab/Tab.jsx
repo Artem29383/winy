@@ -4,7 +4,6 @@ import routes from 'constants/routes';
 import S from './Tab.styled';
 
 const Tab = ({ value, uid }) => {
-  console.log(`${routes.profile}/${uid}${value.to}`);
   return (
     <S.Tab to={`${routes.profile}/${uid}${value.to}`} activeClassName="active">
       {value.text}

@@ -56,4 +56,10 @@ export default {
     height: 30px;
     fill: #000;
   `,
+  AddImage: styled.svg`
+    width: 30px;
+    height: 30px;
+    fill: #838383;
+    transition: fill 0.2s linear;
+  `,
 };

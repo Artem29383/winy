@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useToggle from 'hooks/useToggle';
 import useSelector from 'hooks/useSelector';
@@ -8,63 +8,15 @@ import { firebaseUploadAvatarUser } from 'models/user/reducer';
 import Modal from 'components/Modal';
 import FileInput from 'components/FileInput';
 import Portal from 'components/Portal';
+import { usePhotoWork } from 'hooks/usePhotoWork';
 import S from './UserPhoto.styled';
 
 const UserPhoto = ({ avatarURL, uid, isOwner }) => {
   const [showModal, setShowModal] = useToggle(false);
   const progressUpload = useSelector(progressUploadSelector);
   const [isLoad, setIsLoading] = useToggle(false);
-  const [image, setImage] = useState(null);
-  const [lowImage, setLowImage] = useState(null);
   const uploadAvatar = useAction(firebaseUploadAvatarUser);
-
-  const compressImage = img => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    canvas.getContext('2d').drawImage(img, 0, 0);
-    const newImgData = canvas.toDataURL(image.type, 0.3);
-    fetch(newImgData)
-      .then(res => res.blob())
-      .then(blob => {
-        const file = new File([blob], `low${image.name}`, {
-          type: image.type,
-        });
-        setLowImage(file);
-      });
-  };
-
-  const createImage = e => {
-    const img = document.createElement('IMG');
-    img.src = e.target.result;
-    img.onload = () => {
-      compressImage(img);
-    };
-  };
-
-  useEffect(() => {
-    const reader = new FileReader();
-    reader.addEventListener('load', createImage, false);
-    if (image) {
-      reader.readAsDataURL(image);
-    }
-    return () => reader.removeEventListener('load', createImage);
-  }, [image]);
-
-  const changeHandle = e => {
-    const file = e.currentTarget.files[0];
-    if (file) {
-      const type = file.type.split('/');
-      const size = Math.ceil(file.size / 1024);
-      if (type[0] === 'image') {
-        if (size < 1500) {
-          setImage(file);
-        }
-      } else if (type[0] !== 'image' || size > 1500) {
-        setImage(null);
-      }
-    }
-  };
+  const { image, lowImage, changeHandle, setImage } = usePhotoWork();
 
   useEffect(() => {
     if (isLoad) {

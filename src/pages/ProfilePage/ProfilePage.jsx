@@ -4,11 +4,12 @@ import { userSelector } from 'models/user/selectors';
 import Status from 'pages/ProfilePage/Status';
 import Tabs from 'pages/ProfilePage/Tabs';
 import UserPhoto from 'pages/ProfilePage/UserPhoto';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 import CommonLoader from 'components/CommonLoader';
 import useAction from 'hooks/useAction';
 import { firebaseGetUserInfo, resetUser } from 'models/user/reducer';
 import Online from 'components/Online';
+import routes from 'constants/routes';
 import S from './ProfilePage.styled';
 import profilePageRoutes from '../../routes/profilePageRoutes';
 
@@ -22,6 +23,7 @@ const ProfilePage = () => {
     about,
     isOwner,
     onlineStatus,
+    lowAvatarURL,
   } = useSelector(userSelector);
   const getInfoUser = useAction(firebaseGetUserInfo);
   const userId = useParams().id;
@@ -66,11 +68,17 @@ const ProfilePage = () => {
                   exact={exact}
                   path={path}
                   render={props => (
-                    <Component {...props} about={about} isOwner={isOwner} />
+                    <Component
+                      {...props}
+                      about={about}
+                      isOwner={isOwner}
+                      lowAvatarURL={lowAvatarURL}
+                    />
                   )}
                 />
               );
             })}
+            <Redirect to={`${routes.profile}/${userId}${routes.about}`} />
           </Switch>
         </S.UserProfileContent>
       </S.Content>
