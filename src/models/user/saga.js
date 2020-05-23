@@ -1,6 +1,7 @@
-import { put, take, takeEvery } from 'redux-saga/effects';
+import { put, take, takeEvery, call, all } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
+  firebaseCreateUserPost,
   firebaseGetUserInfo,
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
@@ -12,7 +13,12 @@ import {
   setUserInfo,
   updateStatus,
 } from 'models/user/reducer';
-import { setError, setLoader, setProgressUpload } from 'models/app/reducer';
+import {
+  setError,
+  setLoader,
+  setProgressUpload,
+  setSuccess,
+} from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, storage, storageRef } from 'src/firebase/firebase';
@@ -193,10 +199,64 @@ function* getUserInfo(action) {
   }
 }
 
+function* createPost({ payload }) {
+  try {
+    const { uid } = authRef.currentUser;
+    const { postId, value, images } = payload;
+    const imageCounts = images.length;
+    const delta = 100 / imageCounts;
+    let progress = 0;
+
+    // Создаем массив саг
+    const array = images.map(image => {
+      const imageID = image.id;
+      const { file } = image;
+      const metadata = {
+        contentType: file.type,
+      };
+      return call(function*() {
+        const lowImageRef = yield storage
+          .ref(`posts/${uid}/${postId}/${imageID}`)
+          .put(file, metadata);
+        progress += delta;
+        yield put({
+          type: setProgressUpload.type,
+          payload: progress,
+        });
+        return { id: imageID, url: yield lowImageRef.ref.getDownloadURL() };
+      });
+    });
+    // ждем завершения всех саг
+    const urls = yield all(array);
+    const post = {
+      id: postId,
+      value,
+      images: urls,
+    };
+    yield FireSaga.setToCollection(
+      `${API_PATH.users}/${uid}/posts`,
+      postId,
+      { post },
+      true
+    );
+    yield put({
+      type: setProgressUpload.type,
+      payload: 0,
+    });
+    yield put({
+      type: setSuccess.type,
+      payload: 'Post created.',
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default function* rootSagaUser() {
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
   yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
   yield takeEvery(setUserAboutContent, uploadUserContent);
   yield takeEvery(firebaseUploadDetails, uploadDetailsUser);
   yield takeEvery(firebaseGetUserInfo, getUserInfo);
+  yield takeEvery(firebaseCreateUserPost, createPost);
 }

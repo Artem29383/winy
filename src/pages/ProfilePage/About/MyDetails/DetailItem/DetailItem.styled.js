@@ -20,6 +20,7 @@ export default {
     margin-left: 15px;
     cursor: ${({ isOwner }) => isOwner && 'pointer'};
     flex-grow: 1;
+    padding-bottom: 5px;
     color: ${props => props.theme.detailsColorTextItem};
     white-space: nowrap;
     text-overflow: ellipsis;

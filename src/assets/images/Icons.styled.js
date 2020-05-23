@@ -62,4 +62,11 @@ export default {
     fill: #838383;
     transition: fill 0.2s linear;
   `,
+  CloseImage: styled.svg`
+    width: 15px;
+    height: 15px;
+    fill: #fff;
+    opacity: 0.3;
+    transition: opacity 0.2s linear;
+  `,
 };

@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import S from './PostPlace.styled';
 
 const PostPlace = ({
   edit,
   value,
-  creator,
   setEdit,
   setValue,
   lowAvatarURL,
+  reference,
 }) => {
-  const reference = useRef(null);
   const [isHidePlaceHolder, setIsHidePlaceHolder] = useState(false);
 
   useEffect(() => {
@@ -19,24 +18,9 @@ const PostPlace = ({
     }
   }, [edit]);
 
-  const stopEditHandleBlur = e => {
-    const text = reference.current.textContent;
-    if (!creator.current.contains(e.target) && !text.trim()) {
-      setEdit(false);
-    }
-  };
-
   const setEditHandle = () => {
     setEdit(true);
   };
-
-  useEffect(() => {
-    if (edit) document.addEventListener('mousedown', stopEditHandleBlur);
-    else document.removeEventListener('mousedown', stopEditHandleBlur);
-    return () => {
-      document.removeEventListener('mousedown', stopEditHandleBlur);
-    };
-  }, [edit, creator]);
 
   useEffect(() => {
     if (value.trim() && !isHidePlaceHolder) {
@@ -49,7 +33,7 @@ const PostPlace = ({
 
   const changeHandle = useCallback(
     e => {
-      setValue(e.currentTarget.textContent);
+      setValue(e.currentTarget.innerHTML);
     },
     [value]
   );
@@ -78,8 +62,8 @@ PostPlace.propTypes = {
   setEdit: PropTypes.func,
   value: PropTypes.string,
   setValue: PropTypes.func,
-  creator: PropTypes.any,
   lowAvatarURL: PropTypes.string,
+  reference: PropTypes.any,
 };
 
-export default PostPlace;
+export default memo(PostPlace);
