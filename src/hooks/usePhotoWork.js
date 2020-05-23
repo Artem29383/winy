@@ -1,14 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export const usePhotoWork = () => {
+export const usePhotoWork = typeAction => {
   const [image, setImage] = useState(null);
   const [lowImage, setLowImage] = useState(null);
-
+  const [preview, setPreview] = useState(null);
   const compressImage = img => {
     const canvas = document.createElement('canvas');
     canvas.width = img.width;
     canvas.height = img.height;
     canvas.getContext('2d').drawImage(img, 0, 0);
+
+    if (typeAction === 'preview') {
+      const newImageData = canvas.toDataURL(image.type, 0.7);
+      setPreview(newImageData);
+    }
+
     const newImgData = canvas.toDataURL(image.type, 0.3);
     fetch(newImgData)
       .then(res => res.blob())
@@ -54,5 +60,5 @@ export const usePhotoWork = () => {
     },
     [image]
   );
-  return { image, lowImage, changeHandle, setImage };
+  return { image, lowImage, changeHandle, setImage, preview };
 };

@@ -10,12 +10,7 @@ import {
   registerUser,
   setInit,
 } from 'models/auth/reducer';
-import {
-  resetAll,
-  setError,
-  setLoader,
-  registerSuccess,
-} from 'models/app/reducer';
+import { resetAll, setError, setLoader, setSuccess } from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
 import { push } from 'connected-react-router';
 import routes from 'constants/routes';
@@ -44,7 +39,7 @@ function* signIn(action) {
     // logOut auth, idk why firebase autologin me
     yield authRef.signOut();
     yield put({
-      type: registerSuccess.type,
+      type: setSuccess.type,
       payload: 'Account is ready.',
     });
   } catch (e) {
@@ -66,7 +61,7 @@ function* resetPassword(action) {
   try {
     yield authRef.sendPasswordResetEmail(action.payload);
     yield put({
-      type: registerSuccess.type,
+      type: setSuccess.type,
       payload: 'Reset email sent to email.',
     });
   } catch (e) {

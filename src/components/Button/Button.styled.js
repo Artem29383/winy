@@ -64,5 +64,10 @@ export default {
         background-color: ${props => props.theme.btnBackgroundActiveRed};
       }
     }
+
+    &.disable {
+      background-color: #808080;
+      cursor: not-allowed;
+    }
   `,
 };

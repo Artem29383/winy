@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import { useForm } from 'react-hook-form';
 import { registerUser } from 'models/auth/reducer';
-import { registerSuccess } from 'models/app/reducer';
+import { setSuccess } from 'models/app/reducer';
 import useAction from 'hooks/useAction';
 import { successMsgSelector } from 'models/app/selectors';
 import useSelector from 'hooks/useSelector';
@@ -17,7 +17,7 @@ import S from './RegisterPage.styled';
 
 const RegisterPage = () => {
   const userRegister = useAction(registerUser);
-  const setSuccessMsg = useAction(registerSuccess);
+  const setSuccessMsg = useAction(setSuccess);
   const successMsg = useSelector(successMsgSelector);
   const {
     fetchError,
