@@ -12,6 +12,7 @@ const Posts = ({ lowAvatarURL, avatarURL, userId, login, isOwner, posts }) => {
       {isOwner && <PostCreater lowAvatarURL={lowAvatarURL} />}
       {posts.ids.length > 0 ? (
         <PostsList
+          isOwner={isOwner}
           avatarURL={avatarURL}
           userId={userId}
           login={login}

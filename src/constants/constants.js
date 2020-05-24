@@ -9,3 +9,8 @@ export const NAVLIST_NAME = {
   home: 'Home',
   users: 'Users',
 };
+
+export const SUCCESS_MSG = {
+  postCreated: 'Post created.',
+  postRemoved: 'Post removed.',
+};

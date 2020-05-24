@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Post from 'pages/ProfilePage/Posts/PostsList/Post';
+import { sortByData } from 'utils/sortByData';
 import S from './PostsList.styled';
 
-const PostsList = ({ avatarURL, userId, login, posts }) => {
-  const { ids, entities } = posts;
+const PostsList = ({ avatarURL, userId, login, posts, isOwner }) => {
+  const { entities } = posts;
+  const sortElem = sortByData(entities, 'dateForSort', 'desc');
   return (
     <S.Posts>
-      {ids.map(id => (
+      {sortElem.map(elem => (
         <Post
-          key={id}
+          isOwner={isOwner}
+          key={elem.id}
           avatarURL={avatarURL}
           login={login}
           userId={userId}
-          {...entities[id]}
+          {...elem}
         />
       ))}
     </S.Posts>
@@ -24,6 +27,7 @@ PostsList.propTypes = {
   userId: PropTypes.string,
   login: PropTypes.string,
   avatarURL: PropTypes.string,
+  isOwner: PropTypes.bool,
   posts: PropTypes.object.isRequired,
 };
 

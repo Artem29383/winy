@@ -86,4 +86,13 @@ export default {
     height: 75px;
     fill: #656565;
   `,
+  Cross: styled.svg`
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: 0;
+    cursor: pointer;
+    fill: #67707a;
+  `,
 };

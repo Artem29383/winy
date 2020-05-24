@@ -9,6 +9,7 @@ import useSelector from 'hooks/useSelector';
 import { successMsgSelector } from 'models/app/selectors';
 import useAction from 'hooks/useAction';
 import { setSuccess } from 'models/app/reducer';
+import { SUCCESS_MSG } from 'constants/constants';
 import S from './PostCreater.styled';
 
 const PostCreater = ({ lowAvatarURL }) => {
@@ -23,7 +24,7 @@ const PostCreater = ({ lowAvatarURL }) => {
   const [isDisableBtn, setDisableBtn] = useState(false);
 
   useEffect(() => {
-    if (successMsg.trim()) {
+    if (successMsg.trim() && successMsg === SUCCESS_MSG.postCreated) {
       setValue('');
       setImages([]);
       setSuccessMsg('');

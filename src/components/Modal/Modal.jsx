@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useModal from 'hooks/useModal';
 import Cross from 'components/Cross';
 import Button from 'components/Button';
+import { ternaryCheckError } from 'utils/ternaryCheckError';
 import S from './Modal.styled';
 
 /** *
@@ -14,10 +15,14 @@ import S from './Modal.styled';
  * @param buttons = [{
  * text: string,
  * callback: func,
- * className: string ['close', 'accept']
+ * className: string ['close', 'red']
+ * isLoad: boolean,
  * }]
  * @param isFooter
  * @param title
+ * @param isBody: boolean
+ * @param fetchError string,
+ * @param isLoad boolean,
  * @returns {*}
  * @constructor
  */
@@ -31,6 +36,9 @@ const Modal = ({
   buttons,
   isFooter,
   title,
+  isBody,
+  fetchError,
+  isLoad,
 }) => {
   useModal(toggle, isOpen, isClosable);
   return (
@@ -49,17 +57,21 @@ const Modal = ({
             />
           )}
         </S.Header>
-        <S.Body>{children}</S.Body>
+        {isBody && <S.Body>{children}</S.Body>}
         {isFooter && (
-          <S.Footer>
+          <S.Footer counts={buttons.length}>
             {buttons.map(btn => (
-              <Button
-                onClickHandler={btn.callback}
-                key={btn.text}
-                className={btn.className}
-              >
-                {btn.text}
-              </Button>
+              <S.ButtonWrap key={btn.text}>
+                <Button
+                  onClickHandler={btn.callback}
+                  className={btn.className}
+                  isLoader={btn.isLoad}
+                >
+                  {btn.isLoad
+                    ? ternaryCheckError(isLoad, fetchError, btn.text)
+                    : btn.text}
+                </Button>
+              </S.ButtonWrap>
             ))}
           </S.Footer>
         )}
@@ -77,6 +89,9 @@ Modal.propTypes = {
   buttons: PropTypes.array,
   isFooter: PropTypes.bool,
   title: PropTypes.string,
+  isBody: PropTypes.bool,
+  fetchError: PropTypes.string,
+  isLoad: PropTypes.bool,
 };
 
 Modal.defaultProps = {
@@ -84,6 +99,7 @@ Modal.defaultProps = {
   width: '300',
   isFooter: false,
   title: 'Modal',
+  isBody: true,
 };
 
 export default Modal;

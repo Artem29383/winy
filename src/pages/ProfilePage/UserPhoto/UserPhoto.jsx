@@ -57,6 +57,7 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
               text: 'Upload',
               callback: clickHandle,
               className: 'accept',
+              isLoad: false,
             },
           ]}
           isFooter={!!image}

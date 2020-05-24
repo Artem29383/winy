@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
-import routes from 'constants/routes';
 import Icons from 'assets/images/Icons.styled';
 import like from 'assets/images/posts/like.svg';
 import disLike from 'assets/images/posts/dislike.svg';
 import Images from 'pages/ProfilePage/Posts/PostsList/Post/Images';
+import PostHeader from 'pages/ProfilePage/Posts/PostsList/Post/PostHeader';
 import S from './Post.styled';
 
 const Post = ({
@@ -13,28 +13,23 @@ const Post = ({
   avatarURL,
   login,
   date,
-  // eslint-disable-next-line no-unused-vars
   id,
   images,
   dislikes,
   likes,
   value,
+  isOwner,
 }) => {
   return (
     <S.Post>
-      <S.PostHeader>
-        <S.Ava>
-          <S.AvaWrap>
-            <S.AvaIMG src={avatarURL} />
-          </S.AvaWrap>
-        </S.Ava>
-        <S.Title>
-          <S.Name>
-            <S.Link to={`${routes.profile}/${userId}`}>{login}</S.Link>
-          </S.Name>
-          <S.Time>{date}</S.Time>
-        </S.Title>
-      </S.PostHeader>
+      <PostHeader
+        userId={userId}
+        login={login}
+        avatarURL={avatarURL}
+        id={id}
+        date={date}
+        isOwner={isOwner}
+      />
       <S.PostBody>
         <S.Text>{ReactHtmlParser(value)}</S.Text>
         <Images images={images} />
@@ -67,6 +62,7 @@ Post.propTypes = {
   images: PropTypes.array,
   date: PropTypes.string,
   value: PropTypes.string,
+  isOwner: PropTypes.bool,
 };
 
 export default Post;

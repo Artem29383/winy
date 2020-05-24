@@ -177,7 +177,6 @@ export const GlobalStyles = createGlobalStyle`
     
     &.modal {
       overflow: hidden;
-      height: 100vh;
     }
   }
   

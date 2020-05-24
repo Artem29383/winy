@@ -15,6 +15,7 @@ export default {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    object-fit: cover;
   `,
   WrapInputFile: styled.div`
     width: 100%;

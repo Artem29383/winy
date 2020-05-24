@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { details } from 'utils/exportDefaultUserData';
 import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
+import { removePropFromObject } from 'utils/removePropFromObject';
+import { removeArrayElement } from 'utils/removeArrayElement';
 /* eslint-disable no-param-reassign */
 
 /** *
@@ -63,6 +65,11 @@ const userReducer = createSlice({
       state.posts.entities[payload.id] = payload;
       state.posts.ids.unshift(payload.id);
     },
+    deletePost(state, { payload }) {
+      const id = payload;
+      state.posts.entities = removePropFromObject(state.posts.entities, id);
+      state.posts.ids = removeArrayElement(state.posts.ids, id);
+    },
     setUserAboutContent: state => state,
     checkAuthUser: state => state,
     firebaseUpdateStatus: state => state,
@@ -70,6 +77,7 @@ const userReducer = createSlice({
     firebaseUploadDetails: state => state,
     firebaseGetUserInfo: state => state,
     firebaseCreateUserPost: state => state,
+    firebaseRemoveUserPost: state => state,
   },
 });
 
@@ -88,4 +96,6 @@ export const {
   firebaseGetUserInfo,
   setUserInfo,
   addPost,
+  firebaseRemoveUserPost,
+  deletePost,
 } = userReducer.actions;

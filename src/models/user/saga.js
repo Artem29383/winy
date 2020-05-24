@@ -2,8 +2,11 @@ import { put, take, takeEvery, call, all } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
   addPost,
+  // eslint-disable-next-line no-unused-vars
+  deletePost,
   firebaseCreateUserPost,
   firebaseGetUserInfo,
+  firebaseRemoveUserPost,
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
   firebaseUploadDetails,
@@ -20,7 +23,7 @@ import {
   setProgressUpload,
   setSuccess,
 } from 'models/app/reducer';
-import { API_PATH } from 'constants/constants';
+import { API_PATH, SUCCESS_MSG } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, storage, storageRef } from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
@@ -206,7 +209,7 @@ function* getUserInfo(action) {
         details,
         posts: {
           entities: normalizedPosts.entities.posts,
-          ids: normalizedPosts.result.reverse(),
+          ids: normalizedPosts.result,
         },
       }),
     });
@@ -249,6 +252,7 @@ function* createPost({ payload }) {
       value,
       images: urls,
       date: getDate(),
+      dateForSort: Date.now(),
       likes: 0,
       dislikes: 0,
     };
@@ -268,10 +272,41 @@ function* createPost({ payload }) {
     });
     yield put({
       type: setSuccess.type,
-      payload: 'Post created.',
+      payload: SUCCESS_MSG.postCreated,
     });
   } catch (e) {
     console.log(e);
+  }
+}
+
+function* removePost({ payload }) {
+  try {
+    const id = payload;
+    const { uid } = authRef.currentUser;
+    const allImages = yield FireSaga.getAllImages(`/posts/${uid}/${id}`);
+    const removeFolder = allImages.items.map(image => {
+      return call(function*() {
+        yield FireSaga.removeImagesFromDoc(image.fullPath);
+      });
+    });
+    yield all(removeFolder);
+    yield FireSaga.removeDoc(`${API_PATH.users}/${uid}/posts`, id);
+    yield put({
+      type: deletePost.type,
+      payload: id,
+    });
+    yield put({
+      type: setSuccess.type,
+      payload: SUCCESS_MSG.postRemoved,
+    });
+  } catch (e) {
+    yield put({
+      type: setError.type,
+      payload: {
+        message: e.message,
+        idError: 'serverError',
+      },
+    });
   }
 }
 
@@ -282,4 +317,5 @@ export default function* rootSagaUser() {
   yield takeEvery(firebaseUploadDetails, uploadDetailsUser);
   yield takeEvery(firebaseGetUserInfo, getUserInfo);
   yield takeEvery(firebaseCreateUserPost, createPost);
+  yield takeEvery(firebaseRemoveUserPost, removePost);
 }

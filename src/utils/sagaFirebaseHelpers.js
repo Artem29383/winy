@@ -1,4 +1,4 @@
-import { firestoreRef } from '../firebase/firebase';
+import { firestoreRef, storage, storageRef } from '../firebase/firebase';
 
 export class FireSaga {
   static setToCollection(pathCollection, docId, data, isMerge) {
@@ -15,7 +15,22 @@ export class FireSaga {
       .get();
   }
 
+  static removeDoc(pathCollection, docId) {
+    return firestoreRef
+      .collection(pathCollection)
+      .doc(docId)
+      .delete();
+  }
+
+  static removeImagesFromDoc(pathCollection) {
+    return storage.ref(pathCollection).delete();
+  }
+
   static getFullCollection(pathCollection) {
     return firestoreRef.collection(pathCollection).get();
+  }
+
+  static getAllImages(pathCollection) {
+    return storageRef.child(pathCollection).listAll();
   }
 }

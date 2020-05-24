@@ -130,6 +130,7 @@ export default {
     width: 120px;
     cursor: pointer;
     transition: border-color 0.1s linear;
+    object-fit: cover;
   `,
   LoginUser: styled.div`
     height: 45px;

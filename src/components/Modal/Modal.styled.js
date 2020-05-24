@@ -86,6 +86,9 @@ export default {
     display: flex;
     padding: 10px 0;
     justify-content: center;
-    align-items: center;
+  `,
+  ButtonWrap: styled.div`
+    max-width: 100px;
+    margin: 0 10px;
   `,
 };
