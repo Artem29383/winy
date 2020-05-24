@@ -1,6 +1,7 @@
 import { put, take, takeEvery, call, all } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
+  addPost,
   firebaseCreateUserPost,
   firebaseGetUserInfo,
   firebaseUpdateStatus,
@@ -24,6 +25,8 @@ import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, storage, storageRef } from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
+import { getDate } from 'utils/getDate';
+import { normalizer } from 'utils/normalizer';
 
 function* statusUpdate(action) {
   try {
@@ -163,7 +166,14 @@ function* getUserInfo(action) {
     const { uid } = authRef.currentUser;
     const httpUserId = action.payload;
     const isOwner = uid === httpUserId;
+    // fetch all data user
     const data = yield FireSaga.getCollection(API_PATH.users, httpUserId);
+    // fetch all posts user
+    const allPosts = yield FireSaga.getFullCollection(
+      `${API_PATH.users}/${httpUserId}/posts`
+    );
+    const posts = allPosts.docs.map(doc => doc.data());
+    const normalizedPosts = normalizer(posts, 'posts');
     const {
       login,
       status,
@@ -172,6 +182,7 @@ function* getUserInfo(action) {
       htmlContent,
       lowAvatarURL,
     } = data.data();
+    // fetch status online user
     const statusOnline = yield FireSaga.getCollection(
       API_PATH.status,
       httpUserId
@@ -180,6 +191,7 @@ function* getUserInfo(action) {
       onlineStatus: false,
       last_changed: '',
     };
+    // put all info in reducer user
     yield put({
       type: setUserInfo.type,
       payload: exportDefaultUserData({
@@ -192,6 +204,10 @@ function* getUserInfo(action) {
         lowAvatarURL,
         htmlContent,
         details,
+        posts: {
+          entities: normalizedPosts.entities.posts,
+          ids: normalizedPosts.result.reverse(),
+        },
       }),
     });
   } catch (e) {
@@ -232,13 +248,20 @@ function* createPost({ payload }) {
       id: postId,
       value,
       images: urls,
+      date: getDate(),
+      likes: 0,
+      dislikes: 0,
     };
     yield FireSaga.setToCollection(
       `${API_PATH.users}/${uid}/posts`,
       postId,
-      { post },
+      post,
       true
     );
+    yield put({
+      type: addPost.type,
+      payload: post,
+    });
     yield put({
       type: setProgressUpload.type,
       payload: 0,

@@ -33,5 +33,9 @@ export const exportDefaultUserData = data => {
       aboutUser: data.htmlContent || '',
       details: { ...details, ...data.details },
     },
+    posts: {
+      entities: data.posts.entities || {},
+      ids: data.posts.ids || [],
+    },
   };
 };

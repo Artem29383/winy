@@ -14,4 +14,8 @@ export class FireSaga {
       .doc(docId)
       .get();
   }
+
+  static getFullCollection(pathCollection) {
+    return firestoreRef.collection(pathCollection).get();
+  }
 }

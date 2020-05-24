@@ -43,7 +43,6 @@ export default {
     width: 100%;
     height: ${({ isHide }) => isHide && '100px'};
     position: relative;
-    overflow-y: auto;
 
     @media ${device.tablet} {
       height: auto;
@@ -92,6 +91,7 @@ export default {
       width 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 
     @media ${device.tablet} {
+      overflow-y: auto;
       width: 290px;
     }
   `,

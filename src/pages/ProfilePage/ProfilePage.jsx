@@ -24,6 +24,7 @@ const ProfilePage = () => {
     isOwner,
     onlineStatus,
     lowAvatarURL,
+    posts,
   } = useSelector(userSelector);
   const getInfoUser = useAction(firebaseGetUserInfo);
   const userId = useParams().id;
@@ -73,6 +74,10 @@ const ProfilePage = () => {
                       about={about}
                       isOwner={isOwner}
                       lowAvatarURL={lowAvatarURL}
+                      userId={userId}
+                      login={login}
+                      avatarURL={avatarURL}
+                      posts={posts}
                     />
                   )}
                 />

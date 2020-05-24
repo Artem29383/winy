@@ -59,6 +59,10 @@ const userReducer = createSlice({
       const { id, field, text } = payload;
       state.about.details[id] = { field, text };
     },
+    addPost(state, { payload }) {
+      state.posts.entities[payload.id] = payload;
+      state.posts.ids.unshift(payload.id);
+    },
     setUserAboutContent: state => state,
     checkAuthUser: state => state,
     firebaseUpdateStatus: state => state,
@@ -83,4 +87,5 @@ export const {
   resetUser,
   firebaseGetUserInfo,
   setUserInfo,
+  addPost,
 } = userReducer.actions;

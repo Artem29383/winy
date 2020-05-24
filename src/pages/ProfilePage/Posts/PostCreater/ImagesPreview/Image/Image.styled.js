@@ -5,8 +5,9 @@ export default {
     max-width: 350px;
     max-height: 450px;
     border: 2px solid #5a5151;
-    margin: 5px;
     position: relative;
+    height: 100%;
+    width: 100%;
 
     &:hover {
       & svg {

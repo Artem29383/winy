@@ -69,4 +69,21 @@ export default {
     opacity: 0.3;
     transition: opacity 0.2s linear;
   `,
+  Like: styled.svg`
+    width: 35px;
+    height: 35px;
+    fill: #67707a;
+    transition: fill 0.2s linear;
+  `,
+  DisLike: styled.svg`
+    width: 35px;
+    fill: #67707a;
+    height: 35px;
+    transition: fill 0.2s linear;
+  `,
+  NoPosts: styled.svg`
+    width: 75px;
+    height: 75px;
+    fill: #656565;
+  `,
 };
