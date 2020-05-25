@@ -5,8 +5,8 @@ import routes from 'constants/routes';
 import RegisterPage from 'pages/RegisterPage';
 import ResetPasswordPage from 'pages/ResetPasswordPage';
 import useSelector from 'hooks/useSelector';
-import { isAuthSelector } from 'models/user/selectors';
-import routers from '../../routes';
+import { isAuthSelector } from 'models/auth/selectors';
+import routers from '../../routes/routes';
 
 const appRoutes = () => {
   const isAdminMode = false;

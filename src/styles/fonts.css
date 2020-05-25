@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Roboto Light';
+  src: local('RLight'), local('RLight'),
+  url('../assets/fonts/Roboto-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: fallback;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto LightItalic';
+  src: local('LightItalic'), local('LightItalic'),
+  url('../assets/fonts/Roboto-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-display: fallback;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto Med';
+  src: local('RMed'), local('RMed'),
+  url('../assets/fonts/Roboto-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: fallback;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto MedI';
+  src: local('RMedI'), local('RMedI'),
+  url('../assets/fonts/Roboto-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-display: fallback;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto Bold';
+  src: local('RBold'), local('RBold'),
+  url('../assets/fonts/Roboto-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: fallback;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto BoldI';
+  src: local('RBoldI'), local('RBoldI'),
+  url('../assets/fonts/Roboto-MediumItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: fallback;
+  font-style: italic;
+}
+
+body {
+  font-family: 'Roboto Med';
+}

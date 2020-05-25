@@ -7,17 +7,18 @@ import Button from 'components/Button/Button';
 import { NavLink } from 'react-router-dom';
 import routes from 'constants/routes';
 import useAction from 'hooks/useAction';
-import { passReset, registerSuccess } from 'models/user/reducer';
+import { passReset } from 'models/auth/reducer';
+import { setSuccess } from 'models/app/reducer';
 import useFetchingError from 'hooks/useFetchingError';
 import { ternaryCheckError } from 'utils/ternaryCheckError';
 import useSelector from 'hooks/useSelector';
-import { successMsgSelector } from 'models/user/selectors';
+import { successMsgSelector } from 'models/app/selectors';
 import S from './ResetPasswordPage.styled';
 
 const ResetPasswordPage = () => {
   const { fetchError, resetError, isLoad, setIsLoading } = useFetchingError();
   const resetPassword = useAction(passReset);
-  const setSuccessMsg = useAction(registerSuccess);
+  const setSuccessMsg = useAction(setSuccess);
   const successMsg = useSelector(successMsgSelector);
   const resetPasswordSchema = yup.object().shape({
     email: yup

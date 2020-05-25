@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export default {
   Form: styled.form`
@@ -16,6 +17,11 @@ export default {
 
     &.error {
       border: 2px solid ${props => props.theme.error};
+    }
+
+    @media ${device.mobileM} {
+      margin-top: 50px;
+      width: 300px;
     }
   `,
   InputWrapper: styled.div`

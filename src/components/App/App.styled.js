@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import { device } from 'constants/device';
 
 export default {
   Content: styled.div`
     width: 100%;
+    display: flex;
     position: relative;
     height: 100%;
     background-color: ${props => props.theme.contentColorBody};
@@ -13,6 +15,7 @@ export default {
     height: 60px;
     position: fixed;
     border-radius: 50%;
+    z-index: 1000;
     cursor: pointer;
     background-color: ${({ themeNow }) =>
       `${
@@ -39,6 +42,11 @@ export default {
         fill: ${({ theme, themeNow }) =>
           `${themeNow === 'light' ? theme.sunColor : theme.sunColor}`};
       }
+    }
+
+    @media ${device.mobileM} {
+      top: 10px;
+      right: 10px;
     }
   `,
 };

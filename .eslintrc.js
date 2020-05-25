@@ -19,6 +19,8 @@ module.exports = {
     "es6": true
   },
   rules: {
+    'func-names': "off",
+    'no-nested-ternary': "off",
     "global-require": "off",
     "no-console": "off",
     'react/jsx-props-no-spreading': 0,

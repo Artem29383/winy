@@ -7,7 +7,7 @@ import routes from 'constants/routes';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import useAction from 'hooks/useAction';
-import { loginUser } from 'models/user/reducer';
+import { loginUser } from 'models/auth/reducer';
 import useFetchingError from 'hooks/useFetchingError';
 import { ternaryCheckError } from 'utils/ternaryCheckError';
 import S from './AuthPage.styled';

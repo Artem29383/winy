@@ -1,4 +1,5 @@
 const path = require('path');
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -18,6 +19,9 @@ const plugins = (isDev, isProd) => {
       from:  path.resolve(__dirname, "../src", "favicon.ico"),
       to: path.resolve(__dirname, "../", 'build'),
     }]),
+    new CKEditorWebpackPlugin({
+      buildAllTranslationsToSeparateFiles: true,
+    }),
   ];
   
   if (isDev) base.push(new ErrorOverlayPlugin());

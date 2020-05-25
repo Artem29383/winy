@@ -1,8 +1,8 @@
 import useSelector from 'hooks/useSelector';
-import { isInitSelector } from 'models/user/selectors';
+import { isInitSelector } from 'models/auth/selectors';
 import { useEffect } from 'react';
 import useAction from 'hooks/useAction';
-import { checkAuthUser } from 'models/user/reducer';
+import { checkAuthUser } from 'models/auth/reducer';
 
 const useInit = () => {
   const isInit = useSelector(isInitSelector);

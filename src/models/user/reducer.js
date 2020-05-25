@@ -1,69 +1,101 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { details } from 'utils/exportDefaultUserData';
+import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
+import { removePropFromObject } from 'utils/removePropFromObject';
+import { removeArrayElement } from 'utils/removeArrayElement';
 /* eslint-disable no-param-reassign */
 
+/** *
+ *
+ * @type {
+ * {
+ * uid: null, isOwner: boolean, avatarURL, lowAvatarURL, onlineStatus: boolean, about: {details: {language: {field: string, text: string}, instagram: {field: string, text: string}, age: {field: string, text: string}, height: {field: string, text: string}}, aboutUser: string}, login: null, posts: {entities: {}, ids: []}, status: string, last_changed: null}}
+ * post: {
+ *   id: string,
+ *   postsPhoto: [],
+ *   content: string
+ * }
+ */
+
 const initialState = {
-  isAuth: false,
-  email: null,
-  uid: null,
-  isAdmin: false,
+  isOwner: false,
   login: null,
-  isInit: false,
-  isLoading: false,
-  error: {
-    message: '',
-    idError: '',
+  uid: null,
+  status: '',
+  avatarURL: defaultUserPhoto,
+  onlineStatus: false,
+  last_changed: null,
+  lowAvatarURL: defaultUserPhoto,
+  about: {
+    aboutUser: '',
+    details,
   },
-  successMsg: '',
+  posts: {
+    entities: {},
+    ids: [],
+  },
 };
 
 const userReducer = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setLoader(state, { payload }) {
-      state.isLoading = payload;
+    resetUser(state) {
+      Object.assign(state, initialState);
     },
-    setError(state, { payload }) {
-      const { message, idError } = payload;
-      state.error = {
-        message,
-        idError,
-      };
-    },
-    logoutUser(state) {
-      Object.assign(state, { ...initialState, isInit: true });
-    },
-    registerSuccess(state, { payload }) {
-      state.successMsg = payload;
-    },
-    loginUserFailure(state, { payload }) {
-      state.msgError = payload;
-    },
-    loginUserSuccess(state, { payload }) {
+    setUserInfo(state, { payload }) {
       Object.assign(state, payload);
     },
-    setInit(state, { payload }) {
-      state.isInit = payload;
+    updateStatus(state, { payload }) {
+      state.status = payload;
     },
+    setNewAvatar(state, { payload }) {
+      const { url, lowUrl } = payload;
+      state.avatarURL = url;
+      state.lowAvatarURL = lowUrl;
+    },
+    setUserContent(state, { payload }) {
+      state.about.aboutUser = payload;
+    },
+    setUserDetails(state, { payload }) {
+      const { id, field, text } = payload;
+      state.about.details[id] = { field, text };
+    },
+    addPost(state, { payload }) {
+      state.posts.entities[payload.id] = payload;
+      state.posts.ids.unshift(payload.id);
+    },
+    deletePost(state, { payload }) {
+      const id = payload;
+      state.posts.entities = removePropFromObject(state.posts.entities, id);
+      state.posts.ids = removeArrayElement(state.posts.ids, id);
+    },
+    setUserAboutContent: state => state,
     checkAuthUser: state => state,
-    loginUser: state => state,
-    registerUser: state => state,
-    logOutUser: state => state,
-    passReset: state => state,
+    firebaseUpdateStatus: state => state,
+    firebaseUploadAvatarUser: state => state,
+    firebaseUploadDetails: state => state,
+    firebaseGetUserInfo: state => state,
+    firebaseCreateUserPost: state => state,
+    firebaseRemoveUserPost: state => state,
   },
 });
 
 export default userReducer.reducer;
 export const {
-  logOutUser,
-  loginUser,
-  setError,
-  registerSuccess,
-  setLoader,
-  passReset,
-  loginUserSuccess,
-  checkAuthUser,
-  setInit,
-  logoutUser,
-  registerUser,
+  firebaseCreateUserPost,
+  setUserAboutContent,
+  setUserContent,
+  updateStatus,
+  firebaseUpdateStatus,
+  firebaseUploadAvatarUser,
+  setNewAvatar,
+  firebaseUploadDetails,
+  setUserDetails,
+  resetUser,
+  firebaseGetUserInfo,
+  setUserInfo,
+  addPost,
+  firebaseRemoveUserPost,
+  deletePost,
 } = userReducer.actions;

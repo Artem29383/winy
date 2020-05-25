@@ -16,8 +16,8 @@ export const LoaderComponent = styled.div`
   position: ${({ position }) => position};
   top: ${({ top }) => top && `${top}%`};
   left: ${({ left }) => left && `${left}%`};
-  transform: ${({ position }) =>
-    position === 'absolute' ? 'translate(-50%, -50%)' : ''};
+  transform: ${({ position, translate }) =>
+    position === 'absolute' ? translate : ''};
   width: ${({ width }) => (width ? `${width}px` : '64px')};
   height: ${({ height }) => (height ? `${height}px` : '64px')};
 

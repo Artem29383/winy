@@ -3,6 +3,7 @@ import AuthPage from 'pages/AuthPage';
 import RegisterPage from 'pages/RegisterPage';
 import HomePage from 'pages/HomePage';
 import ResetPasswordPage from 'pages/ResetPasswordPage';
+import ProfilePage from 'pages/ProfilePage';
 
 export default [
   {
@@ -27,6 +28,17 @@ export default [
     path: routes.home,
     exact: true,
     component: HomePage,
+    isAuth: true,
+    isAdmin: false,
+  },
+  {
+    path: [
+      `${routes.profile}/:id/about`,
+      `${routes.profile}/:id/posts`,
+      `${routes.profile}/:id`,
+    ],
+    exact: false,
+    component: ProfilePage,
     isAuth: true,
     isAdmin: false,
   },

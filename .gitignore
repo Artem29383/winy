@@ -6,3 +6,5 @@ public
 yarn.lock
 .idea
 .firebase
+.firebase/hosting.YnVpbGQ.cache
+functions/node_modules
