@@ -9,7 +9,7 @@ export default {
   `,
   Img: styled.img`
     width: 100%;
-    object-fit: fill;
+    object-fit: cover;
     height: 100%;
   `,
 };

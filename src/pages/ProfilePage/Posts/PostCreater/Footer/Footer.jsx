@@ -35,7 +35,7 @@ const Footer = ({
               <use xlinkHref={`${imageAdd}#imageAdd`} />
             </Icons.AddImage>
           </S.Label>
-          <S.Input id="input" type="file" onChange={changeHandle} />
+          <S.Input id="input" multiple type="file" onChange={changeHandle} />
         </S.FunctionWrap>
       </S.Functions>
       {isDisableBtn && (
