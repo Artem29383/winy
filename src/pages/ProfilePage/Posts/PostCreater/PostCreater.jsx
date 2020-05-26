@@ -2,18 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Footer from 'pages/ProfilePage/Posts/PostCreater/Footer/Footer';
 import PostPlace from 'pages/ProfilePage/Posts/PostCreater/PostPlace';
-import { usePhotoWork } from 'hooks/usePhotoWork';
-import { nanoid } from '@reduxjs/toolkit';
-import ImagesPreview from 'pages/ProfilePage/Posts/PostCreater/ImagesPreview';
 import useSelector from 'hooks/useSelector';
 import { successMsgSelector } from 'models/app/selectors';
 import useAction from 'hooks/useAction';
-import { setSuccess } from 'models/app/reducer';
 import { SUCCESS_MSG } from 'constants/constants';
+import ImagesPreview from 'pages/ProfilePage/Posts/PostCreater/ImagesPreview';
+import { usePhotoWork } from 'hooks/usePhotoWork';
+import { nanoid } from '@reduxjs/toolkit';
+import { setSuccess } from 'models/app/reducer';
 import S from './PostCreater.styled';
 
 const PostCreater = ({ lowAvatarURL }) => {
-  const { lowImage, changeHandle, setImage, preview } = usePhotoWork('preview');
+  const {
+    image,
+    changeHandle,
+    preview,
+    counts,
+    isDisableBtn,
+    setDisableBtn,
+  } = usePhotoWork();
   const successMsg = useSelector(successMsgSelector);
   const setSuccessMsg = useAction(setSuccess);
   const creator = useRef(null);
@@ -21,7 +28,6 @@ const PostCreater = ({ lowAvatarURL }) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState('');
   const [images, setImages] = useState([]);
-  const [isDisableBtn, setDisableBtn] = useState(false);
 
   useEffect(() => {
     if (successMsg.trim() && successMsg === SUCCESS_MSG.postCreated) {
@@ -34,27 +40,31 @@ const PostCreater = ({ lowAvatarURL }) => {
   }, [successMsg]);
 
   const stopEditHandleBlur = e => {
-    if (!creator.current.contains(e.target)) {
-      if (!reference.current.textContent.trim() && images.length < 1) {
-        setEdit(false);
-        setValue('');
+    if (!creator) {
+      if (!creator.current.contains(e.target)) {
+        if (!reference.current.textContent.trim() && images.length < 1) {
+          setEdit(false);
+          setValue('');
+        }
       }
     }
   };
 
   useEffect(() => {
-    if (lowImage) {
+    if (image) {
       setImages([
         ...images,
         {
           id: nanoid(),
-          file: lowImage,
+          file: image,
           preview,
         },
       ]);
-      setImage(null);
+      if (counts === images.length + 1) {
+        setDisableBtn(false);
+      }
     }
-  }, [lowImage]);
+  }, [image]);
 
   useEffect(() => {
     if (edit) document.addEventListener('mousedown', stopEditHandleBlur);

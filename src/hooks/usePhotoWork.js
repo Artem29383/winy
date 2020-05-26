@@ -1,64 +1,80 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export const usePhotoWork = typeAction => {
+export const usePhotoWork = () => {
   const [image, setImage] = useState(null);
-  const [lowImage, setLowImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const compressImage = img => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    canvas.getContext('2d').drawImage(img, 0, 0);
+  const [preview, setPreview] = useState([]);
+  const [counts, setCounts] = useState(0);
+  const [isDisableBtn, setDisableBtn] = useState(false);
 
-    if (typeAction === 'preview') {
-      const newImageData = canvas.toDataURL(image.type, 0.7);
-      setPreview(newImageData);
-    }
+  const compressImage = async (img, fileImage) => {
+    return new Promise(resolve => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.getContext('2d').drawImage(img, 0, 0);
 
-    const newImgData = canvas.toDataURL(image.type, 0.3);
-    fetch(newImgData)
-      .then(res => res.blob())
-      .then(blob => {
-        const file = new File([blob], `low${image.name}`, {
-          type: image.type,
+      const newImgData = canvas.toDataURL(fileImage.type, 0.3);
+      fetch(newImgData)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], `low${fileImage.name}`, {
+            type: fileImage.type,
+          });
+          const newImageData = canvas.toDataURL(fileImage.type, 0.7);
+          resolve([newImageData, file]);
         });
-        setLowImage(file);
-      });
+    });
   };
 
-  const createImage = e => {
-    const img = document.createElement('IMG');
-    img.src = e.target.result;
-    img.onload = () => {
-      compressImage(img);
-    };
+  const createImage = (base64, file) => {
+    return new Promise(resolve => {
+      const img = document.createElement('IMG');
+      img.src = base64;
+      img.onload = () => {
+        resolve(
+          compressImage(img, file).then(result => {
+            setPreview(result[0]);
+            setImage(result[1]);
+          })
+        );
+      };
+    });
   };
 
-  useEffect(() => {
-    const reader = new FileReader();
-    reader.addEventListener('load', createImage, false);
-    if (image) {
-      reader.readAsDataURL(image);
-    }
-    return () => reader.removeEventListener('load', createImage);
-  }, [image]);
+  const reader = file => {
+    return new Promise(resolve => {
+      const fileReader = new FileReader();
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.readAsDataURL(file);
+    });
+  };
 
-  const changeHandle = useCallback(
-    e => {
-      const file = e.currentTarget.files[0];
+  const changeHandle = e => {
+    const { files } = e.currentTarget;
+    setCounts(files.length);
+    setDisableBtn(true);
+    Object.values(files).forEach(async file => {
       if (file) {
         const type = file.type.split('/');
         const size = Math.ceil(file.size / 1024);
         if (type[0] === 'image') {
-          if (size < 1500) {
-            setImage(file);
+          if (size < 2500) {
+            const base64 = await reader(file);
+            await createImage(base64, file);
           }
-        } else if (type[0] !== 'image' || size > 1500) {
+        } else if (type[0] !== 'image' || size > 2500) {
           setImage(null);
         }
       }
-    },
-    [image]
-  );
-  return { image, lowImage, changeHandle, setImage, preview };
+    });
+  };
+  return {
+    image,
+    changeHandle,
+    preview,
+    setImage,
+    counts,
+    setDisableBtn,
+    isDisableBtn,
+  };
 };
