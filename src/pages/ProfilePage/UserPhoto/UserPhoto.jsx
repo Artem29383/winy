@@ -16,7 +16,7 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
   const progressUpload = useSelector(progressUploadSelector);
   const [isLoad, setIsLoading] = useToggle(false);
   const uploadAvatar = useAction(firebaseUploadAvatarUser);
-  const { image, lowImage, changeHandle, setImage } = usePhotoWork();
+  const { image, changeHandle, setImage } = usePhotoWork();
 
   useEffect(() => {
     if (isLoad) {
@@ -33,7 +33,7 @@ const UserPhoto = ({ avatarURL, uid, isOwner }) => {
     uploadAvatar({
       uid,
       image,
-      lowImage,
+      lowImage: image,
     });
   };
 
