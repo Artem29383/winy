@@ -6,6 +6,8 @@ export default {
     padding: 5px;
     display: flex;
     position: relative;
+    background-color: ${({ isOver }) => isOver && '#BEBBBF'};
+    transition: background-color 0.2s linear;
   `,
   PostAvatar: styled.div`
     flex-basis: 15%;

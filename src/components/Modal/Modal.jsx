@@ -23,6 +23,8 @@ import S from './Modal.styled';
  * @param isBody: boolean
  * @param fetchError string,
  * @param isLoad boolean,
+ * @param height string
+ * @param top string
  * @returns {*}
  * @constructor
  */
@@ -39,12 +41,14 @@ const Modal = ({
   isBody,
   fetchError,
   isLoad,
+  heightBody,
+  top,
 }) => {
   useModal(toggle, isOpen, isClosable);
   return (
     <S.Overlay unmountOnExit in={isOpen} timeout={100}>
       {isClosable && <S.BackDrop onClick={toggle} />}
-      <S.Modal appear in={isOpen} timeout={100} width={width}>
+      <S.Modal appear in={isOpen} timeout={100} width={width} top={top}>
         <S.Header>
           <S.Title>{title}</S.Title>
           {isClosable && (
@@ -57,7 +61,7 @@ const Modal = ({
             />
           )}
         </S.Header>
-        {isBody && <S.Body>{children}</S.Body>}
+        {isBody && <S.Body heightBody={heightBody}>{children}</S.Body>}
         {isFooter && (
           <S.Footer counts={buttons.length}>
             {buttons.map(btn => (
@@ -92,6 +96,8 @@ Modal.propTypes = {
   isBody: PropTypes.bool,
   fetchError: PropTypes.string,
   isLoad: PropTypes.bool,
+  heightBody: PropTypes.string,
+  top: PropTypes.string,
 };
 
 Modal.defaultProps = {
@@ -100,6 +106,8 @@ Modal.defaultProps = {
   isFooter: false,
   title: 'Modal',
   isBody: true,
+  heightBody: 'auto',
+  top: '200px',
 };
 
 export default Modal;

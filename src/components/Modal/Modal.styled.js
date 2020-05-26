@@ -30,12 +30,13 @@ export default {
       }
   `,
   Modal: transition.div`
-    width: ${({ width }) => `${width}px`};
+    max-width: ${({ width }) => `${width}px`};
     height: auto;
     z-index: 1000;
+    width: 100%;
     border-radius: 20px;
     position: relative;
-    top: 200px;
+    top: ${({ top }) => top};
     transform: scale(1);
     background-color: ${props => props.theme.modalBgc};
     margin: 0 auto;
@@ -79,6 +80,7 @@ export default {
   Body: styled.div`
     width: 100%;
     min-height: 50px;
+    height: ${({ heightBody }) => `${heightBody}px`};
     position: relative;
   `,
   Footer: styled.div`

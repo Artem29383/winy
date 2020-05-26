@@ -13,6 +13,7 @@ import { successMsgSelector } from 'models/app/selectors';
 import { SUCCESS_MSG } from 'constants/constants';
 import { setSuccess } from 'models/app/reducer';
 import useFetchingError from 'hooks/useFetchingError';
+import Tooltip from 'components/Tooltip/Tooltip.tsx';
 import S from './PostHeader.styled';
 
 const PostHeader = ({ avatarURL, userId, login, date, id, isOwner }) => {
@@ -53,9 +54,11 @@ const PostHeader = ({ avatarURL, userId, login, date, id, isOwner }) => {
           <S.Time>{date}</S.Time>
         </S.Title>
         {isOwner && (
-          <Icons.Cross onClick={setShowModal}>
-            <use xlinkHref={`${cross}#closeImage`} />
-          </Icons.Cross>
+          <Tooltip title="Remove" minWidth="50px" top="30px">
+            <Icons.Cross onClick={setShowModal}>
+              <use xlinkHref={`${cross}#closeImage`} />
+            </Icons.Cross>
+          </Tooltip>
         )}
       </S.PostHeader>
       <Portal id="RemovePost">
