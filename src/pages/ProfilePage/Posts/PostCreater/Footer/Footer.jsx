@@ -9,7 +9,6 @@ import { firebaseCreateUserPost } from 'models/user/reducer';
 import ProgressBar from 'components/ProgressBar';
 import useSelector from 'hooks/useSelector';
 import { progressUploadSelector } from 'models/app/selectors';
-import Tooltip from 'components/Tooltip/Tooltip.tsx';
 import S from './Footer.styled';
 
 const Footer = ({
@@ -31,19 +30,12 @@ const Footer = ({
     <S.Footer>
       <S.Functions>
         <S.FunctionWrap>
-          <Tooltip title="Add image (max 2.5MB)" minWidth="70px">
-            <S.Label htmlFor="inputMultiple">
-              <Icons.AddImage>
-                <use xlinkHref={`${imageAdd}#imageAdd`} />
-              </Icons.AddImage>
-            </S.Label>
-          </Tooltip>
-          <S.Input
-            id="inputMultiple"
-            multiple
-            type="file"
-            onChange={changeHandle}
-          />
+          <S.Label htmlFor="input">
+            <Icons.AddImage>
+              <use xlinkHref={`${imageAdd}#imageAdd`} />
+            </Icons.AddImage>
+          </S.Label>
+          <S.Input id="input" type="file" onChange={changeHandle} />
         </S.FunctionWrap>
       </S.Functions>
       {isDisableBtn && (
