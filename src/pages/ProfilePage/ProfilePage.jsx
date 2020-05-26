@@ -10,6 +10,7 @@ import useAction from 'hooks/useAction';
 import { firebaseGetUserInfo, resetUser } from 'models/user/reducer';
 import Online from 'components/Online';
 import routes from 'constants/routes';
+import Tooltip from 'components/Tooltip/Tooltip.tsx';
 import S from './ProfilePage.styled';
 import profilePageRoutes from '../../routes/profilePageRoutes';
 
@@ -53,7 +54,12 @@ const ProfilePage = () => {
         <S.UserInfoBlock>
           <S.UserName>
             <S.Text>{login}</S.Text>
-            <Online isOnline={onlineStatus} />
+            <Tooltip
+              title={onlineStatus === true ? 'Online' : 'Offline'}
+              minWidth="50px"
+            >
+              <Online isOnline={onlineStatus} />
+            </Tooltip>
           </S.UserName>
           <Status uid={uid} userStatus={status} isOwner={isOwner} />
         </S.UserInfoBlock>

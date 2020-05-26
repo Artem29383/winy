@@ -7,6 +7,10 @@ export const initialUserDataSelector = createSelector(
   auth => auth
 );
 
+const getOwnerId = state => state.auth.uid;
+
+export const ownerIdSelector = createSelector(getOwnerId, uid => uid);
+
 const getIsInit = state => state.auth.isInit;
 
 export const isInitSelector = createSelector(getIsInit, isInit => isInit);

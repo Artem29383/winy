@@ -70,6 +70,11 @@ const userReducer = createSlice({
       state.posts.entities = removePropFromObject(state.posts.entities, id);
       state.posts.ids = removeArrayElement(state.posts.ids, id);
     },
+    setLike(state, { payload }) {
+      const { likes, postId, usersWhoLike } = payload;
+      state.posts.entities[postId].likes = likes;
+      state.posts.entities[postId].usersWhoLike = usersWhoLike;
+    },
     setUserAboutContent: state => state,
     checkAuthUser: state => state,
     firebaseUpdateStatus: state => state,
@@ -78,6 +83,7 @@ const userReducer = createSlice({
     firebaseGetUserInfo: state => state,
     firebaseCreateUserPost: state => state,
     firebaseRemoveUserPost: state => state,
+    firebaseLikeHandle: state => state,
   },
 });
 
@@ -98,4 +104,7 @@ export const {
   addPost,
   firebaseRemoveUserPost,
   deletePost,
+  setLike,
+  removeLike,
+  firebaseLikeHandle,
 } = userReducer.actions;

@@ -39,9 +39,9 @@ const appReducer = createSlice({
 
 export default appReducer.reducer;
 export const {
-  setSuccess,
   setError,
   setLoader,
   setProgressUpload,
   resetAll,
+  setSuccess,
 } = appReducer.actions;

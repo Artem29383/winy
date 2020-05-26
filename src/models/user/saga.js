@@ -2,14 +2,15 @@ import { put, take, takeEvery, call, all } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
   addPost,
-  // eslint-disable-next-line no-unused-vars
   deletePost,
   firebaseCreateUserPost,
   firebaseGetUserInfo,
+  firebaseLikeHandle,
   firebaseRemoveUserPost,
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
   firebaseUploadDetails,
+  setLike,
   setNewAvatar,
   setUserAboutContent,
   setUserContent,
@@ -254,6 +255,7 @@ function* createPost({ payload }) {
       date: getDate(),
       dateForSort: Date.now(),
       likes: 0,
+      usersWhoLike: {},
       dislikes: 0,
     };
     yield FireSaga.setToCollection(
@@ -310,6 +312,31 @@ function* removePost({ payload }) {
   }
 }
 
+function* addLikeSaga({ payload }) {
+  try {
+    const { postId, userId, usersWhoLike, likes, isLike } = payload;
+    yield FireSaga.setToCollection(
+      `${API_PATH.users}/${userId}/posts`,
+      postId,
+      { usersWhoLike, likes },
+      true
+    );
+    if (isLike) {
+      yield put({
+        type: setLike.type,
+        payload: { likes, postId, usersWhoLike },
+      });
+    } else {
+      yield put({
+        type: setLike.type,
+        payload: { likes, postId, usersWhoLike },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default function* rootSagaUser() {
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
   yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
@@ -318,4 +345,5 @@ export default function* rootSagaUser() {
   yield takeEvery(firebaseGetUserInfo, getUserInfo);
   yield takeEvery(firebaseCreateUserPost, createPost);
   yield takeEvery(firebaseRemoveUserPost, removePost);
+  yield takeEvery(firebaseLikeHandle, addLikeSaga);
 }
