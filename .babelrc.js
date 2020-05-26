@@ -7,7 +7,7 @@ module.exports = {
         corejs: 2
       }
     ],
-    "@babel/preset-react"
+    "@babel/preset-react",
   ],
   plugins: [
     [
