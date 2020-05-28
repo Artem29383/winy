@@ -6,13 +6,17 @@ import useAction from 'hooks/useAction';
 import { firebaseLikeHandle } from 'models/user/reducer';
 import { removePropFromObject } from 'utils/removePropFromObject';
 import useSelector from 'hooks/useSelector';
-import { ownerIdSelector } from 'models/auth/selectors';
+import {
+  initialUserDataSelector,
+  ownerIdSelector,
+} from 'models/auth/selectors';
 import S from './PostFooter.styled';
 
 const PostFooter = ({ likes, id, userId, usersWhoLike }) => {
   const uid = useSelector(ownerIdSelector);
   const likeChangeHandle = useAction(firebaseLikeHandle);
   const isLike = usersWhoLike[uid];
+  const { likesInDay } = useSelector(initialUserDataSelector);
 
   const likeHandle = () => {
     if (isLike) {
@@ -23,6 +27,7 @@ const PostFooter = ({ likes, id, userId, usersWhoLike }) => {
         usersWhoLike: usersWhoLikeCopy,
         likes: likes - 1,
         isLike: false,
+        likesInDay,
       });
     } else {
       const usersWhoLikeCopy = { ...usersWhoLike, [uid]: true };
@@ -32,6 +37,7 @@ const PostFooter = ({ likes, id, userId, usersWhoLike }) => {
         usersWhoLike: usersWhoLikeCopy,
         likes: likes + 1,
         isLike: true,
+        likesInDay,
       });
     }
   };

@@ -4,6 +4,7 @@ import RegisterPage from 'pages/RegisterPage';
 import HomePage from 'pages/HomePage';
 import ResetPasswordPage from 'pages/ResetPasswordPage';
 import ProfilePage from 'pages/ProfilePage';
+import SettingsPage from 'pages/SettingsPage';
 
 export default [
   {
@@ -39,6 +40,13 @@ export default [
     ],
     exact: false,
     component: ProfilePage,
+    isAuth: true,
+    isAdmin: false,
+  },
+  {
+    path: routes.settings,
+    exact: true,
+    component: SettingsPage,
     isAuth: true,
     isAdmin: false,
   },

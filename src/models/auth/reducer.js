@@ -27,11 +27,15 @@ const authReducer = createSlice({
     setInit(state, { payload }) {
       state.isInit = payload;
     },
+    setNewLogin(state, { payload }) {
+      state.login = payload;
+    },
     checkAuthUser: state => state,
     loginUser: state => state,
     registerUser: state => state,
     logOutUser: state => state,
     passReset: state => state,
+    firebaseSetNewUserSetting: state => state,
   },
 });
 
@@ -46,4 +50,6 @@ export const {
   logoutUser,
   updateAvatar,
   registerUser,
+  firebaseSetNewUserSetting,
+  setNewLogin,
 } = authReducer.actions;

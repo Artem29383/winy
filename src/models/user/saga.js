@@ -314,7 +314,10 @@ function* removePost({ payload }) {
 
 function* addLikeSaga({ payload }) {
   try {
-    const { postId, userId, usersWhoLike, likes, isLike } = payload;
+    // const { uid } = authRef.currentUser;
+    // eslint-disable-next-line no-unused-vars
+    const { postId, userId, usersWhoLike, likes, isLike, likesInDay } = payload;
+    // yield FireSaga.setToCollection(API_PATH.users, uid, likesInDay, true);
     yield FireSaga.setToCollection(
       `${API_PATH.users}/${userId}/posts`,
       postId,

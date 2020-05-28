@@ -14,6 +14,14 @@ export const InputField = styled.input`
   &.error {
     border: 2px solid ${props => props.theme.error};
   }
+
+  &.settings {
+    background-color: #fff;
+
+    &.error {
+      border: 2px solid ${props => props.theme.error};
+    }
+  }
 `;
 
 export const Label = styled.label`
@@ -26,6 +34,10 @@ export const Label = styled.label`
   background-color: ${props => props.theme.inputBackground};
   transition: transform 0.1s linear, color 0.1s linear,
     background-color 0.2s linear;
+
+  &.settings {
+    background-color: #fff;
+  }
 `;
 
 export default {

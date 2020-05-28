@@ -7,4 +7,5 @@ export default {
   about: '/about',
   users: '/users',
   posts: '/posts',
+  settings: '/settings',
 };

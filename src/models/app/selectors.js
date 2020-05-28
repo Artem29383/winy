@@ -24,3 +24,7 @@ export const progressUploadSelector = createSelector(
   getProgressUpload,
   progressUpload => progressUpload
 );
+
+const getTheme = state => state.app.theme;
+
+export const themeSelector = createSelector(getTheme, theme => theme);

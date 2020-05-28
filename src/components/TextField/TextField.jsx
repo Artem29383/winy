@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import eye from 'assets/images/eye.svg';
 import Eye from 'assets/images/Icons.styled';
 import S, { InputField, Label } from './TextField.styled';
@@ -33,13 +34,13 @@ const TextField = ({
           onChange={onChange}
           ref={register}
           name={name}
-          className={errors && 'error'}
+          className={classnames(className, errors && 'error')}
           type={inputType}
           autoFocus={focus}
           onKeyDown={onKeyHandler}
           onBlur={onBlur}
         />
-        <Label>{label}</Label>
+        <Label className={className}>{label}</Label>
         {type === 'password' && (
           <Eye.Icon onMouseDown={passHandle} onMouseUp={passHandle}>
             <use xlinkHref={`${eye}#eye`} />

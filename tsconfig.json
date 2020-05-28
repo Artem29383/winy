@@ -19,6 +19,7 @@
     "noUnusedLocals": false,
     "experimentalDecorators": true
   },
+  "files": ["custom.d.ts"],
   "include": [
     "src/**/*",
     "config/*"

@@ -31,7 +31,6 @@ const PostCreater = ({ lowAvatarURL }) => {
 
   useEffect(() => {
     if (successMsg.trim() && successMsg === SUCCESS_MSG.postCreated) {
-      console.log('off');
       setValue('');
       setImages([]);
       setSuccessMsg('');
@@ -41,12 +40,10 @@ const PostCreater = ({ lowAvatarURL }) => {
   }, [successMsg]);
 
   const stopEditHandleBlur = e => {
-    if (!creator) {
-      if (!creator.current.contains(e.target)) {
-        if (!reference.current.textContent.trim() && images.length < 1) {
-          setEdit(false);
-          setValue('');
-        }
+    if (!creator.current.contains(e.target)) {
+      if (!reference.current.textContent.trim() && images.length < 1) {
+        setEdit(false);
+        setValue('');
       }
     }
   };
