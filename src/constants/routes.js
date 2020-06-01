@@ -8,4 +8,5 @@ export default {
   users: '/users',
   posts: '/posts',
   settings: '/settings',
+  analytics: '/analytics',
 };

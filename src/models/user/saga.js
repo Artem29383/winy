@@ -7,6 +7,7 @@ import {
   firebaseGetUserInfo,
   firebaseLikeHandle,
   firebaseRemoveUserPost,
+  firebaseSetTotalLikes,
   firebaseUpdateStatus,
   firebaseUploadAvatarUser,
   firebaseUploadDetails,
@@ -17,6 +18,7 @@ import {
   setUserDetails,
   setUserInfo,
   updateStatus,
+  updateTotalLikes,
 } from 'models/user/reducer';
 import {
   setError,
@@ -26,11 +28,13 @@ import {
 } from 'models/app/reducer';
 import { API_PATH, SUCCESS_MSG } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef, storage, storageRef } from 'src/firebase/firebase';
+import { authRef, storage, storageRef, firestore } from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { getDate } from 'utils/getDate';
 import { normalizer } from 'utils/normalizer';
+import { firebaseTotalLikesAnalytics } from 'models/analytics/reducer';
+import { removePropFromObject } from 'utils/removePropFromObject';
 
 function* statusUpdate(action) {
   try {
@@ -185,6 +189,7 @@ function* getUserInfo(action) {
       avatarURL,
       htmlContent,
       lowAvatarURL,
+      totalLikes,
     } = data.data();
     // fetch status online user
     const statusOnline = yield FireSaga.getCollection(
@@ -212,6 +217,7 @@ function* getUserInfo(action) {
           entities: normalizedPosts.entities.posts,
           ids: normalizedPosts.result,
         },
+        totalLikes,
       }),
     });
   } catch (e) {
@@ -283,13 +289,25 @@ function* createPost({ payload }) {
 
 function* removePost({ payload }) {
   try {
-    const id = payload;
+    const { id, totalLikes } = payload;
     const { uid } = authRef.currentUser;
     const allImages = yield FireSaga.getAllImages(`/posts/${uid}/${id}`);
     const removeFolder = allImages.items.map(image => {
       return call(function*() {
         yield FireSaga.removeImagesFromDoc(image.fullPath);
       });
+    });
+    yield FireSaga.setToCollection(API_PATH.users, uid, { totalLikes }, true);
+    yield put({
+      type: firebaseTotalLikesAnalytics.type,
+      payload: {
+        totalLikes,
+        userId: uid,
+      },
+    });
+    yield put({
+      type: updateTotalLikes.type,
+      payload: totalLikes,
     });
     yield all(removeFolder);
     yield FireSaga.removeDoc(`${API_PATH.users}/${uid}/posts`, id);
@@ -314,27 +332,65 @@ function* removePost({ payload }) {
 
 function* addLikeSaga({ payload }) {
   try {
-    // const { uid } = authRef.currentUser;
-    // eslint-disable-next-line no-unused-vars
-    const { postId, userId, usersWhoLike, likes, isLike, likesInDay } = payload;
-    // yield FireSaga.setToCollection(API_PATH.users, uid, likesInDay, true);
-    yield FireSaga.setToCollection(
-      `${API_PATH.users}/${userId}/posts`,
-      postId,
-      { usersWhoLike, likes },
-      true
-    );
+    const { postId, userId, usersWhoLike, likes, isLike, uid } = payload;
     if (isLike) {
+      const usersWhoLikeCopy = { ...usersWhoLike, [uid]: true };
+      // add likes to DB
+      yield FireSaga.setToCollection(
+        `${API_PATH.users}/${userId}/posts`,
+        postId,
+        { usersWhoLike: usersWhoLikeCopy, likes },
+        true
+      );
       yield put({
         type: setLike.type,
-        payload: { likes, postId, usersWhoLike },
+        payload: { likes, postId, usersWhoLike: usersWhoLikeCopy },
       });
     } else {
+      // remove likes from DB
+      yield FireSaga.setToCollection(
+        `${API_PATH.users}/${userId}/posts`,
+        postId,
+        {
+          usersWhoLike: {
+            [uid]: firestore.FieldValue.delete(),
+          },
+          likes,
+        },
+        true
+      );
+      const usersWhoLikeCopy = removePropFromObject(usersWhoLike, uid);
       yield put({
         type: setLike.type,
-        payload: { likes, postId, usersWhoLike },
+        payload: { likes, postId, usersWhoLike: usersWhoLikeCopy },
       });
     }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* setTotalLikes({ payload }) {
+  try {
+    const { totalLikes, userId } = payload;
+    yield FireSaga.setToCollection(
+      API_PATH.users,
+      userId,
+      { totalLikes },
+      true
+    );
+    // вызов изменения саги отвечающей за аналитику лайков в целом поп профилю
+    yield put({
+      type: firebaseTotalLikesAnalytics.type,
+      payload: {
+        totalLikes,
+        userId,
+      },
+    });
+    yield put({
+      type: updateTotalLikes.type,
+      payload: totalLikes,
+    });
   } catch (e) {
     console.log(e);
   }
@@ -349,4 +405,5 @@ export default function* rootSagaUser() {
   yield takeEvery(firebaseCreateUserPost, createPost);
   yield takeEvery(firebaseRemoveUserPost, removePost);
   yield takeEvery(firebaseLikeHandle, addLikeSaga);
+  yield takeEvery(firebaseSetTotalLikes, setTotalLikes);
 }

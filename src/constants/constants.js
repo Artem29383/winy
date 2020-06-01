@@ -4,6 +4,7 @@ export const API_PATH = {
   posts: 'posts',
   likes: 'likes',
   dislikes: 'dislikes',
+  likesAnalytics: 'likesAnalytics',
 };
 
 export const NAVLIST_NAME = {

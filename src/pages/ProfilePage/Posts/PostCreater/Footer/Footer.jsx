@@ -38,7 +38,12 @@ const Footer = ({
               </Icons.AddImage>
             </S.Label>
           </Tooltip>
-          <S.Input id="inputMultiple" type="file" onChange={changeHandle} />
+          <S.Input
+            id="inputMultiple"
+            multiple
+            type="file"
+            onChange={changeHandle}
+          />
         </S.FunctionWrap>
       </S.Functions>
       {isDisableBtn && (

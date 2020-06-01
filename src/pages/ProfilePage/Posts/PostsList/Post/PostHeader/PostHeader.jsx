@@ -16,10 +16,21 @@ import useFetchingError from 'hooks/useFetchingError';
 import Tooltip from 'components/Tooltip/Tooltip.tsx';
 import S from './PostHeader.styled';
 
-const PostHeader = ({ avatarURL, userId, login, date, id, isOwner }) => {
+const PostHeader = ({
+  avatarURL,
+  userId,
+  login,
+  date,
+  // eslint-disable-next-line no-unused-vars
+  id,
+  isOwner,
+  totalLikes,
+  likes,
+}) => {
   const { fetchError } = useFetchingError();
   const msgSuccess = useSelector(successMsgSelector);
   const [showModal, setShowModal] = useToggle(false);
+  // eslint-disable-next-line no-unused-vars
   const removePost = useAction(firebaseRemoveUserPost);
   const [isLoad, setIsLoad] = useState(false);
   const setSuccessMSG = useAction(setSuccess);
@@ -36,7 +47,10 @@ const PostHeader = ({ avatarURL, userId, login, date, id, isOwner }) => {
 
   const removePostHandle = () => {
     setIsLoad(true);
-    removePost(id);
+    removePost({
+      id,
+      totalLikes: totalLikes - likes,
+    });
   };
 
   return (
@@ -97,6 +111,8 @@ PostHeader.propTypes = {
   login: PropTypes.string,
   id: PropTypes.string,
   date: PropTypes.string,
+  totalLikes: PropTypes.number,
+  likes: PropTypes.number,
   isOwner: PropTypes.bool,
 };
 

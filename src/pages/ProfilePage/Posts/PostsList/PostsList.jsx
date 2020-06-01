@@ -4,7 +4,14 @@ import Post from 'pages/ProfilePage/Posts/PostsList/Post';
 import { sortByData } from 'utils/sortByData';
 import S from './PostsList.styled';
 
-const PostsList = ({ avatarURL, userId, login, posts, isOwner }) => {
+const PostsList = ({
+  avatarURL,
+  userId,
+  login,
+  posts,
+  isOwner,
+  totalLikes,
+}) => {
   const { entities } = posts;
   const sortElem = sortByData(entities, 'dateForSort', 'desc');
   return (
@@ -16,6 +23,7 @@ const PostsList = ({ avatarURL, userId, login, posts, isOwner }) => {
           avatarURL={avatarURL}
           login={login}
           userId={userId}
+          totalLikes={totalLikes}
           {...elem}
         />
       ))}
@@ -29,6 +37,7 @@ PostsList.propTypes = {
   avatarURL: PropTypes.string,
   isOwner: PropTypes.bool,
   posts: PropTypes.object.isRequired,
+  totalLikes: PropTypes.number,
 };
 
 export default PostsList;

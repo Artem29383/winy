@@ -6,11 +6,13 @@ import { all } from 'redux-saga/effects';
 import authReducer from './auth/reducer';
 import userReducer from './user/reducer';
 import appReducer from './app/reducer';
+import analyticsReducer from './analytics/reducer';
 /* reducers */
 
 /* sagas */
 import rootSagaAuth from './auth/saga';
 import rootSagaUser from './user/saga';
+import rootSagaAnalytics from './analytics/saga';
 /* sagas */
 
 export const createRootReducer = history =>
@@ -19,8 +21,9 @@ export const createRootReducer = history =>
     auth: authReducer,
     user: userReducer,
     app: appReducer,
+    analytics: analyticsReducer,
   });
 
 export const rootSaga = function* rootSaga() {
-  yield all([rootSagaAuth(), rootSagaUser()]);
+  yield all([rootSagaAuth(), rootSagaUser(), rootSagaAnalytics()]);
 };

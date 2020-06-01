@@ -20,7 +20,6 @@ import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, firestore } from 'src/firebase/firebase';
 import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
 import { resetUser } from 'models/user/reducer';
-import { convertDataToMS } from 'utils/convertDataToMS';
 
 function* signIn(action) {
   try {
@@ -106,7 +105,6 @@ function* checkLoginUser() {
           isAuth: true,
           uid: user.uid,
           avatarURL: data.lowAvatarURL || defaultUserPhoto,
-          likesInDay: data.likesInDay || { [convertDataToMS()]: 0 },
         },
       });
     } else {
@@ -143,7 +141,6 @@ function* userAuth(action) {
         isAuth: true,
         uid: user.uid,
         avatarURL: data.lowAvatarURL || defaultUserPhoto,
-        likesInDay: data.likesInDay || { [convertDataToMS()]: 0 },
       },
     });
   } catch (e) {

@@ -3,41 +3,42 @@ import PropTypes from 'prop-types';
 import Icons from 'assets/images/Icons.styled';
 import like from 'assets/images/posts/like.svg';
 import useAction from 'hooks/useAction';
-import { firebaseLikeHandle } from 'models/user/reducer';
-import { removePropFromObject } from 'utils/removePropFromObject';
+import { firebaseLikeHandle, firebaseSetTotalLikes } from 'models/user/reducer';
 import useSelector from 'hooks/useSelector';
-import {
-  initialUserDataSelector,
-  ownerIdSelector,
-} from 'models/auth/selectors';
+import { ownerIdSelector } from 'models/auth/selectors';
+import { totalLikesSelector } from 'models/user/selectors';
 import S from './PostFooter.styled';
 
 const PostFooter = ({ likes, id, userId, usersWhoLike }) => {
   const uid = useSelector(ownerIdSelector);
+  const totalLikes = useSelector(totalLikesSelector);
   const likeChangeHandle = useAction(firebaseLikeHandle);
+  const totalLikesChange = useAction(firebaseSetTotalLikes);
   const isLike = usersWhoLike[uid];
-  const { likesInDay } = useSelector(initialUserDataSelector);
-
   const likeHandle = () => {
+    const likeObject = {
+      postId: id,
+      userId,
+      usersWhoLike,
+      likes,
+      isLike: true,
+      uid,
+    };
     if (isLike) {
-      const usersWhoLikeCopy = removePropFromObject(usersWhoLike, uid);
-      likeChangeHandle({
-        postId: id,
+      likeObject.isLike = false;
+      likeObject.likes = likes - 1;
+      likeChangeHandle(likeObject);
+      totalLikesChange({
+        totalLikes: totalLikes - 1,
         userId,
-        usersWhoLike: usersWhoLikeCopy,
-        likes: likes - 1,
-        isLike: false,
-        likesInDay,
       });
     } else {
-      const usersWhoLikeCopy = { ...usersWhoLike, [uid]: true };
-      likeChangeHandle({
-        postId: id,
+      likeObject.isLike = true;
+      likeObject.likes = likes + 1;
+      likeChangeHandle(likeObject);
+      totalLikesChange({
+        totalLikes: totalLikes + 1,
         userId,
-        usersWhoLike: usersWhoLikeCopy,
-        likes: likes + 1,
-        isLike: true,
-        likesInDay,
       });
     }
   };

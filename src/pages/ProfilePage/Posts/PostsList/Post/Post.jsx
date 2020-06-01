@@ -17,6 +17,7 @@ const Post = ({
   value,
   isOwner,
   usersWhoLike,
+  totalLikes,
 }) => {
   return (
     <S.Post>
@@ -27,6 +28,8 @@ const Post = ({
         id={id}
         date={date}
         isOwner={isOwner}
+        totalLikes={totalLikes}
+        likes={likes}
       />
       <S.PostBody>
         <S.Text>{ReactHtmlParser(value)}</S.Text>
@@ -53,6 +56,7 @@ Post.propTypes = {
   value: PropTypes.string,
   isOwner: PropTypes.bool,
   usersWhoLike: PropTypes.object,
+  totalLikes: PropTypes.number,
 };
 
 export default Post;

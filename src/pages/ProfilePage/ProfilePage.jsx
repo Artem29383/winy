@@ -26,6 +26,7 @@ const ProfilePage = () => {
     onlineStatus,
     lowAvatarURL,
     posts,
+    totalLikes,
   } = useSelector(userSelector);
   const getInfoUser = useAction(firebaseGetUserInfo);
   const userId = useParams().id;
@@ -84,6 +85,7 @@ const ProfilePage = () => {
                       login={login}
                       avatarURL={avatarURL}
                       posts={posts}
+                      totalLikes={totalLikes}
                     />
                   )}
                 />

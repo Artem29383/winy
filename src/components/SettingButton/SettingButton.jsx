@@ -18,8 +18,12 @@ const SettingButton = ({ isHide }) => {
     userExit();
   };
 
-  const to = () => {
+  const handleToSetting = () => {
     history.push(routes.settings);
+  };
+
+  const handleToAnalytics = () => {
+    history.push(routes.analytics);
   };
 
   return (
@@ -29,8 +33,8 @@ const SettingButton = ({ isHide }) => {
       </Icons.SettingNav>
       <SelectList
         isHide={isHide}
-        options={['Exit', 'Settings', 'Select2']}
-        callbacks={[logOut, to]}
+        options={['Exit', 'Settings', 'Analytics']}
+        callbacks={[logOut, handleToSetting, handleToAnalytics]}
         active={active}
         toggle={toggle}
       />
