@@ -9,6 +9,7 @@ const PostPlace = ({
   setValue,
   lowAvatarURL,
   reference,
+  isOver,
 }) => {
   const [isHidePlaceHolder, setIsHidePlaceHolder] = useState(false);
 
@@ -39,7 +40,7 @@ const PostPlace = ({
   );
 
   return (
-    <S.PostPlace>
+    <S.PostPlace isOver={isOver}>
       <S.PostAvatar>
         <S.ImageWrapper>
           <S.Img src={lowAvatarURL} />
@@ -64,6 +65,7 @@ PostPlace.propTypes = {
   setValue: PropTypes.func,
   lowAvatarURL: PropTypes.string,
   reference: PropTypes.any,
+  isOver: PropTypes.bool,
 };
 
 export default memo(PostPlace);

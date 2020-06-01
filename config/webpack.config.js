@@ -1,5 +1,6 @@
 const path = require('path');
 const { styles } = require('@ckeditor/ckeditor5-dev-utils');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const optimize = require('./optimize');
 const plugins = require('./plugins');
@@ -23,7 +24,7 @@ const jsLoaders = (react) => {
     options: babelOptions(react),
   }];
   
-  if (isDev) loaders.push('eslint-loader', 'stylelint-custom-processor-loader');
+  if (isDev) loaders.push('eslint-loader', 'stylelint-custom-processor-loader', 'source-map-loader');
   
   return loaders;
 };
@@ -39,7 +40,7 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: require('./alias'),
   },
   optimization: optimize(),
@@ -100,6 +101,15 @@ module.exports = {
         test: /\.(jsx?)$/,
         exclude: /node_modules/,
         use: jsLoaders('@babel/preset-react'),
+      },
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+          },
+        ],
       },
     ],
   },

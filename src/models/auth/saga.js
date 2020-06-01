@@ -2,6 +2,7 @@ import { put, take, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import {
   checkAuthUser,
+  firebaseSetNewUserSetting,
   loginUser,
   loginUserSuccess,
   logoutUser,
@@ -9,6 +10,7 @@ import {
   passReset,
   registerUser,
   setInit,
+  setNewLogin,
 } from 'models/auth/reducer';
 import { resetAll, setError, setLoader, setSuccess } from 'models/app/reducer';
 import { API_PATH } from 'constants/constants';
@@ -191,10 +193,35 @@ function* userLogOut() {
   });
 }
 
+function* setNewUserSetting({ payload }) {
+  try {
+    const { uid } = authRef.currentUser;
+    const { login } = payload;
+    yield FireSaga.setToCollection(API_PATH.users, uid, { login }, true);
+    yield put({
+      type: setNewLogin.type,
+      payload: login,
+    });
+  } catch (e) {
+    yield put({
+      type: setError.type,
+      payload: {
+        message: e.message,
+        idError: 'serverError',
+      },
+    });
+  }
+  yield put({
+    type: setLoader.type,
+    payload: false,
+  });
+}
+
 export default function* rootSagaAuth() {
   yield takeEvery(registerUser, signIn);
   yield takeEvery(passReset, resetPassword);
   yield takeEvery(checkAuthUser, checkLoginUser);
   yield takeEvery(loginUser, userAuth);
   yield takeEvery(logOutUser, userLogOut);
+  yield takeEvery(firebaseSetNewUserSetting, setNewUserSetting);
 }

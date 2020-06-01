@@ -69,5 +69,23 @@ export default {
       background-color: #808080;
       cursor: not-allowed;
     }
+
+    &.yellow {
+      background-color: #7ed321;
+
+      &:hover {
+        background: ${({
+          x,
+          y,
+        }) => `#cdd31c radial-gradient(circle at ${x}px ${y}px, transparent 1%, #cdd31c 1%)
+        left/15000%`};
+      }
+
+      &:active {
+        background-size: 100%;
+        transition: background 0s;
+        background-color: #43d304;
+      }
+    }
   `,
 };

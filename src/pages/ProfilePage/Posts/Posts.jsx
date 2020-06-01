@@ -6,7 +6,15 @@ import noPosts from 'assets/images/posts/noposts.svg';
 import Icons from 'assets/images/Icons.styled';
 import S from './Posts.styled';
 
-const Posts = ({ lowAvatarURL, avatarURL, userId, login, isOwner, posts }) => {
+const Posts = ({
+  lowAvatarURL,
+  avatarURL,
+  userId,
+  login,
+  isOwner,
+  posts,
+  totalLikes,
+}) => {
   return (
     <S.Content>
       {isOwner && <PostCreater lowAvatarURL={lowAvatarURL} />}
@@ -17,6 +25,7 @@ const Posts = ({ lowAvatarURL, avatarURL, userId, login, isOwner, posts }) => {
           userId={userId}
           login={login}
           posts={posts}
+          totalLikes={totalLikes}
         />
       ) : (
         !isOwner && (
@@ -41,6 +50,7 @@ Posts.propTypes = {
   avatarURL: PropTypes.string,
   isOwner: PropTypes.bool.isRequired,
   posts: PropTypes.object.isRequired,
+  totalLikes: PropTypes.number,
 };
 
 export default Posts;

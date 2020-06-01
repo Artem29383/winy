@@ -7,7 +7,6 @@ const ImagesPreview = ({ images, setImages }) => {
   const removeImageHandle = id => {
     setImages(images.filter(img => img.id !== id));
   };
-
   return (
     <S.ImagesPreview>
       {images.map(img => (

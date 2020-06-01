@@ -2,6 +2,9 @@ export const API_PATH = {
   users: 'users',
   status: 'status',
   posts: 'posts',
+  likes: 'likes',
+  dislikes: 'dislikes',
+  likesAnalytics: 'likesAnalytics',
 };
 
 export const NAVLIST_NAME = {

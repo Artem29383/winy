@@ -3,7 +3,6 @@ import { useState } from 'react';
 export const usePhotoWork = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState([]);
-  const [counts, setCounts] = useState(0);
   const [isDisableBtn, setDisableBtn] = useState(false);
 
   const compressImage = async (img, fileImage) => {
@@ -49,9 +48,8 @@ export const usePhotoWork = () => {
     });
   };
 
-  const changeHandle = e => {
-    const { files } = e.currentTarget;
-    setCounts(files.length);
+  const changeHandle = (e, fileList = null) => {
+    const files = e.currentTarget.files || fileList;
     setDisableBtn(true);
     Object.values(files).forEach(async file => {
       if (file) {
@@ -73,7 +71,6 @@ export const usePhotoWork = () => {
     changeHandle,
     preview,
     setImage,
-    counts,
     setDisableBtn,
     isDisableBtn,
   };

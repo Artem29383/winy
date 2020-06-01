@@ -25,6 +25,7 @@ export default {
   FunctionWrap: styled.div``,
   Label: styled.label`
     cursor: pointer;
+    display: flex;
 
     &:hover svg {
       fill: #000;

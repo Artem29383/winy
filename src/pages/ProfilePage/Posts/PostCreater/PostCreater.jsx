@@ -17,7 +17,6 @@ const PostCreater = ({ lowAvatarURL }) => {
     image,
     changeHandle,
     preview,
-    counts,
     isDisableBtn,
     setDisableBtn,
   } = usePhotoWork();
@@ -28,6 +27,7 @@ const PostCreater = ({ lowAvatarURL }) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState('');
   const [images, setImages] = useState([]);
+  const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
     if (successMsg.trim() && successMsg === SUCCESS_MSG.postCreated) {
@@ -40,12 +40,10 @@ const PostCreater = ({ lowAvatarURL }) => {
   }, [successMsg]);
 
   const stopEditHandleBlur = e => {
-    if (!creator) {
-      if (!creator.current.contains(e.target)) {
-        if (!reference.current.textContent.trim() && images.length < 1) {
-          setEdit(false);
-          setValue('');
-        }
+    if (!creator.current.contains(e.target)) {
+      if (!reference.current.textContent.trim() && images.length < 1) {
+        setEdit(false);
+        setValue('');
       }
     }
   };
@@ -60,11 +58,38 @@ const PostCreater = ({ lowAvatarURL }) => {
           preview,
         },
       ]);
-      if (counts === images.length + 1) {
-        setDisableBtn(false);
-      }
+      setDisableBtn(false);
     }
   }, [image]);
+
+  const dragover = e => {
+    if (!isOver) {
+      setIsOver(true);
+      setEdit(true);
+    }
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const drop = e => {
+    e.stopPropagation();
+    e.preventDefault();
+    const { files } = e.dataTransfer;
+    const fileList = Object.values(files).map(file => file);
+    changeHandle(e, fileList);
+    setIsOver(false);
+  };
+
+  useEffect(() => {
+    if (creator.current) {
+      creator.current.addEventListener('dragover', dragover, false);
+      creator.current.addEventListener('drop', drop, false);
+    }
+    return () => {
+      creator.current.removeEventListener('dragover', dragover, false);
+      creator.current.removeEventListener('drop', drop, false);
+    };
+  }, []);
 
   useEffect(() => {
     if (edit) document.addEventListener('mousedown', stopEditHandleBlur);
@@ -77,6 +102,7 @@ const PostCreater = ({ lowAvatarURL }) => {
   return (
     <S.PostCreater ref={creator}>
       <PostPlace
+        isOver={isOver}
         reference={reference}
         lowAvatarURL={lowAvatarURL}
         stopEditHandleBlur={stopEditHandleBlur}

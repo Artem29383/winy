@@ -9,6 +9,7 @@ const initialState = {
     idError: '',
   },
   successMsg: '',
+  theme: 'light',
 };
 
 const appReducer = createSlice({
@@ -34,14 +35,18 @@ const appReducer = createSlice({
     resetAll(state) {
       Object.assign(state, initialState);
     },
+    themeChangeHandle(state, { payload }) {
+      state.theme = payload;
+    },
   },
 });
 
 export default appReducer.reducer;
 export const {
-  setSuccess,
   setError,
   setLoader,
   setProgressUpload,
   resetAll,
+  setSuccess,
+  themeChangeHandle,
 } = appReducer.actions;

@@ -37,5 +37,6 @@ export const exportDefaultUserData = data => {
       entities: data.posts.entities || {},
       ids: data.posts.ids || [],
     },
+    totalLikes: data.totalLikes || 0,
   };
 };
