@@ -19,6 +19,8 @@ export default {
   `,
   GraphicsBody: styled.div`
     color: #000;
+    position: relative;
     width: 100%;
+    min-height: 150px;
   `,
 };
