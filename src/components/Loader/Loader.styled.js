@@ -26,11 +26,14 @@ export const LoaderComponent = styled.div`
     position: absolute;
     width: ${({ width }) => (width ? `${width}px` : '64px')};
     height: ${({ height }) => (height ? `${height}px` : '64px')};
-    border: ${props => `5px solid ${props.theme.loaderColor}`};
+    border: ${({ color, theme }) =>
+      color ? `5px solid ${color}` : `5px solid ${theme.loaderColor}`};
     border-radius: 50%;
     animation: ${keyframes1} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: ${props =>
-      `${props.theme.loaderColor} transparent transparent transparent`};
+    border-color: ${({ theme, color }) =>
+      color
+        ? `${color} transparent transparent transparent`
+        : `${theme.loaderColor} transparent transparent transparent`};
   }
 
   & div:nth-child(1) {

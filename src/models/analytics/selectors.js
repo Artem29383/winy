@@ -1,8 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const getLikesAnalyticsData = state => state.analytics.likesAnalyticsData;
+const getLikesAnalyticsData = state => state.analytics;
 
 export const likesAnalyticsDataSelector = createSelector(
   getLikesAnalyticsData,
-  likesAnalyticsData => likesAnalyticsData
+  analytics => analytics
 );

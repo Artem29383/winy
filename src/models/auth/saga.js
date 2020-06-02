@@ -20,6 +20,7 @@ import { FireSaga } from 'utils/sagaFirebaseHelpers';
 import { authRef, firestore } from 'src/firebase/firebase';
 import defaultUserPhoto from 'assets/images/defaultUserPhoto.png';
 import { resetUser } from 'models/user/reducer';
+import { resetAnalytics } from 'models/analytics/reducer';
 
 function* signIn(action) {
   try {
@@ -177,6 +178,9 @@ function* userLogOut() {
     });
     yield put({
       type: resetAll.type,
+    });
+    yield put({
+      type: resetAnalytics.type,
     });
   } catch (e) {
     yield put({

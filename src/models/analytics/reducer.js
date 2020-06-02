@@ -1,16 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createDataNow } from 'utils/createDataNow';
+import { correctPrintLineGraphics } from 'utils/correctPrintLineGraphics';
 /* eslint-disable no-param-reassign */
 
 const initialState = {
   totalLikesAnalytics: {},
   likesAnalyticsData: {},
+  keysRemove: [],
 };
 
 const analyticsReducer = createSlice({
   name: 'analytics',
   initialState,
   reducers: {
+    resetAnalytics(state) {
+      state.totalLikesAnalytics = {};
+      state.likesAnalyticsData = {};
+    },
     changeTotalLikesAnalytics(state, { payload }) {
       const { id, totalLikes, dataNow } = payload;
       state.totalLikesAnalytics[id] = {
@@ -19,21 +24,19 @@ const analyticsReducer = createSlice({
       };
     },
     putLikesAnalyticsData(state, { payload }) {
-      const { labels, dataGraph, dates } = payload;
-      if (labels.length < 7) {
-        let counts = labels.length;
-        while (counts !== 7) {
-          dates.push(createDataNow(counts));
-          counts += 1;
-        }
-      }
+      const { allData } = payload;
+      const { labels, dataGraph, keysRemove } = correctPrintLineGraphics(
+        allData
+      );
       state.likesAnalyticsData = {
-        labels: dates,
+        labels,
         dataGraph,
       };
+      state.keysRemove = keysRemove;
     },
     firebaseTotalLikesAnalytics: state => state,
     firebaseGetAllLikesAnalytics: state => state,
+    firebaseRemoveExtraKeysAllLikesAnalytics: state => state,
   },
 });
 
@@ -43,4 +46,6 @@ export const {
   firebaseTotalLikesAnalytics,
   firebaseGetAllLikesAnalytics,
   putLikesAnalyticsData,
+  resetAnalytics,
+  firebaseRemoveExtraKeysAllLikesAnalytics,
 } = analyticsReducer.actions;
