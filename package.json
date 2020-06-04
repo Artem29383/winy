@@ -92,6 +92,7 @@
     "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^1.0.0-rc4",
     "@reduxjs/toolkit": "^1.2.5",
     "@types/classnames": "^2.2.10",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/yup": "^0.29.0",
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",

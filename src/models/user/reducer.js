@@ -35,6 +35,12 @@ const initialState = {
     ids: [],
   },
   totalLikes: 0,
+  users: {
+    entities: {},
+    ids: [],
+    lastVisibleObject: {},
+    size: 0,
+  },
 };
 
 const userReducer = createSlice({
@@ -79,6 +85,21 @@ const userReducer = createSlice({
     updateTotalLikes(state, { payload }) {
       state.totalLikes = payload;
     },
+    setUsersInit(state, { payload }) {
+      const { entities, ids, lastVisibleObject, size } = payload;
+      state.users.entities = { ...state.users.entities, ...entities };
+      state.users.ids = [...state.users.ids, ...ids];
+      state.users.lastVisibleObject = lastVisibleObject;
+      state.users.size = size;
+    },
+    resetUsers(state) {
+      state.users = {
+        entities: {},
+        ids: [],
+        lastVisibleObject: {},
+        size: 0,
+      };
+    },
     setUserAboutContent: state => state,
     checkAuthUser: state => state,
     firebaseUpdateStatus: state => state,
@@ -89,6 +110,7 @@ const userReducer = createSlice({
     firebaseRemoveUserPost: state => state,
     firebaseLikeHandle: state => state,
     firebaseSetTotalLikes: state => state,
+    firebaseGetUsers: state => state,
   },
 });
 
@@ -113,4 +135,7 @@ export const {
   firebaseLikeHandle,
   firebaseSetTotalLikes,
   updateTotalLikes,
+  firebaseGetUsers,
+  setUsersInit,
+  resetUsers,
 } = userReducer.actions;
