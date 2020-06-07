@@ -4,6 +4,7 @@ import {
   addPost,
   deletePost,
   firebaseCreateUserPost,
+  firebaseGetUsers,
   firebaseGetUserInfo,
   firebaseLikeHandle,
   firebaseRemoveUserPost,
@@ -17,6 +18,7 @@ import {
   setUserContent,
   setUserDetails,
   setUserInfo,
+  setUsersInit,
   updateStatus,
   updateTotalLikes,
 } from 'models/user/reducer';
@@ -28,7 +30,13 @@ import {
 } from 'models/app/reducer';
 import { API_PATH, SUCCESS_MSG } from 'constants/constants';
 import { FireSaga } from 'utils/sagaFirebaseHelpers';
-import { authRef, storage, storageRef, firestore } from 'src/firebase/firebase';
+import {
+  authRef,
+  storage,
+  storageRef,
+  firestore,
+  firestoreRef,
+} from 'src/firebase/firebase';
 import { updateAvatar } from 'models/auth/reducer';
 import { exportDefaultUserData } from 'utils/exportDefaultUserData';
 import { getDate } from 'utils/getDate';
@@ -396,6 +404,45 @@ function* setTotalLikes({ payload }) {
   }
 }
 
+function* getAllUsers({ payload }) {
+  try {
+    let users = [];
+    const lastUser = payload.lastVisibleObject;
+    const size = yield firestoreRef.collection(API_PATH.users).get();
+    if (!lastUser) {
+      users = yield firestoreRef
+        .collection(API_PATH.users)
+        .limit(5)
+        .get();
+    } else {
+      users = yield firestoreRef
+        .collection(API_PATH.users)
+        .startAfter(lastUser)
+        .limit(5)
+        .get();
+    }
+    const firstUsers = users.docs.map(doc => {
+      const { id } = doc;
+      const data = doc.data();
+      data.id = id;
+      return data;
+    });
+    const normalizerData = normalizer(firstUsers, 'users');
+    const lastVisibleObject = users.docs[users.docs.length - 1];
+    yield put({
+      type: setUsersInit.type,
+      payload: {
+        entities: normalizerData.entities.users,
+        ids: normalizerData.result,
+        lastVisibleObject,
+        size: size.size,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default function* rootSagaUser() {
   yield takeEvery(firebaseUpdateStatus, statusUpdate);
   yield takeEvery(firebaseUploadAvatarUser, avatarUpload);
@@ -406,4 +453,5 @@ export default function* rootSagaUser() {
   yield takeEvery(firebaseRemoveUserPost, removePost);
   yield takeEvery(firebaseLikeHandle, addLikeSaga);
   yield takeEvery(firebaseSetTotalLikes, setTotalLikes);
+  yield takeEvery(firebaseGetUsers, getAllUsers);
 }

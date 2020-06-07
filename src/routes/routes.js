@@ -6,6 +6,7 @@ import ResetPasswordPage from 'pages/ResetPasswordPage';
 import ProfilePage from 'pages/ProfilePage';
 import SettingsPage from 'pages/SettingsPage';
 import AnalyticsPage from 'pages/AnalyticsPage';
+import UsersPage from 'pages/UsersPage';
 
 export default [
   {
@@ -55,6 +56,13 @@ export default [
     path: routes.analytics,
     exact: true,
     component: AnalyticsPage,
+    isAuth: true,
+    isAdmin: false,
+  },
+  {
+    path: routes.users,
+    exact: true,
+    component: UsersPage,
     isAuth: true,
     isAdmin: false,
   },
