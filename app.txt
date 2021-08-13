@@ -1,0 +1,119 @@
+import * as React from 'react';
+import { DataBus, Loader, connect } from 'ufs-ui';
+import { UserCredentials, ConnectedAuthProvider } from '@dcm/dcm-ui';
+import { LoggerFactory } from '@dcm/logger';
+import { Route, Router } from '@dcm/router';
+import getServiceAxios from '@dcm/service-discovery';
+import 'index.css';
+// Components
+import Index from 'pages/Index';
+import AdminPage from './components/AdminPage';
+// import { BpmNewsMonitoring } from './components/BpmNewsMonitoring';
+// Actions
+import { getResponsibleSubjectsAction } from 'reducers/responsibleSubjectsWithMonitoringType/thunkActions';
+import { getAllEventsAction } from 'reducers/allEvents/thunkActions';
+import { getBaseTypeByCategoryAction } from './reducers/baseTypeByCategory/thunkActions';
+import { getAllIndustriesAction } from 'reducers/allIndustries/thunkActions';
+import { getValuationReasonsAction } from 'reducers/valuationReasons/thunkActions';
+import { getFrontConfigAction } from './actions/app';
+// Reducers
+import { reducer, store } from './reducers';
+// Enums
+import { ApiInfo } from './api/ApiInfo';
+import { Routes } from './enums/Routes';
+import { CookiesProvider } from 'react-cookie';
+import { Provider } from 'react-redux';
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export type AppProps = {
+  appData?: any;
+  dataBus?: DataBus;
+} & DispatchProps;
+
+LoggerFactory.getLoggerFactory();
+
+class App extends React.Component<AppProps> {
+  static reducer = reducer;
+
+  auth = () => getServiceAxios().get<UserCredentials>(ApiInfo.SERVICE, 'auth', 'view');
+
+  componentDidMount() {
+    this.props.getResponsibleSubjects();
+    this.props.getAllEvents();
+    this.props.getBaseTypeByCategory();
+    this.props.getAllIndustries();
+    this.props.getValuationReasons();
+    this.props.getFrontConfig();
+  }
+
+  public render(): React.ReactElement {
+    const loading = <Loader global />;
+
+    // const mockTasks = [
+    //   {
+    //     name: 'Экспертиза сотрудника',
+    //     priority: 50,
+    //     createTime: new Date(),
+    //     dueDate: new Date(),
+    //     category: 'НМ',
+    //     id: '13c2b8b3-5986-11eb-a84f-262193c2e255',
+    //     claimTime: new Date(),
+    //     links: [
+    //       {
+    //         group: null,
+    //         id: 'a9ef380b-5cba-1f05-e053-9650810a9ca4',
+    //         linkType: 'PRIMARY',
+    //         name: 'РПАО СБЕРБАНК РОССИИ',
+    //         type: 'client',
+    //       },
+    //       {
+    //         group: null,
+    //         id: '001626560fbcb476008d4bd0b0d7a8ec',
+    //         linkType: 'ASSOCIATE',
+    //         name: null,
+    //         type: 'newsMonitoringTextId',
+    //       },
+    //     ],
+    //     formKey: 'newsmonitoring:BpmNewsMonitoring',
+    //     processInstanceId: '13bfd270-5986-11eb-a84f-262193c2e255',
+    //   },
+    // ];
+    //
+    // const userCredentials = {
+    //   id: '18e0d987-8910-48c0-abd9-41e5306daa2e',
+    //   login: 'askpm',
+    //   name: 'АСК ПМ',
+    //   fullname: 'АСК ПМ ',
+    // };
+
+    return (
+      <ConnectedAuthProvider auth={this.auth} loader={loading}>
+        <CookiesProvider>
+          <Provider store={store}>
+            <Router {...this.props.appData}>
+              {/* <Route */}
+              {/*  test={(data) => data.view === 'BPM'} */}
+              {/*  component={(props) => <BpmNewsMonitoring tasks={mockTasks} setExecutionConfig={() => {}} userCredentials={userCredentials} {...props} />} */}
+              {/* /> */}
+              {/* <Route test={(data) => data.page === Routes.SCALA_NM_PAGE} component={(props) => <ScalaNmPage {...props} />} /> */}
+              <Route test={(data) => data.page === Routes.ADMIN} component={(props) => <AdminPage {...props} />} />
+              <Route component={(props) => <Index {...props} />} />
+            </Router>
+          </Provider>
+        </CookiesProvider>
+      </ConnectedAuthProvider>
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  getResponsibleSubjects: () => dispatch(getResponsibleSubjectsAction()),
+  getAllEvents: () => dispatch(getAllEventsAction()),
+  getBaseTypeByCategory: () => dispatch(getBaseTypeByCategoryAction()),
+  getAllIndustries: () => dispatch(getAllIndustriesAction()),
+  getValuationReasons: () => dispatch(getValuationReasonsAction()),
+  getFrontConfig: () => dispatch(getFrontConfigAction()),
+});
+
+export default connect(null, mapDispatchToProps)(App);
