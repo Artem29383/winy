@@ -1,0 +1,95 @@
+import { combineReducers } from 'redux';
+import { authReducer, combineStores, fixStore } from '@dcm/dcm-ui';
+import { navigationReducer } from '@dcm/router';
+import { dictionaryReducer } from '@dcm/dictionary';
+
+import { appReducer } from './app/reducer';
+import { digestReducer } from './digest/reducer';
+import allEventsReducer from 'reducers/allEvents/reducer';
+import { newsFilterReducer } from './newsFilter/reducer';
+import userRolesOfUserReducer from './userRolesOfUser/reducer';
+import visibleItemsReducer from './visibleItems/reducer';
+import visibleItemsWithoutNewsReducer from './visibleItemsWithoutNews/reducer';
+import { dashEventsReducer } from './dashEvents/reducer';
+import baseTypeByCategoryReducer from './baseTypeByCategory/reducer';
+import allIndustriesReducer from './allIndustries/reducer';
+import { dashIndustriesReducer } from './dashIndustries/reducer';
+import currentTextInfoReducer from './currentTextInfo/reducer';
+import companyByAskIdReducer from './companyByAskId/reducer';
+import { subjectShortReducer } from './subjectShort/reducer';
+import { holdingInfoReducer } from './holdingInfo/reducer';
+import userEventsReducer from './userEvents/reducer';
+import valuationReasonsReducer from './valuationReasons/reducer';
+import adminFilterReducer from './adminFilter/reducer';
+import { favoriteTextToUserFilterReducer } from './favoriteTextToUserFilter/reducer';
+import { favoriteIndustryTableReducer } from './favoriteIndustryTable/reducer';
+import { kafkaEventsReducer } from './kafkaEvents/reducer';
+import { textToCompanyValuationWithSubstitutionResultReducer } from './textToCompanyValuationWithSubstitutionResult/reducer';
+import responsibleSubjectsWithMonitoringTypeReducer from './responsibleSubjectsWithMonitoringType/reducer';
+import userRolesEventsReducer from './userRolesEvents/reducer';
+import userRolesReducer from './userRoles/reducer';
+import { eventsWithIndustriesReducer } from './eventsWithIndustries/reducer';
+import selectedSignalsReducer from './selectedSignals/reducer';
+import userEventActivitiesReducer from './userEventActivities/reducer';
+import bpmInfoByDigestsReducer from './bpmInfoByDigests/reducer';
+import { kafkaEventsByDigestsReducer } from './kafkaEventsByDigests/reducer';
+import { kafkaEventsObserveReducer } from './kafkaEventsObserve/reducer';
+import { kafkaEventsProblemReducer } from './kafkaEventsProblem/reducer';
+import monitoringReducer from './monitoring/reducer';
+import communicationReducer from './communication/reducer';
+import { configureStore } from '@reduxjs/toolkit';
+
+const reducers = {
+  authStore: authReducer,
+  navigation: navigationReducer,
+  dictionaries: dictionaryReducer,
+  appStore: appReducer,
+  communicationStore: communicationReducer,
+  digestStore: digestReducer,
+  monitoringStore: monitoringReducer,
+  allEventsStore: allEventsReducer,
+  newsFilterStore: newsFilterReducer,
+  userRolesOfUserStore: userRolesOfUserReducer,
+  visibleItemsStore: visibleItemsReducer,
+  visibleItemsWithoutNewsStore: visibleItemsWithoutNewsReducer,
+  dashEventsStore: dashEventsReducer,
+  baseTypeByCategoryStore: baseTypeByCategoryReducer,
+  allIndustriesStore: allIndustriesReducer,
+  dashIndustriesStore: dashIndustriesReducer,
+  currentTextInfoStore: currentTextInfoReducer,
+  companyByAskIdStore: companyByAskIdReducer,
+  subjectShortStore: subjectShortReducer,
+  holdingInfoStore: holdingInfoReducer,
+  userEventsStore: userEventsReducer,
+  valuationReasonsStore: valuationReasonsReducer,
+  adminFilterStore: adminFilterReducer,
+  favoriteTextToUserFilterStore: favoriteTextToUserFilterReducer,
+  favoriteIndustryTableStore: favoriteIndustryTableReducer,
+  kafkaEventsStore: kafkaEventsReducer,
+  textToCompanyValuationWithSubstitutionResultStore: textToCompanyValuationWithSubstitutionResultReducer,
+  responsibleSubjectsWithMonitoringTypeStore: responsibleSubjectsWithMonitoringTypeReducer,
+  userRolesEventsStore: userRolesEventsReducer,
+  userRolesStore: userRolesReducer,
+  eventsWithIndustriesStore: eventsWithIndustriesReducer,
+  selectedSignalsStore: selectedSignalsReducer,
+  userEventActivitiesStore: userEventActivitiesReducer,
+  bpmInfoByDigestsStore: bpmInfoByDigestsReducer,
+  kafkaEventsByDigestsStore: kafkaEventsByDigestsReducer,
+  kafkaEventsObserveStore: kafkaEventsObserveReducer,
+  kafkaEventsProblemStore: kafkaEventsProblemReducer,
+};
+
+const STORE = combineStores(
+  Object.keys(reducers).reduce((acc, item) => {
+    return { ...acc, [item]: { reducer: reducers[item] } };
+  }, {})
+);
+
+export const store = configureStore({
+  reducer: combineReducers(reducers),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
+  // devTools: true,
+});
+
+export const { reducer, selectors } = fixStore<any, any>(STORE);
+// export const reducer = combineReducers(reducers);
